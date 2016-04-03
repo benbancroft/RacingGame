@@ -1,0 +1,41 @@
+{
+    "texture": "assets/textures/police",
+    "sprites": [
+        {
+            "name": "Police Car Off",
+            "x": "0",
+            "y": "0",
+            "centreX": "128",
+            "centreY": "128",
+            "width": "256",
+            "height": "256"
+        },
+        {
+            "name": "Police Car Red",
+            "x": "256",
+            "y": "0",
+            "centreX": "128",
+            "centreY": "128",
+            "width": "256",
+            "height": "256"
+        },
+        {
+            "name": "Police Car Yellow",
+            "x": "512",
+            "y": "0",
+            "centreX": "128",
+            "centreY": "128",
+            "width": "256",
+            "height": "256"
+        },
+        {
+            "name": "Police Car Blue",
+            "x": "768",
+            "y": "0",
+            "centreX": "128",
+            "centreY": "128",
+            "width": "256",
+            "height": "256"
+        }
+  ]
+}

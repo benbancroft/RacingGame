@@ -1,0 +1,26 @@
+{
+  "name": "game",
+  "description": "A WebGL game",
+  "main": "",
+  "authors": [
+    "Ben Bancroft <ben.bancroft@scarrowhill.co.uk>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "^2.1.22"
+  },
+  "devDependencies": {
+    "qunit": "^1.21.0"
+  }
+}

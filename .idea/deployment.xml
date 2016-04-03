@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData">
+    <serverData>
+      <paths name="Central">
+        <serverdata>
+          <mappings>
+            <mapping deploy="public_html/ftw4" local="$PROJECT_DIR$/app" web="/ftw" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

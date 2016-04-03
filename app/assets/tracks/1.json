@@ -1,0 +1,54 @@
+{
+  "name": "The Loop",
+  "difficulty": "1",
+  "startOrientation": "1",
+  "nodes": [
+    {
+      "type": "2",
+      "range": "4"
+    },
+    {
+      "type": "1"
+    },
+    {
+      "type": "3",
+      "range": "2"
+    },
+    {
+      "type": "3",
+      "range": "10"
+    },
+    {
+      "type": "4",
+      "orientation": "0"
+    },
+    {
+      "type": "3",
+      "range": "10"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
+    },
+    {
+      "type": "3",
+      "range": "10"
+    },
+    {
+      "type": "4",
+      "orientation": "2"
+    },
+    {
+      "type": "3",
+      "range": "10"
+    },
+    {
+      "type": "4",
+      "orientation": "1"
+    },
+    {
+      "type": "3",
+      "range": "3"
+    }
+  ]
+}
