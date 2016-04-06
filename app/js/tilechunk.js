@@ -20,6 +20,8 @@ var TileChunk = function(tileSystem, location){
     this.tileLayers = new Map();
     this.blocks = new HashMap();
     this.hasChanged = false;
+
+    this.chunkDependencies = new HashMap();
 };
 
 TileChunk.prototype.needsUpdate = function (){
@@ -68,54 +70,87 @@ TileChunk.prototype.getLayer = function(depth){
     return layer;
 };
 
-TileChunk.prototype.createTile = function(depth, position, tile){
-    this.hasChanged = true;
+TileChunk.prototype.createTile = function(depth, position, tile, hideUpdate){
+    if (!hideUpdate) this.hasChanged = true;
 
     var layer = this.getLayer(depth);
 
     layer.createTile(position, tile);
 };
 
+TileChunk.prototype.createTilesFromBlock = function(position, value, hideUpdate){
+
+    var self = this;
+
+    if (!value) value = this.getBlock(position);
+
+    var blockInfo = this.tileSystem.getBlockById(value);
+
+    blockInfo.blockLayers.forEach(function (layerArray) {
+
+        if (layerArray.length < 2) return;
+
+        var layerInfo = layerArray[1];
+        var layerDepth = layerArray[0];
+
+        var chunkPos = self.location.clone();
+        var worldPos = chunkPos.scale(self.tileSystem.chunkSize).add(position).add(layerInfo.position);
+
+        var tilePosition = null;
+
+        if (layerInfo.tilePositionPredicate != null){
+            tilePosition = layerInfo.tilePositionPredicate(self.tileSystem, worldPos);
+        }else {
+
+            var tileIndex = 0;
+            if (layerInfo.tileIndexPredicate) tileIndex = layerInfo.tileIndexPredicate(self.tileSystem, worldPos);
+
+            if (tileIndex < 0) return;
+
+            tilePosition = layerInfo.tiles[tileIndex];
+        }
+
+        if (tilePosition == null) return;
+
+        if (layerInfo.position.equals(TilePosition.Centre)){
+            self.createTile(layerDepth, position, tilePosition, hideUpdate);
+        }else{
+            self.tileSystem.createTile(layerDepth, worldPos, tilePosition, false, hideUpdate);
+
+            var chunkPos = self.tileSystem.getChunkPosition(worldPos);
+            if (!chunkPos.equals(self.location)){
+                var deps = self.chunkDependencies.get(chunkPos)
+
+                if (deps == null){
+                    deps = [];
+                    self.chunkDependencies.set(chunkPos, deps)
+                }
+
+                if (!deps.some(function(i) { return i.equals(position)})) deps.push(position);
+            }
+        }
+    });
+};
+
 TileChunk.prototype.createTiles = function(){
     var tileChunk = this;
-    this.blocks.forEach(function (block) {
-        var position = block.key;
+    this.blocks.data().sort(function(val1, val2) {
 
-        var blockInfo = tileChunk.tileSystem.getBlockById(block.value);
+        var blockInfo1 = tileChunk.tileSystem.getBlockById(val1.value);
+        var blockInfo2 = tileChunk.tileSystem.getBlockById(val2.value);
 
-        blockInfo.blockLayers.forEach(function (layerArray) {
 
-            if (layerArray.length < 2) return;
+        return blockInfo1.blockLayers.length - blockInfo2.blockLayers.length;
+    }).forEach(function (block) {
+        tileChunk.createTilesFromBlock(block.key, block.value);
+    });
 
-            var layerInfo = layerArray[1];
-            var layerDepth = layerArray[0];
-
-            var chunkPos = tileChunk.location.clone();
-            var worldPos = chunkPos.scale(tileChunk.tileSystem.chunkSize).add(position).add(layerInfo.position);
-
-            var tilePosition = null;
-
-            if (layerInfo.tilePositionPredicate != null){
-                tilePosition = layerInfo.tilePositionPredicate(this.tileSystem, worldPos);
-            }else {
-
-                var tileIndex = 0;
-                if (layerInfo.tileIndexPredicate) tileIndex = layerInfo.tileIndexPredicate(this.tileSystem, worldPos);
-
-                if (tileIndex < 0) return;
-
-                tilePosition = layerInfo.tiles[tileIndex];
-            }
-
-            if (tilePosition == null) return;
-
-            if (layerInfo.position.equals(TilePosition.Centre)){
-                tileChunk.createTile(layerDepth, position, tilePosition);
-            }else{
-                tileChunk.tileSystem.createTile(layerDepth, worldPos, tilePosition);
-            }
+    this.tileSystem.getChunkDependencies(this.location).forEach(function (chunk) {
+        chunk.chunkDependencies.get(tileChunk.location).forEach(function (pos) {
+            chunk.createTilesFromBlock(pos, null, true);
         });
     });
+
     this.hasChanged = false;
 };
 

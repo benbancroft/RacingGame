@@ -9,17 +9,23 @@ PlayerCar.prototype.constructor = PlayerCar;
 PlayerCar.prototype.tick = function(engine){
 
     //up
-    if (engine.isKeyPressed(87)){
+    if (engine.isKeyPressed(32)){
+        this.isHandbrake = true;
+    }
+    else if (engine.isKeyPressed(87)){
         this.isForward = true;
         this.isReverse = false;
+        this.isHandbrake = false;
     }
     //down
     else if (engine.isKeyPressed(83)){
         this.isForward = false;
         this.isReverse = true;
+        this.isHandbrake = false;
     }else{
         this.isForward = false;
         this.isReverse = false;
+        this.isHandbrake = false;
     }
 
     //fraction of a degree

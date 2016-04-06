@@ -393,6 +393,9 @@ var Tracks = {
                         case NodeType.STRAIGHT:
                             nodes.push(new StraightTrackNode(parseInt(nodeJson.range)));
                             break;
+                        case NodeType.CORNER:
+                            nodes.push(new CornerTrackNode(parseInt(nodeJson.orientation)));
+                            break;
                     }
 
                     //nodes.push(new Sprite(spriteJson.name, parseFloat(spriteJson.x), parseFloat(spriteJson.y), parseFloat(spriteJson.centreX), parseFloat(spriteJson.centreY), parseFloat(spriteJson.width), parseFloat(spriteJson.height)));

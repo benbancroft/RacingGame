@@ -44,12 +44,12 @@ TileSystem.prototype.tick = function(viewports){
         var minX = Math.floor((-viewport.levelX+viewport.levelWidth/2) / tileSystem.chunkSize / tileSystem.tileSize);
         var maxX = Math.floor(((-viewport.levelX+viewport.levelWidth/2) + viewport.levelWidth) / tileSystem.chunkSize / tileSystem.tileSize);
 
-        //minX = 0, maxX = 4;
+        //minX = 5, maxX = 5;
 
         var minY = Math.floor((-viewport.levelY+viewport.levelHeight/2) / tileSystem.chunkSize / tileSystem.tileSize);
         var maxY = Math.floor(((-viewport.levelY+viewport.levelHeight/2) + viewport.levelHeight) / tileSystem.chunkSize / tileSystem.tileSize);
 
-        //minY = 0, maxY =0;
+        //minY = 0, maxY = 0;
 
         for (var x = minX; x <= maxX; x++) {
             for (var y = minY; y <= maxY; y++) {
@@ -113,9 +113,19 @@ TileSystem.prototype.getChunk = function(chunkPosition, create){
     return chunk;
 };
 
+TileSystem.prototype.getChunkDependencies = function(chunkPosition){
+    return this.tileChunks.values().filter(function(c) {
+        var deps = c.chunkDependencies.get(chunkPosition);
+        return deps != null && deps.length > 0;
+    });
+};
+
 TileSystem.prototype.getChunksInRange = function(position, bounds){
-    var chunkPositionStart = position.clone().divScalar(this.chunkSize).floor();
-    var chunkPositionEnd = position.clone().add(bounds).divScalar(this.chunkSize).floor();
+    var chunkPositionStartUN = position.clone().divScalar(this.chunkSize).floor();
+    var chunkPositionEndUN = position.clone().add(bounds).divScalar(this.chunkSize).floor();
+
+    var chunkPositionStart = chunkPositionStartUN.minPoint(chunkPositionEndUN);
+    var chunkPositionEnd = chunkPositionStartUN.maxPoint(chunkPositionEndUN);
 
     var boundedChunks = new Array();
 
@@ -134,7 +144,13 @@ TileSystem.prototype.setBlock = function(position, blockId){
 
     var chunk = this.getChunk(chunkPosition);
 
-    if (chunk) chunk.setBlock(position.clone().mod(this.chunkSize), blockId);
+    if (chunk){
+        chunk.setBlock(position.clone().wrap(this.chunkSize), blockId);
+
+        return true;
+    }
+
+    return false;
 };
 
 TileSystem.prototype.removeBlock = function(position){
@@ -142,7 +158,9 @@ TileSystem.prototype.removeBlock = function(position){
 
     var chunk = this.getChunk(chunkPosition);
 
-    if (chunk) chunk.removeBlock(position.clone().mod(this.chunkSize));
+    var chunkBlockPos = position.clone().mod(this.chunkSize);
+
+    if (chunk) chunk.removeBlock(position.clone().wrap(this.chunkSize));
 };
 
 TileSystem.prototype.getBlock = function(position){
@@ -151,7 +169,7 @@ TileSystem.prototype.getBlock = function(position){
     var chunk = this.getChunk(chunkPosition, false);
 
     if (chunk) {
-        return chunk.getBlock(position.clone().mod(this.chunkSize));
+        return chunk.getBlock(position.clone().wrap(this.chunkSize));
     }else{
         return 0;
     }
@@ -161,12 +179,20 @@ TileSystem.prototype.registerBlockType = function(blockId, block){
     this.blocks.set(blockId, block);
 };
 
-TileSystem.prototype.createTile = function(depth, position, tile, createChunk){
-    var chunkPosition = position.clone().divScalar(this.chunkSize).floor();
+TileSystem.prototype.createTile = function(depth, position, tile, createChunk, hideUpdate){
+    var chunkPosition = this.getChunkPosition(position);
     var chunk = this.getChunk(chunkPosition, createChunk);
     if (chunk) {
-        chunk.createTile(depth, position.clone().mod(this.chunkSize), tile);
+        chunk.createTile(depth, position.clone().wrap(this.chunkSize), tile, hideUpdate);
+
+        return true;
     }
+
+    return false;
+};
+
+TileSystem.prototype.getChunkPosition = function(position){
+    return position.clone().divScalar(this.chunkSize).floor();
 };
 
 TileSystem.prototype.createTiles = function(update){

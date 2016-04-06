@@ -21,16 +21,17 @@ Game.prototype.loaded = function () {
     this.tilesystem.setGenerator(this.generator);
 
     var tileSelectFunc = function(startPos, tileSystem, worldPos){
-        var tileOffset = worldPos.clone().mod(16).abs();
+        var tileOffset = worldPos.clone().wrap(16).abs();
 
-        if (worldPos.lessThan(new Vector2(0))) tileOffset = new Vector2(15, 15).sub(tileOffset);
+        //if (worldPos.lessThan(new Vector2(0))) tileOffset = new Vector2(15, 15).sub(tileOffset);
 
         return startPos.clone().add(tileOffset);
     };
 
     //Grass
 
-    var grassLayer = new BlockLayer(TilePosition.Centre, curry(tileSelectFunc, new Vector2(0,16)));
+    var grassFunc = curry(tileSelectFunc, new Vector2(0,16))
+    var grassLayer = new BlockLayer(TilePosition.Centre, grassFunc);
 
     this.tilesystem.registerBlockType(1, new Block([
         [0, grassLayer]
@@ -69,16 +70,31 @@ Game.prototype.loaded = function () {
         [1, new BlockLayer(TilePosition.DownRight, null, [new Vector2(1, 2)])]
     ], true));
 
-    //Start line up-down
+    //Straight arrow up-down
 
     this.tilesystem.registerBlockType(6, new Block([
+        [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Right, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Down, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.DownRight, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(4, 1)])],
+        [1, new BlockLayer(TilePosition.Right, null, [new Vector2(5, 1)])],
+        [1, new BlockLayer(TilePosition.Down, null, [new Vector2(4, 2)])],
+        [1, new BlockLayer(TilePosition.DownRight, null, [new Vector2(5, 2)])]
+    ], true));
+
+    //Finish line up-down
+
+    this.tilesystem.registerBlockType(7, new Block([
         [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
         [0, new BlockLayer(TilePosition.Right, asphaltFunc)],
         [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(3, 3)])],
         [1, new BlockLayer(TilePosition.Right, null, [new Vector2(4, 3)])],
     ], true));
 
-    this.tilesystem.registerBlockType(7, new Block([
+    //Start line up-down
+
+    this.tilesystem.registerBlockType(8, new Block([
         [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
         [0, new BlockLayer(TilePosition.Right, asphaltFunc)],
         [0, new BlockLayer(TilePosition.Down, asphaltFunc)],
@@ -93,6 +109,139 @@ Game.prototype.loaded = function () {
         [1, new BlockLayer(TilePosition.DownDownRight, null, [new Vector2(5, 2)])]
     ], true));
 
+    //Corner inner wall: right-up
+
+    this.tilesystem.registerBlockType(9, new Block([
+        [0, new BlockLayer(TilePosition.Up, grassFunc)],
+        [0, new BlockLayer(TilePosition.UpRight, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Right, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Up, null, [new Vector2(6, 0)])],
+        [1, new BlockLayer(TilePosition.UpRight, null, [new Vector2(7, 0)])],
+        [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(6, 1)])],
+        [1, new BlockLayer(TilePosition.Right, null, [new Vector2(7, 1)])]
+    ], true));
+
+    //Corner inner wall: left-up
+
+    this.tilesystem.registerBlockType(10, new Block([
+        [0, new BlockLayer(TilePosition.Up, grassFunc)],
+        [0, new BlockLayer(TilePosition.UpRight, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Right, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Up, null, [new Vector2(8, 0)])],
+        [1, new BlockLayer(TilePosition.UpRight, null, [new Vector2(9, 0)])],
+        [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(8, 1)])],
+        [1, new BlockLayer(TilePosition.Right, null, [new Vector2(9, 1)])]
+    ], true));
+
+    //Corner inner wall: right-down
+
+    this.tilesystem.registerBlockType(11, new Block([
+        [0, new BlockLayer(TilePosition.Left, grassFunc)],
+        [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.UpLeft, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Up, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Left, null, [new Vector2(10, 1)])],
+        [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(11, 1)])],
+        [1, new BlockLayer(TilePosition.UpLeft, null, [new Vector2(10, 0)])],
+        [1, new BlockLayer(TilePosition.Up, null, [new Vector2(11, 0)])]
+    ], true));
+
+    //Corner inner wall: left-down
+
+    this.tilesystem.registerBlockType(12, new Block([
+        [0, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Left, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Down, grassFunc)],
+        [0, new BlockLayer(TilePosition.DownLeft, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(13, 0)])],
+        [1, new BlockLayer(TilePosition.Left, null, [new Vector2(12, 0)])],
+        [1, new BlockLayer(TilePosition.Down, null, [new Vector2(13, 1)])],
+            [1, new BlockLayer(TilePosition.DownLeft, null, [new Vector2(12, 1)])]
+    ], true));
+
+    //Corner outer wall: right-up
+
+    this.tilesystem.registerBlockType(13, new Block([
+        [0, new BlockLayer(TilePosition.Centre, grassFunc)],
+        [0, new BlockLayer(TilePosition.Up, asphaltFunc)],
+        [0, new BlockLayer(TilePosition.Right, grassFunc)],
+        [0, new BlockLayer(TilePosition.UpRight, asphaltFunc)],
+        [0, new BlockLayer(new Vector2(2, 0), grassFunc)],
+        [0, new BlockLayer(new Vector2(2, -1), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(3, 0), grassFunc)],
+        [0, new BlockLayer(new Vector2(3, -1), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(4, 0), grassFunc)],
+        [0, new BlockLayer(new Vector2(4, -1), grassFunc)],
+        [0, new BlockLayer(new Vector2(4, -2), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(5, -1), grassFunc)],
+        [0, new BlockLayer(new Vector2(5, -2), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(5, -3), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(6, -1), grassFunc)],
+        [0, new BlockLayer(new Vector2(6, -2), grassFunc)],
+        [0, new BlockLayer(new Vector2(6, -3), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(7, -2), grassFunc)],
+        [0, new BlockLayer(new Vector2(7, -3), grassFunc)],
+        [0, new BlockLayer(new Vector2(7, -4), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(7, -5), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(8, -3), grassFunc)],
+        [0, new BlockLayer(new Vector2(8, -4), grassFunc)],
+        [0, new BlockLayer(new Vector2(8, -5), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(8, -6), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(9, -4), grassFunc)],
+        [0, new BlockLayer(new Vector2(9, -5), grassFunc)],
+        [0, new BlockLayer(new Vector2(9, -6), grassFunc)],
+        [0, new BlockLayer(new Vector2(9, -7), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(9, -8), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(9, -9), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(9, -10), asphaltFunc)],
+        [0, new BlockLayer(new Vector2(10, -6), grassFunc)],
+        [0, new BlockLayer(new Vector2(10, -7), grassFunc)],
+        [0, new BlockLayer(new Vector2(10, -8), grassFunc)],
+        [0, new BlockLayer(new Vector2(10, -9), grassFunc)],
+        [0, new BlockLayer(new Vector2(10, -10), grassFunc)],
+        [1, new BlockLayer(TilePosition.Centre, null, [new Vector2(5, 14)])],
+        [1, new BlockLayer(TilePosition.Up, null, [new Vector2(5, 13)])],
+        [1, new BlockLayer(TilePosition.Right, null, [new Vector2(6, 14)])],
+        [1, new BlockLayer(TilePosition.UpRight, null, [new Vector2(6, 13)])],
+        [1, new BlockLayer(new Vector2(2, 0), null, [new Vector2(7, 14)])],
+        [1, new BlockLayer(new Vector2(2, -1), null, [new Vector2(7, 13)])],
+        [1, new BlockLayer(new Vector2(3, 0), null, [new Vector2(8, 14)])],
+        [1, new BlockLayer(new Vector2(3, -1), null, [new Vector2(8, 13)])],
+        [1, new BlockLayer(new Vector2(4, 0), null, [new Vector2(9, 14)])],
+        [1, new BlockLayer(new Vector2(4, -1), null, [new Vector2(9, 13)])],
+        [1, new BlockLayer(new Vector2(4, -2), null, [new Vector2(9, 12)])],
+        [1, new BlockLayer(new Vector2(5, -1), null, [new Vector2(10, 13)])],
+        [1, new BlockLayer(new Vector2(5, -2), null, [new Vector2(10, 12)])],
+        [1, new BlockLayer(new Vector2(5, -3), null, [new Vector2(10, 11)])],
+        [1, new BlockLayer(new Vector2(6, -1), null, [new Vector2(11, 13)])],
+        [1, new BlockLayer(new Vector2(6, -2), null, [new Vector2(11, 12)])],
+        [1, new BlockLayer(new Vector2(6, -3), null, [new Vector2(11, 11)])],
+        [1, new BlockLayer(new Vector2(7, -2), null, [new Vector2(12, 12)])],
+        [1, new BlockLayer(new Vector2(7, -3), null, [new Vector2(12, 11)])],
+        [1, new BlockLayer(new Vector2(7, -4), null, [new Vector2(12, 10)])],
+        [1, new BlockLayer(new Vector2(7, -5), null, [new Vector2(12, 9)])],
+        [1, new BlockLayer(new Vector2(8, -3), null, [new Vector2(13, 11)])],
+        [1, new BlockLayer(new Vector2(8, -4), null, [new Vector2(13, 10)])],
+        [1, new BlockLayer(new Vector2(8, -5), null, [new Vector2(13, 9)])],
+        [1, new BlockLayer(new Vector2(8, -6), null, [new Vector2(13, 8)])],
+        [1, new BlockLayer(new Vector2(9, -4), null, [new Vector2(14, 10)])],
+        [1, new BlockLayer(new Vector2(9, -5), null, [new Vector2(14, 9)])],
+        [1, new BlockLayer(new Vector2(9, -6), null, [new Vector2(14, 8)])],
+        [1, new BlockLayer(new Vector2(9, -7), null, [new Vector2(14, 7)])],
+        [1, new BlockLayer(new Vector2(9, -8), null, [new Vector2(14, 6)])],
+        [1, new BlockLayer(new Vector2(9, -9), null, [new Vector2(14, 5)])],
+        [1, new BlockLayer(new Vector2(9, -10), null, [new Vector2(14, 4)])],
+        [1, new BlockLayer(new Vector2(10, -6), null, [new Vector2(15, 8)])],
+        [1, new BlockLayer(new Vector2(10, -7), null, [new Vector2(15, 7)])],
+        [1, new BlockLayer(new Vector2(10, -8), null, [new Vector2(15, 6)])],
+        [1, new BlockLayer(new Vector2(10, -9), null, [new Vector2(15, 5)])],
+        [1, new BlockLayer(new Vector2(10, -10), null, [new Vector2(15, 4)])]
+
+
+    ], true));
+
 
 
     this.mainLevel.setTileSystem(this.tilesystem);
@@ -101,9 +250,21 @@ Game.prototype.loaded = function () {
 
     this.mainViewport = this.registerViewport(new Viewport(this.mainLevel, 0, 0, resolution.x, resolution.y, resolution.x/2, resolution.y/2, resolution.x, resolution.y));
 
+    var ai = new AICar(this.mainLevel);
+
     this.player = new PlayerCar(this.mainLevel);
-    this.player.x = resolution.x/2;
-    this.player.y = resolution.y/2;
+    this.player.direction = Math.PI/2;
+
+    this.generator.startPositions.forEach(function(position){
+        ai.setPosition(position.key)
+        ai.direction = Math.PI/2;
+    });
+
+    this.player.setPosition(new Vector2(ai.x-200, ai.y));
+
+
+    //this.player.x = resolution.x/2;
+    //this.player.y = resolution.y/2;
 
     /*this.aiTest = new AICar(this.mainLevel);
      this.aiTest.x = resolution.x/2;

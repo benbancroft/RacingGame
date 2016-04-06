@@ -41,12 +41,14 @@ var Car = function(level){
     this.isReverse = false;
     this.isLeft = false;
     this.isRight = false;
+    this.isHandbrake = false;
 
     this.acceleration = 0.05;
     this.deceleration = this.acceleration/5;
-    this.turnSpeed = Math.PI/2000;
-    this.angularDeceleration = this.turnSpeed/4;
+    this.turnSpeed = Math.PI/800;
+    this.angularDeceleration = this.turnSpeed/1.1;
 
+    this.carMaxSpeed = 15;
     this.maxSpeed = 15;
 
     this.sirenRate = 10;
@@ -140,6 +142,14 @@ Car.prototype.accelerateForwardMax = function(acceleration) {
     }
 }
 
+Car.prototype.killForwardVelocity = function() {
+
+    var currentSpeed = this.getForwardSpeed();
+    var forwardVector = this.getForwardVector(this.velocity);
+
+    this.velocity.add(forwardVector);
+}
+
 Car.prototype.killOrthogonalVelocity = function(drift){
 
     var forward = new Vector2(-Math.sin(this.direction), Math.cos(this.direction)).normalise();
@@ -155,18 +165,34 @@ Car.prototype.killOrthogonalVelocity = function(drift){
 
 Car.prototype.tick = function(engine){
 
-    this.killOrthogonalVelocity(0.8);
+    //0.95 grass
+
+    var driftFactor = 0.95;
+    this.maxSpeed = this.carMaxSpeed / 2;
+
+    var ct = this.turnSpeed/2;
+
+    var tileSystem = this.level.tileSystem;
+    if (tileSystem && tileSystem.generator.isOnStructure(new Vector2(this.x, this.y))){
+        driftFactor = 0.2;
+        this.maxSpeed = this.carMaxSpeed;
+        ct *= 2;
+    }
+
+    this.killOrthogonalVelocity(driftFactor);
     this.dampenSpeed();
 
-    var ct = this.turnSpeed;
 
     var speed = this.getForwardSpeed();
     if(speed >= 0){
-        ct *= (speed / this.maxSpeed);
+        ct *= (speed / (this.maxSpeed/2));
     }
 
     //up
-    if (this.isForward){
+    if (this.isHandbrake){
+        //this.killForwardVelocity();
+    }
+    else if (this.isForward){
         //this.speed += 1.0;
         //change to force F=ma
         this.accelerateForwardMax(this.acceleration);
@@ -177,7 +203,7 @@ Car.prototype.tick = function(engine){
     else if (this.isReverse){
         this.accelerateForwardMax(-this.acceleration);
 
-        ct *= -1.25;
+        ct *= -2.25;
         //this.speed -= 1.0;
 
         //Engine.log("back");

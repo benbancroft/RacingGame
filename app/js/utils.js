@@ -20,6 +20,10 @@ var curry = function(fn){
     };
 };
 
+function wrapIndex(i, div) {
+    return ((i % div) + div) % div;
+}
+
 function isObject(obj) {
     var type = typeof obj;
     return type === 'function' || type === 'object' && !!obj;
@@ -140,6 +144,14 @@ Vector2.prototype.max = function(other) {
     return this;
 };
 
+Vector2.prototype.maxPoint = function(other) {
+    return new Vector2(Math.max(this.x, other.x), Math.max(this.y, other.y));
+};
+
+Vector2.prototype.minPoint = function(other) {
+    return new Vector2(Math.min(this.x, other.x), Math.min(this.y, other.y));
+};
+
 Vector2.prototype.multiply = function(other) {
     this.x *= other.x;
     this.y *= other.y;
@@ -182,9 +194,21 @@ Vector2.prototype.mod = function(other) {
     return this;
 };
 
+Vector2.prototype.wrap = function(other) {
+    this.x = wrapIndex(this.x, other);
+    this.y = wrapIndex(this.y, other);
+    return this;
+};
+
 Vector2.prototype.floor = function() {
     this.x = Math.floor(this.x);
     this.y = Math.floor(this.y);
+    return this;
+};
+
+Vector2.prototype.ceil = function() {
+    this.x = Math.ceil(this.x);
+    this.y = Math.ceil(this.y);
     return this;
 };
 
@@ -376,6 +400,24 @@ HashMap.prototype.keys = function(callback){
     });
 
     return keys;
+};
+
+HashMap.prototype.values = function(callback){
+    var values = []
+    this.map.forEach(function (bucket, hash) {
+        values = values.concat(bucket.map(function (i) { return i.value; }));
+    });
+
+    return values;
+};
+
+HashMap.prototype.data = function(callback){
+    var data = []
+    this.map.forEach(function (bucket, hash) {
+        data = data.concat(bucket.map(function (i) { return i; }));
+    });
+
+    return data;
 };
 
 HashMap.prototype.size = function(callback){
