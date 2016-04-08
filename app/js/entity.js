@@ -24,6 +24,8 @@ var Entity = function(level, depth){
     this.angularVelocity = 0;
     this.torque = 0;
 
+    this.mass = 1;
+
     this.width = 128.0;
     this.height = 128.0;
 
@@ -249,8 +251,14 @@ Entity.prototype.tick = function(engine){
                 this.x = newPos.x;
                 this.y = newPos.y;
 
-                this.x = this.lastX;
-                this.y = this.lastY;
+                //this.x = this.lastX;
+                //this.y = this.lastY;
+
+                var selfVelocity = this.velocity.clone();
+                var totalMass = this.mass + other.mass;
+
+                this.velocity.scale(this.mass - other.mass).add(other.velocity.scale(other.mass).scale(2)).divScalar(totalMass);
+                other.velocity.scale(other.mass - this.mass).add(selfVelocity.scale(this.mass).scale(2)).divScalar(totalMass);
 
                 //console.log("After: " + manifolds.maximumDisplacement);
 

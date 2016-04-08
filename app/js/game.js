@@ -250,17 +250,21 @@ Game.prototype.loaded = function () {
 
     this.mainViewport = this.registerViewport(new Viewport(this.mainLevel, 0, 0, resolution.x, resolution.y, resolution.x/2, resolution.y/2, resolution.x, resolution.y));
 
-    var ai = new AICar(this.mainLevel);
+    //var ai = new AICar(this.mainLevel);
 
     this.player = new PlayerCar(this.mainLevel);
     this.player.direction = Math.PI/2;
 
+    var self = this;
     this.generator.startPositions.forEach(function(position){
+
+        var ai = new AICar(self.mainLevel);
+
         ai.setPosition(position.key)
         ai.direction = Math.PI/2;
     });
 
-    this.player.setPosition(new Vector2(ai.x-200, ai.y));
+    this.player.setPosition(new Vector2(0, 200));
 
 
     //this.player.x = resolution.x/2;
@@ -299,7 +303,8 @@ Game.prototype.loaded = function () {
     //this.coldebug5.x = resolution.x;
     //this.coldebug5.y = 20;
     this.coldebug5.x = resolution.x/4;
-    this.coldebug5.y = resolution.y/4;
+    this.coldebug5.y = resolution.y/2;
+    this.coldebug5.direction = Math.PI/4;
     //this.coldebug5.directTowards(new Vector2(resolution.x/2, resolution.y/2));
     this.player.addViewportTrack(this.mainViewport);
 

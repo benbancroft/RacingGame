@@ -87,11 +87,11 @@ Vector2.prototype.hashCode = function(){
 };
 
 Vector2.prototype.lessThanEqual = function(other){
-    return other != undefined && ((approxEqual(this.x, other.x)) || (this.x <= other.x && this.y <= other.y));
+    return other != undefined && this.x <= other.x && this.y <= other.y;
 };
 
 Vector2.prototype.greaterThanEqual = function(other){
-    return other != undefined && (((approxEqual(this.x, other.x)) || this.x >= other.x && this.y >= other.y));
+    return other != undefined && this.x >= other.x && this.y >= other.y;
 };
 
 Vector2.prototype.lessThan = function(other){
@@ -553,13 +553,13 @@ function projectPointsLine(position, points, normal, result, projectionPoint, ch
         if (dot < min) {
             min = dot;
             minPoint = i;
-        }else if (checkDistance && approxEqual(dot, min) && minimumDistance(currentPoint, projectionPoint, normal) > minimumDistance(points[minPoint].clone().add(position), projectionPoint, normal)){
+        }else if (checkDistance && approxEqual(dot, min) && minimumDistance(currentPoint, projectionPoint, normal) < minimumDistance(points[minPoint].clone().add(position), projectionPoint, normal)){
             minPoint = i;
         }
         if (dot > max) {
             max = dot;
             maxPoint = i;
-        }else if (checkDistance && approxEqual(dot, max) && minimumDistance(currentPoint, projectionPoint, normal) > minimumDistance(points[maxPoint].clone().add(position), projectionPoint, normal)){
+        }else if (checkDistance && approxEqual(dot, max) && minimumDistance(currentPoint, projectionPoint, normal) < minimumDistance(points[maxPoint].clone().add(position), projectionPoint, normal)){
             maxPoint = i;
         }
     }
@@ -614,7 +614,7 @@ function lineLineIntersection(p, pNormal, q, qNormal) {
 function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aManifolds, bManifolds, currentDisplacement){
 
     var polyPos = null;
-    var displacement = 0;
+    var displacement = Number.MAX_VALUE;
 
     var position = vertex.clone().add(leftPos);
 
@@ -631,8 +631,16 @@ function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aM
             if (pointOnEdgeLine == null) continue;
 
             var edgeEnd = edgePos.clone().add(poly.edges[i])
-            if ((edgeEnd.greaterThanEqual(edgePos) && pointOnEdgeLine.greaterThanEqual(edgePos) && pointOnEdgeLine.lessThanEqual(edgeEnd)) ||
-                (edgeEnd.lessThanEqual(edgePos) && pointOnEdgeLine.lessThanEqual(edgePos) && pointOnEdgeLine.greaterThanEqual(edgeEnd))){
+            /*if ((edgeEnd.greaterThanEqual(edgePos) && pointOnEdgeLine.greaterThanEqual(edgePos) && pointOnEdgeLine.lessThanEqual(edgeEnd)) ||
+                (edgeEnd.lessThanEqual(edgePos) && pointOnEdgeLine.lessThanEqual(edgePos) && pointOnEdgeLine.greaterThanEqual(edgeEnd))){*/
+
+            var minX = Math.min(edgePos.x, edgeEnd.x);
+            var maxX = Math.max(edgePos.x, edgeEnd.x)
+            var minY = Math.min(edgePos.y, edgeEnd.y);
+            var maxY = Math.max(edgePos.y, edgeEnd.y)
+
+            if ((minX < pointOnEdgeLine.x || approxEqual(minX, pointOnEdgeLine.x)) && (maxX > pointOnEdgeLine.x || approxEqual(maxX, pointOnEdgeLine.x)) &&
+                (minY < pointOnEdgeLine.y || approxEqual(minY, pointOnEdgeLine.y)) && (maxY > pointOnEdgeLine.y || approxEqual(maxY, pointOnEdgeLine.y))){
                 displacement = pointOnEdgeLine.clone().sub(position).len();
                 polyPos = pointOnEdgeLine.clone().sub(rightPos);
                 /*edgePos.print();
@@ -735,15 +743,15 @@ function testPolygonsSAT(lastPosition, a, b, response) {
 
         //centrePoint.print();
 
-        //console.log("Min max A - should be top so lower y")
+        console.log("Min max A - should be top so higher y")
 
-        //aPoints[rangeA[2]].print();
-        //aPoints[rangeA[3]].print();
+        aPoints[rangeA[2]].print();
+        aPoints[rangeA[3]].print();
 
-        //console.log("Min max B - should be bottom so higher y")
+        console.log("Min max B - should be bottom so lower y")
 
-        //bPoints[rangeB[2]].print();
-        //bPoints[rangeB[3]].print();
+        bPoints[rangeB[2]].print();
+        bPoints[rangeB[3]].print();
 
         var aManifolds = new Array();
         var bManifolds = new Array();

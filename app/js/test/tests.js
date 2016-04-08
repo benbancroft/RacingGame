@@ -117,20 +117,20 @@ QUnit.test("collision manifolds diagonal corner case velocity based on car bb", 
 
 QUnit.test("collision manifolds diagonal corner case velocity", function( assert ) {
     //about 2/3 along object or so is destination
-    var polygon1 = new Polygon(new Vector2(40,62.5), [
+    var polygon1 = new Polygon(new Vector2(70,30), [
         new Vector2(-25 / 2, -50 / 2), new Vector2(25 / 2, -50 / 2), new Vector2(25 / 2, 50 / 2), new Vector2(-25 / 2, 50 / 2)
     ], new Vector2(0,0));
-    polygon1.setAngle(-Math.PI);
+    //polygon1.setAngle(-Math.PI);
     //10m penetration
 
-    var polygon2 = new Polygon(new Vector2(50,25), [
+    var polygon2 = new Polygon(new Vector2(40,12), [
         new Vector2(-25 / 2, -50 / 2), new Vector2(25 / 2, -50 / 2), new Vector2(25 / 2, 50 / 2), new Vector2(-25 / 2, 50 / 2)
     ], new Vector2(0,0));
-    polygon2.setAngle(Math.PI/2);
+    polygon2.setAngle(Math.PI/4);
     //37.5 is lower boundry on y
 
     var response = new CollisionManifolds();
-    var isCollision = testPolygonsSAT(new Vector2(40,140), polygon1, polygon2, response);
+    var isCollision = testPolygonsSAT(new Vector2(70,70), polygon1, polygon2, response);
 
     console.log(response.contactPointsA);
     console.log(response.contactPointsB);

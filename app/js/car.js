@@ -34,6 +34,8 @@ var Car = function(level){
     this.width = 128;
     this.height = 128;
 
+    this.mass = 100;
+
     this.bbWidth = 49;
     this.bbHeight = 107;
 
@@ -185,7 +187,7 @@ Car.prototype.tick = function(engine){
 
     var speed = this.getForwardSpeed();
     if(speed >= 0){
-        ct *= (speed / (this.maxSpeed/2));
+        ct *= ((speed+1) / (this.maxSpeed/2));
     }
 
     //up
