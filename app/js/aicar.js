@@ -49,6 +49,8 @@ AICar.prototype.tick = function(engine){
 
             this.checkPointIndex++;
             this.checkPointIndex %= numberCheckpoints;
+        }else{
+            this.isForward = true;
         }
 
         var result = new Vector2(Math.sin(this.direction), -Math.cos(this.direction)).cross(nextCheckPoint.clone().sub(position));

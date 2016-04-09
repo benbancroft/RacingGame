@@ -62,6 +62,10 @@ function approxEqual(a, b){
     return Math.abs(a-b) <= 0.000001;
 }
 
+function cross(v, i){
+    return new Vector2(-i * v.y , i * v.x);
+}
+
 //Maths
 
 var Vector2 = function(x, y){
@@ -113,6 +117,12 @@ Vector2.prototype.toFixed = function(precision){
 
 };
 
+Vector2.prototype.pow = function(exponent){
+    this.x = Math.pow(this.x, exponent);
+    this.y = Math.pow(this.y, exponent);
+    return this;
+};
+
 Vector2.prototype.cross = function(other){
     return this.x * other.y - this.y * other.x;
 };
@@ -152,6 +162,10 @@ Vector2.prototype.minPoint = function(other) {
     return new Vector2(Math.min(this.x, other.x), Math.min(this.y, other.y));
 };
 
+Vector2.prototype.midPoint = function(other) {
+    return new Vector2((this.x + other.x) / 2, (this.y + other.y) / 2);
+};
+
 Vector2.prototype.multiply = function(other) {
     this.x *= other.x;
     this.y *= other.y;
@@ -185,6 +199,12 @@ Vector2.prototype.addScalar = function(other) {
 Vector2.prototype.sub = function(other) {
     this.x -= other.x;
     this.y -= other.y;
+    return this;
+};
+
+Vector2.prototype.subScalar = function(other) {
+    this.x -= other;
+    this.y -= other;
     return this;
 };
 
@@ -739,11 +759,7 @@ function testPolygonsSAT(lastPosition, a, b, response) {
         projectPointsLine(lastPosition, aPoints, velocityNormal, rangeA, centrePoint, true);
         projectPointsLine(b.position, bPoints, velocityNormal, rangeB, centrePoint, true);
 
-        //console.log("Centre point");
-
-        //centrePoint.print();
-
-        console.log("Min max A - should be top so higher y")
+        /*console.log("Min max A - should be top so higher y")
 
         aPoints[rangeA[2]].print();
         aPoints[rangeA[3]].print();
@@ -751,7 +767,7 @@ function testPolygonsSAT(lastPosition, a, b, response) {
         console.log("Min max B - should be bottom so lower y")
 
         bPoints[rangeB[2]].print();
-        bPoints[rangeB[3]].print();
+        bPoints[rangeB[3]].print();*/
 
         var aManifolds = new Array();
         var bManifolds = new Array();

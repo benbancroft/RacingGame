@@ -24,15 +24,14 @@ var Entity = function(level, depth){
     this.angularVelocity = 0;
     this.torque = 0;
 
-    this.mass = 1;
-
     this.width = 128.0;
     this.height = 128.0;
 
     this.bbWidth = 128.0;
     this.bbHeight = 128.0;
 
-    this.slides = true;
+    this.mass = 1;
+    this.density = 0.001;
 
     this.spriteSheet = "";
     this.spriteIndex = 0;
@@ -189,6 +188,8 @@ Entity.prototype.resolveCollision = function(other){
         this.x -= response.overlapV.x;
         this.y -= response.overlapV.y;
 
+        return response;
+
         //this.x = this.lastX;
         //this.y = this.lastY;
 
@@ -251,16 +252,58 @@ Entity.prototype.tick = function(engine){
                 this.x = newPos.x;
                 this.y = newPos.y;
 
-                //this.x = this.lastX;
-                //this.y = this.lastY;
+                var maxRadiusA = 0;
+                var maxRadiusB = 0;
 
-                var selfVelocity = this.velocity.clone();
-                var totalMass = this.mass + other.mass;
+                var minCollPointA = new Vector2();
+                var minCollPointB = new Vector2();
 
-                this.velocity.scale(this.mass - other.mass).add(other.velocity.scale(other.mass).scale(2)).divScalar(totalMass);
-                other.velocity.scale(other.mass - this.mass).add(selfVelocity.scale(this.mass).scale(2)).divScalar(totalMass);
+                var maxCollPointA = new Vector2();
+                var maxCollPointB = new Vector2();
 
-                //console.log("After: " + manifolds.maximumDisplacement);
+                manifolds.contactPointsA.forEach(function(p){
+                    maxRadiusA = Math.max(maxRadiusA, p.len());
+
+                    minCollPointA = p.minPoint(minCollPointA)
+                    maxCollPointA = p.maxPoint(maxCollPointA)
+
+                });
+                manifolds.contactPointsB.forEach(function(p){
+                    maxRadiusB = Math.max(maxRadiusB, p.len());
+
+                    minCollPointB = p.minPoint(minCollPointB)
+                    maxCollPointB = p.maxPoint(maxCollPointB)
+                });
+
+                var midPointA = minCollPointA.midPoint(maxCollPointA);
+                var midPointB = minCollPointA.midPoint(maxCollPointB);
+
+                //Linear momentum
+
+                //Based on physics derived at:
+                //http://www.myphysicslab.com/collision.html#resting_contact
+
+                //Elasticity constant - set to 1 for fully elastic collision
+                var e = 1.0;
+
+                var aI = 4/3 * this.bbWidth * this.bbHeight * (Math.pow(this.bbWidth, 2) + Math.pow(this.bbHeight, 2)) * this.density;
+                var bI = 4/3 * other.bbWidth * other.bbHeight * (Math.pow(other.bbWidth, 2) + Math.pow(other.bbHeight, 2)) * other.density;
+
+
+                var n = this.velocity.clone().normalise().reverse();
+
+                var velocityOnPoint = this.velocity.clone().add(other.velocity.clone().sub(cross(this.angularVelocity, midPointA).add(cross(other.angularVelocity, midPointB))));
+                var velocityOnPointProjection = velocityOnPoint.dot(n); //negative projection means they are moving towards each other
+                if (velocityOnPointProjection < 0) { //Bases on projection, are they moving apart?
+                    //Normal impulse
+                    var j = -e*velocityOnPointProjection / (Math.pow(midPointA.cross(n), 2) / aI + Math.pow(midPointB.cross(n), 2) / bI + 1/this.mass + 1/other.mass);
+                    var jn = n.clone().scale(j);
+//
+                    this.velocity.add(jn.clone().divScalar(this.mass));
+                    this.angularVelocity += midPointA.cross(jn) / aI;
+                    other.velocity.sub(jn.clone().divScalar(other.mass));
+                    other.angularVelocity -= midPointB.cross(jn) / bI;
+                }
 
             }
         //}while (isColliding);
