@@ -1,14 +1,20 @@
 //Globals
 
 var canvas;
+var textCanvas;
+var textCtx;
 var gl;
 
 //Misc
 
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    textCanvas.width = canvas.width = window.innerWidth;
+    textCanvas.height = canvas.height = window.innerHeight;
 }
+
+var TextAlign = {
+    START: 0, END: 1, LEFT: 2, CENTRE: 3, RIGHT: 4
+};
 
 //Render state
 
@@ -17,6 +23,8 @@ var Renderer = function(){
     //logic
 
     canvas = document.getElementById("canvas");
+    textCanvas = document.getElementById("text");
+    textCtx = textCanvas.getContext("2d");
     resizeCanvas();
     gl = canvas.getContext("experimental-webgl");
 
@@ -24,6 +32,8 @@ var Renderer = function(){
         Engine.log("Browser does not support WebGL - cannot run game.");
         return;
     }
+
+    this.setFont("Arial", 32);
 
     //current shader
     this.shader = null;
@@ -93,6 +103,8 @@ var Renderer = function(){
 
     window.requestAnimationFrame(this.animate.bind(this));
 
+    textCtx.textBaseline = 'middle';
+
 };
 
 Renderer.prototype.resetRenderer = function(isDraw){
@@ -110,6 +122,8 @@ Renderer.prototype.resetRenderer = function(isDraw){
     gl.depthFunc(gl.LEQUAL);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     //glBlendFunc(SRC_ALPHA, DST_ALPHA);
+
+    textCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
 };
 
 Renderer.prototype.initiseRenderer = function(){
@@ -296,7 +310,7 @@ Renderer.prototype.setRotation = function(rotation, force){
 Renderer.prototype.setUVs = function(topLeftCorner, bottomRightCorner, forSprite, force){
     if (this.currentTexture != null){
         if (force == true || topLeftCorner.equals(this.uvTopLeft) == false || bottomRightCorner.equals(this.uvBottomRight) == false){
-            var textureDims = new Vector2(this.currentTexture.texture.width, this.currentTexture.texture.height);
+            var textureDims = new Vector2(this.currentTexture.width, this.currentTexture.height);
 
             this.uvTopLeft = topLeftCorner;
             this.uvBottomRight = bottomRightCorner;
@@ -400,4 +414,37 @@ Renderer.prototype.drawTileChunk = function(location, tileSheet, squareSize, chu
     gl.uniform2f(this.tileSheetSizeLocation, 1024.0, 1024.0);
 
     this.draw(location.clone().scale(chunkSize*squareSize));
+};
+
+Renderer.prototype.setTextAlign = function(alignment){
+    var alignString = "";
+
+    switch (alignment){
+        case TextAlign.START:
+            alignString = "start";
+            break;
+        case TextAlign.END:
+            alignString = "end";
+            break;
+        case TextAlign.LEFT:
+            alignString = "left";
+            break;
+        case TextAlign.CENTRE:
+            alignString = "center";
+            break;
+        case TextAlign.RIGHT:
+            alignString = "right";
+            break;
+    }
+
+    textCtx.textAlign = alignString;
+};
+
+Renderer.prototype.setFont = function(name, size){
+    textCtx.font = size + "px " + name;
+};
+
+Renderer.prototype.drawText = function(text, location){
+    textCtx.fillStyle = "rgba(" + Math.floor(this.colour.x*256) + ", " + Math.floor(this.colour.y*256) + ", " + Math.floor(this.colour.z*256) + ", " + Math.floor(this.colour.w*256) + ")";
+    textCtx.fillText(text, location.x, location.y);
 };

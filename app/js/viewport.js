@@ -10,6 +10,8 @@ var Viewport = function(level, x, y, width, height, levelX, levelY, levelWidth, 
     this.levelY = levelY;
     this.levelWidth = levelWidth;
     this.levelHeight = levelHeight;
+
+    this.followingEntity = null;
 };
 
 Viewport.prototype.render = function(renderer){

@@ -17,6 +17,8 @@ var Engine = function(){
     this.viewports = new Array();
     this.levels = new Array();
 
+    this.guiComponents = new Array();
+
     this.keys = new Map();
 };
 
@@ -43,9 +45,22 @@ Engine.random = function(lower, upper){
 
 //API
 
+Engine.prototype.registerGuiComponent = function(component){
+    this.guiComponents.push(component);
+    return component;
+};
+
+Engine.prototype.unregisterGuiComponents = function(){
+    this.guiComponents.clear();
+};
+
 Engine.prototype.registerViewport = function(viewport){
     this.viewports.push(viewport);
     return viewport;
+};
+
+Engine.prototype.unregisterViewports = function(){
+    this.viewports.clear();
 };
 
 Engine.prototype.registerLevel = function(level){
@@ -53,6 +68,10 @@ Engine.prototype.registerLevel = function(level){
 
     return level;
 }
+
+Engine.prototype.unregisterLevels = function(){
+    this.levels.clear();
+};
 
 Engine.prototype.isKeyPressed = function(keycode){
 
@@ -85,12 +104,42 @@ Engine.prototype.keyUp = function (keycode) {
     }
 };
 
+Engine.prototype.mouseMove = function(x, y){
+    var position = new Vector2(x, y);
+
+    for (var i = 0; i < this.guiComponents.length; i++) {
+        var component = this.guiComponents[i];
+
+        component.isHover = position.greaterThanEqual(component.position.clone().sub(component.dimensions.clone().scale(0.5))) && position.lessThanEqual(component.position.clone().add(component.dimensions.clone().scale(0.5)));
+
+        if (component.isHover) component.onHover();
+    }
+};
+
+Engine.prototype.mouseDown = function(x, y){
+    var position = new Vector2(x, y);
+
+    for (var i = 0; i < this.guiComponents.length; i++) {
+        var component = this.guiComponents[i];
+
+        if (component.isHover) component.onPress(position.clone().sub(component.position.clone().sub(component.dimensions.clone().scale(0.5))));
+    }
+};
+
+Engine.prototype.renderGui = function(){
+    for (var i = 0; i < this.guiComponents.length; i++) {
+        this.guiComponents[i].render(this);
+    }
+};
+
 Engine.prototype.render = function () {
     this.resetRenderer(true);
 
     for (var i = 0; i < this.viewports.length; i++) {
         this.viewports[i].render(this);
     }
+
+    this.renderGui();
 };
 
 Engine.prototype.loaded = function () {

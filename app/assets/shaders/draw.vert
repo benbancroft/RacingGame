@@ -59,6 +59,7 @@ void main() {
 
         vec2 position = u_position;
         vec2 dimension = u_dimension;
+        vec2 centre = u_centre;
         if (u_useViewport){
 
                 vec2 viewportPos = u_viewport[0];
@@ -68,9 +69,9 @@ void main() {
                 vec2 sceneDim = u_viewportScene[1];
 
                 position = viewportPos.xy+(viewportDim.xy / sceneDim.xy)*(position.xy+scenePos.xy)-(viewportDim.xy/2.0);
-                //dimension = vec2((viewportDim.x / sceneDim.x)*dimension.x, (viewportDim.y / sceneDim.y)*dimension.y);
                 dimension = (viewportDim.xy / sceneDim.xy)*dimension.xy;
+                centre = (viewportDim.xy / sceneDim.xy)*centre.xy;
         }
 
-        gl_Position = vec4(toScreenSpace(position + (a_verticies*dimension-u_centre)*u_rotation), 0, 1);
+        gl_Position = vec4(toScreenSpace(position + (a_verticies*dimension-centre)*u_rotation), 0, 1);
 }

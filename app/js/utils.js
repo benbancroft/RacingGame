@@ -166,6 +166,16 @@ Vector2.prototype.midPoint = function(other) {
     return new Vector2((this.x + other.x) / 2, (this.y + other.y) / 2);
 };
 
+Vector2.prototype.applyAspectRatio = function(ratio) {
+    if (this.x > this.y){
+        this.y = this.x / ratio.x * ratio.y;
+    }else{
+        this.x = this.y / ratio.y * ratio.x;
+    }
+
+    return this;
+};
+
 Vector2.prototype.multiply = function(other) {
     this.x *= other.x;
     this.y *= other.y;

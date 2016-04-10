@@ -1,7 +1,9 @@
-var Level = function(width, height, hasBounds){
+var Level = function(game, width, height, hasBounds){
     this.width = width;
     this.height = height;
     this.hasBounds = hasBounds;
+
+    this.game = game;
 
     this.entities = new Array();
     this.renderables = new Array();
@@ -60,8 +62,13 @@ Level.prototype.render = function(renderer, viewport){
     }
 };
 
-Level.prototype.addEntity = function(entity, engine){
+Level.prototype.addEntity = function(entity){
     this.entities.push(entity);
+};
+
+Level.prototype.removeEntity = function(entity){
+    this.entities.removeElement(entity);
+    this.renderables.removeElement(entity);
 };
 
 Level.prototype.setTileSystem = function(tileSystem){

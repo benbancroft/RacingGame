@@ -34,7 +34,8 @@ var Car = function(level){
     this.width = 128;
     this.height = 128;
 
-    this.mass = 100;
+    this.mass = 200;
+    this.density = 0.001
 
     this.bbWidth = 49;
     this.bbHeight = 107;
@@ -47,7 +48,7 @@ var Car = function(level){
 
     this.acceleration = 0.05;
     this.deceleration = this.acceleration/5;
-    this.turnSpeed = Math.PI/800;
+    this.turnSpeed = Math.PI/400;
     this.angularDeceleration = this.turnSpeed/1.1;
 
     this.carMaxSpeed = 15;
@@ -55,6 +56,9 @@ var Car = function(level){
 
     this.sirenRate = 10;
     this.sirenState = false;
+
+    this.checkPointIndex = 0;
+    this.currentLap = 0;
 
     this.toggleSirens();
 
@@ -165,6 +169,16 @@ Car.prototype.killOrthogonalVelocity = function(drift){
     this.velocity = forwardVelocity.add(rightVelocity.scale(drift));
 };
 
+Car.prototype.getCheckpoint = function(engine){
+    return engine.generator.checkPoints[this.checkPointIndex];
+}
+
+Car.prototype.getDistanceToCheckpoint = function(engine){
+    var nextCheckPoint = this.getCheckpoint(engine);
+
+    return this.getPosition().sub(nextCheckPoint).len();
+};
+
 Car.prototype.tick = function(engine){
 
     //0.95 grass
@@ -187,7 +201,7 @@ Car.prototype.tick = function(engine){
 
     var speed = this.getForwardSpeed();
     if(speed >= 0){
-        ct *= ((speed+1) / (this.maxSpeed/2));
+        ct *= ((speed+7) / this.maxSpeed);
     }
 
     //up
@@ -223,6 +237,19 @@ Car.prototype.tick = function(engine){
     }
 
     Entity.prototype.tick.call(this, engine);
+
+    var numberCheckpoints = engine.generator.checkPoints.length;
+
+    if (this.checkPointIndex < numberCheckpoints) {
+
+        var distanceToCheckPoint = this.getDistanceToCheckpoint(engine);
+
+        if (distanceToCheckPoint < 300) {
+            this.checkPointIndex++;
+            if (this.checkPointIndex >= numberCheckpoints) this.currentLap++;
+            this.checkPointIndex %= numberCheckpoints;
+        }
+    }
 
 };
 

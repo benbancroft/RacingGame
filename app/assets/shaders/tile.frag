@@ -34,12 +34,8 @@ void main() {
 
     vec2 sf = vMapScaleFactor;
 
-    /*if(clamp(vTextureCoord, vec2(0.0, 0.0), vec2(1.0, 1.0)) != vTextureCoord) {
-        discard;
-    }*/
-
     vec4 tile = texture2D(u_mapTile, vTextureCoord);
-    //tile = vec4(0.875,0.0,1.0,0.0);
+
     if(tile.b != 1.0) {
         discard;
     }
@@ -47,8 +43,5 @@ void main() {
     vec2 spriteOffset = (tile.xy * 256.0) * (u_tileSheetSquareSize + u_mapSeperationSize.xy);
     vec2 spriteCoord = mod(vTextureCoord * u_mapChunkSize * u_mapSquareSize, u_mapSquareSize)/u_mapSquareSize*u_tileSheetSquareSize;
     gl_FragColor = texture2D(u_textureSample, (spriteOffset + spriteCoord - 0.1) / (u_tileSheetSize.xy + (u_tileSheetSize.xy / u_tileSheetSquareSize) * u_mapSeperationSize.xy));
-
-    /*if (spriteCoord.x < 16.0) gl_FragColor = vec4(1.0,0.0,0.0,1.0);
-    else gl_FragColor = texture2D(u_textureSample, (spriteOffset + vec2(32.0)) / u_tileSheetSize.xy);*/
 
 }

@@ -2,17 +2,11 @@
   "name": "The Loop",
   "difficulty": "1",
   "startOrientation": "1",
+  "laps": "5",
   "nodes": [
     {
-      "type": "2",
-      "range": "5"
-    },
-    {
-      "type": "1"
-    },
-    {
       "type": "3",
-      "range": "3"
+      "range": "6"
     },
     {
       "type": "4",
@@ -43,8 +37,11 @@
       "orientation": "1"
     },
     {
-      "type": "3",
-      "range": "3"
+      "type": "2",
+      "range": "5"
+    },
+    {
+      "type": "1"
     }
   ]
 }

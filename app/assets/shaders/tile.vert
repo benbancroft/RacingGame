@@ -62,24 +62,6 @@ void main() {
 		vec2 scenePos = u_viewportScene[0];
 		vec2 sceneDim = u_viewportScene[1];
 
-	/* - (viewportDim.xy/2.0)*/
-        /*vec2 pixelCoord =  (a_verticies*u_dimension *  sceneDim - (scenePos - sceneDim) - (sceneDim/2.0));
-
-	vMapScaleFactor = (viewportDim.xy / sceneDim.xy);
-
-        vTextureCoord = pixelCoord.xy / u_mapSize.xy / u_mapSquareSize;*/
-
-        /*if (u_useViewport){
-
-		//vMapSquareSizeScaled *= (viewportDim.xy / sceneDim.xy);
-		//pixelCoordOffset += scenePos.xy - (viewportDim.xy);
-	}
-
-        vTextureCoord = pixelCoord.xy / u_mapSize.xy / u_mapSquareSize;
-
-
-        gl_Position = vec4(toScreenSpace(viewportPos.xy  + (u_position + a_verticies*u_dimension)*viewportDim), depth, 1);*/
-
         vec2 position = u_position;
         vec2 dimension = u_dimension;
         if (u_useViewport){
@@ -91,7 +73,6 @@ void main() {
                 vec2 sceneDim = u_viewportScene[1];
 
                 position = viewportPos.xy+(viewportDim.xy / sceneDim.xy)*(position.xy+scenePos.xy)-(viewportDim.xy/2.0);
-                //dimension = vec2((viewportDim.x / sceneDim.x)*dimension.x, (viewportDim.y / sceneDim.y)*dimension.y);
                 dimension = (viewportDim.xy / sceneDim.xy)*dimension.xy;
         }
 

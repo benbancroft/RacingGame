@@ -33,6 +33,9 @@ var Entity = function(level, depth){
     this.mass = 1;
     this.density = 0.001;
 
+    //Elasticity constant - set to 1 for fully elastic collision
+    this.elasticity = 0.2;
+
     this.spriteSheet = "";
     this.spriteIndex = 0;
 
@@ -54,6 +57,7 @@ Entity.prototype.setPosition = function(position){
 
 Entity.prototype.addViewportTrack = function(viewport){
     if (viewport.level == this.level && !this.viewportsFollowing.find(function(element) { return element == viewport})){
+        viewport.followingEntity = this;
         this.viewportsFollowing.push(viewport);
     }
 };
@@ -77,6 +81,10 @@ Entity.prototype.getForwardSpeed = function(){
     var speed = forward.len();
 
     return isNaN(speed) ? 0 : speed;
+};
+
+Entity.prototype.getPosition = function(){
+   return new Vector2(this.x, this.y);
 };
 
 
@@ -138,6 +146,8 @@ Entity.prototype.moveTowards = function(x, y, speed){
 };
 
 Entity.prototype.render = function(renderer){
+
+    renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
 
     renderer.setUseColour(false);
     renderer.setDimensions(new Vector2(this.width, this.height));
@@ -283,9 +293,6 @@ Entity.prototype.tick = function(engine){
                 //Based on physics derived at:
                 //http://www.myphysicslab.com/collision.html#resting_contact
 
-                //Elasticity constant - set to 1 for fully elastic collision
-                var e = 1.0;
-
                 var aI = 4/3 * this.bbWidth * this.bbHeight * (Math.pow(this.bbWidth, 2) + Math.pow(this.bbHeight, 2)) * this.density;
                 var bI = 4/3 * other.bbWidth * other.bbHeight * (Math.pow(other.bbWidth, 2) + Math.pow(other.bbHeight, 2)) * other.density;
 
@@ -296,7 +303,7 @@ Entity.prototype.tick = function(engine){
                 var velocityOnPointProjection = velocityOnPoint.dot(n); //negative projection means they are moving towards each other
                 if (velocityOnPointProjection < 0) { //Bases on projection, are they moving apart?
                     //Normal impulse
-                    var j = -e*velocityOnPointProjection / (Math.pow(midPointA.cross(n), 2) / aI + Math.pow(midPointB.cross(n), 2) / bI + 1/this.mass + 1/other.mass);
+                    var j = -this.elasticity*velocityOnPointProjection / (Math.pow(midPointA.cross(n), 2) / aI + Math.pow(midPointB.cross(n), 2) / bI + 1/this.mass + 1/other.mass);
                     var jn = n.clone().scale(j);
 //
                     this.velocity.add(jn.clone().divScalar(this.mass));

@@ -26,8 +26,9 @@ function ShaderProgram (url) {
     };
 }
 
-function Texture (url, texture, glTexture) {
-    this.texture = texture;
+function Texture (url, width, height, glTexture) {
+    this.width = width;
+    this.height = height;
     this.glTexture = glTexture;
     this.url = url;
 }
@@ -55,11 +56,12 @@ function Sprite (name, x, y, centreX, centreY, width, height){
     this.height = height;
 }
 
-function RaceTrack(name, difficulty, startOrientation, nodes){
+function RaceTrack(name, difficulty, startOrientation, nodes, laps){
     this.name = name;
     this.difficulty = difficulty;
     this.startOrientation = startOrientation;
     this.nodes = nodes;
+    this.laps = laps
 }
 
 //Race Track Nodes
@@ -291,7 +293,7 @@ var Textures = {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.bindTexture(gl.TEXTURE_2D, null);
 
-        var texture = new Texture(url, image, glTexture);
+        var texture = new Texture(url, image.width, image.height, glTexture);
         //textures.push(texture);
 
         Engine.log("Loaded texture: " + url);
@@ -358,8 +360,8 @@ var Sprites = {
 
 var Tracks = {
 
-    create: function(url, name, difficulty, startOrientation, nodes){
-        var track = new RaceTrack(name, difficulty, startOrientation, nodes);
+    create: function(url, name, difficulty, startOrientation, laps, nodes){
+        var track = new RaceTrack(name, difficulty, startOrientation, nodes, laps);
 
         Engine.log("Loaded Race Track: " + name + " from: " + url + " containing " + nodes.length + " nodes");
 
@@ -401,7 +403,7 @@ var Tracks = {
                     //nodes.push(new Sprite(spriteJson.name, parseFloat(spriteJson.x), parseFloat(spriteJson.y), parseFloat(spriteJson.centreX), parseFloat(spriteJson.centreY), parseFloat(spriteJson.width), parseFloat(spriteJson.height)));
                 }
 
-                var track = Tracks.create(url, json.name, parseInt(json.difficulty), parseInt(json.startOrientation), nodes);
+                var track = Tracks.create(url, json.name, parseInt(json.difficulty), parseInt(json.startOrientation), parseInt(json.laps), nodes);
 
             }
         };

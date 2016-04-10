@@ -7,8 +7,6 @@ var AICar = function(level){
 
     this.isForward = true;
 
-    this.checkPointIndex = 0;
-
     //this.findNewTarget();
     //this.setAlarm(1, 20+Engine.random(0, 80));
 }
@@ -23,6 +21,13 @@ AICar.prototype.findNewTarget = function () {
 
 AICar.prototype.tick = function(engine){
 
+    if (this.level.game.running && this.currentLap >= this.level.game.generator.track.laps){
+
+        this.level.removeEntity(this);
+
+        return;
+    }
+
     var numberCheckpoints = engine.generator.checkPoints.length;
 
     if (this.checkPointIndex < numberCheckpoints) {
@@ -33,37 +38,31 @@ AICar.prototype.tick = function(engine){
 
         var distanceToCheckPoint = position.clone().sub(nextCheckPoint).len();
 
-        var doTurn = true;
-
         if (distanceToCheckPoint < 1000 && distanceToCheckPoint > 300){
 
-            //nextCheckPoint = engine.generator.checkPoints[(this.checkPointIndex+1)%numberCheckpoints];
+            var forwardSpeed = this.getForwardSpeed();
 
-            if (this.getForwardSpeed() > this.maxSpeed / 2) this.isForward = false;
+            if (forwardSpeed > this.maxSpeed / 2) this.isForward = false;
+            else this.isForward = true;
 
             //doTurn = false;
 
         }else if (distanceToCheckPoint < 300){
 
-            this.isForward = true;
-
-            this.checkPointIndex++;
-            this.checkPointIndex %= numberCheckpoints;
+            if (forwardSpeed > 0.5) this.isForward = true;
         }else{
             this.isForward = true;
         }
 
         var result = new Vector2(Math.sin(this.direction), -Math.cos(this.direction)).cross(nextCheckPoint.clone().sub(position));
 
-        if (doTurn) {
-            if (result > 0) {
-                this.isLeft = false;
-                this.isRight = true;
-            }
-            else {
-                this.isLeft = true;
-                this.isRight = false;
-            }
+        if (result > 0) {
+            this.isLeft = false;
+            this.isRight = true;
+        }
+        else {
+            this.isLeft = true;
+            this.isRight = false;
         }
     }
 
