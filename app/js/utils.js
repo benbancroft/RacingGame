@@ -20,6 +20,27 @@ var curry = function(fn){
     };
 };
 
+function getOrdinalString(input) {
+    var tenth = input % 10,
+        hundreth = input % 100;
+    if (tenth == 1 && hundreth != 11) {
+        return input + "st";
+    }
+    if (tenth == 2 && hundreth != 12) {
+        return input + "nd";
+    }
+    if (tenth == 3 && hundreth != 13) {
+        return input + "rd";
+    }
+    return input + "th";
+}
+
+function getTimeString(input) {
+    var minutes = Math.floor((input) / 60);
+    var seconds = input - (minutes * 60);
+    return minutes + " minute" + (minutes != 1 ? "s" : "") + ", " + seconds + " second" + (seconds != 1 ? "s" : "");
+}
+
 function wrapIndex(i, div) {
     return ((i % div) + div) % div;
 }
@@ -167,7 +188,7 @@ Vector2.prototype.midPoint = function(other) {
 };
 
 Vector2.prototype.applyAspectRatio = function(ratio) {
-    if (this.x > this.y){
+    if (this.x < this.y){
         this.y = this.x / ratio.x * ratio.y;
     }else{
         this.x = this.y / ratio.y * ratio.x;

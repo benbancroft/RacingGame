@@ -2,7 +2,7 @@
     "texture": "assets/textures/police",
     "sprites": [
         {
-            "name": "Police Car Off",
+            "name": "Police Car",
             "x": "0",
             "y": "0",
             "centreX": "128",

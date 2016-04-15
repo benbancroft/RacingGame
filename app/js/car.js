@@ -26,7 +26,7 @@ var Car = function(level){
     Entity.call(this, level, 10);
 
     this.spriteSheet = "assets/sprites/police";
-    this.spriteIndex = 1;
+    this.spriteIndex = 0;
 
     this.sirenRate = 10;
     this.sirenState = false;
@@ -48,24 +48,37 @@ var Car = function(level){
 
     this.acceleration = 0.05;
     this.deceleration = this.acceleration/5;
-    this.turnSpeed = Math.PI/400;
+    this.turnSpeed = Math.PI/200;
     this.angularDeceleration = this.turnSpeed/1.1;
 
-    this.carMaxSpeed = 15;
     this.maxSpeed = 15;
+    this.carMaxSpeed = 15;
 
     this.sirenRate = 10;
     this.sirenState = false;
 
     this.checkPointIndex = 0;
     this.currentLap = 0;
-
-    this.toggleSirens();
-
 }
 
 Car.prototype = Object.create(Entity.prototype);
 Car.prototype.constructor = Car;
+
+Car.prototype.setStats = function(type, stats) {
+
+    if (!stats) return;
+
+    this.mass = stats.mass;
+    this.carMaxSpeed = stats.maxSpeed;
+    this.turnSpeed = stats.turnSpeed;
+    this.spriteSheet = stats.spriteSheetUrl;
+    this.acceleration = stats.acceleration;
+    this.bbWidth = stats.boundingBox.x;
+    this.bbHeight = stats.boundingBox.y;
+    this.spriteIndex = 0;
+
+    if (type == CarType.POLICE) this.toggleSirens();
+};
 
 Car.prototype.render = function(renderer){
 
@@ -170,7 +183,7 @@ Car.prototype.killOrthogonalVelocity = function(drift){
 };
 
 Car.prototype.getCheckpoint = function(engine){
-    return engine.generator.checkPoints[this.checkPointIndex];
+    return this.level.tileSystem.generator.checkPoints[this.checkPointIndex];
 }
 
 Car.prototype.getDistanceToCheckpoint = function(engine){
@@ -181,18 +194,20 @@ Car.prototype.getDistanceToCheckpoint = function(engine){
 
 Car.prototype.tick = function(engine){
 
+    if (this.level.game.gameState == 2 && !this.level.game.running) return;
+
     //0.95 grass
 
     var driftFactor = 0.95;
     this.maxSpeed = this.carMaxSpeed / 2;
 
-    var ct = this.turnSpeed/2;
+    var ct = this.turnSpeed * 0.8;
 
     var tileSystem = this.level.tileSystem;
     if (tileSystem && tileSystem.generator.isOnStructure(new Vector2(this.x, this.y))){
         driftFactor = 0.2;
         this.maxSpeed = this.carMaxSpeed;
-        ct *= 2;
+        ct = this.turnSpeed;
     }
 
     this.killOrthogonalVelocity(driftFactor);
@@ -200,8 +215,9 @@ Car.prototype.tick = function(engine){
 
 
     var speed = this.getForwardSpeed();
-    if(speed >= 0){
-        ct *= ((speed+7) / this.maxSpeed);
+    if(!this.isReverse && speed >= 0){
+        if (speed > this.maxSpeed/2) speed = this.maxSpeed/2;
+        ct *= Math.sin((speed * (Math.PI / 2)) / (this.maxSpeed/2) );
     }
 
     //up
@@ -219,7 +235,7 @@ Car.prototype.tick = function(engine){
     else if (this.isReverse){
         this.accelerateForwardMax(-this.acceleration);
 
-        ct *= -2.25;
+        ct *= -0.6;
         //this.speed -= 1.0;
 
         //Engine.log("back");
@@ -238,13 +254,13 @@ Car.prototype.tick = function(engine){
 
     Entity.prototype.tick.call(this, engine);
 
-    var numberCheckpoints = engine.generator.checkPoints.length;
+    var numberCheckpoints = this.level.tileSystem.generator.checkPoints.length;
 
     if (this.checkPointIndex < numberCheckpoints) {
 
         var distanceToCheckPoint = this.getDistanceToCheckpoint(engine);
 
-        if (distanceToCheckPoint < 300) {
+        if (distanceToCheckPoint < 220) {
             this.checkPointIndex++;
             if (this.checkPointIndex >= numberCheckpoints) this.currentLap++;
             this.checkPointIndex %= numberCheckpoints;

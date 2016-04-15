@@ -1,8 +1,10 @@
-var Button = function(engine, position, dimensions, text, callback){
+var Button = function(engine, position, dimensions, text, callback, colour){
     GuiComponent.call(this, engine, position, dimensions);
 
     this.text = text;
     this.callback = callback;
+
+    this.colour = colour || new Vector4(0.8, 0.8, 0.8, 1)
 };
 
 Button.prototype = Object.create(GuiComponent.prototype);
@@ -15,7 +17,7 @@ Button.prototype.onPress = function(position){
 Button.prototype.render = function(renderer){
     renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
 
-    if (this.isHover) renderer.setColour(new Vector4(0.8, 0.8, 0.8, 1));
+    if (this.isHover) renderer.setColour(this.colour);
     else renderer.setColour(new Vector4(0, 0, 0, 1))
 
     renderer.setUseColour(true);

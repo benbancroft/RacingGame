@@ -70,12 +70,12 @@ TileChunk.prototype.getLayer = function(depth){
     return layer;
 };
 
-TileChunk.prototype.createTile = function(depth, position, tile, hideUpdate){
+TileChunk.prototype.createTile = function(depth, position, tile, flipX, flipY, hideUpdate){
     if (!hideUpdate) this.hasChanged = true;
 
     var layer = this.getLayer(depth);
 
-    layer.createTile(position, tile);
+    layer.createTile(position, tile, flipX, flipY);
 };
 
 TileChunk.prototype.createTilesFromBlock = function(position, value, hideUpdate){
@@ -113,9 +113,9 @@ TileChunk.prototype.createTilesFromBlock = function(position, value, hideUpdate)
         if (tilePosition == null) return;
 
         if (layerInfo.position.equals(TilePosition.Centre)){
-            self.createTile(layerDepth, position, tilePosition, hideUpdate);
+            self.createTile(layerDepth, position, tilePosition, layerInfo.flipX, layerInfo.flipY, hideUpdate);
         }else{
-            self.tileSystem.createTile(layerDepth, worldPos, tilePosition, false, hideUpdate);
+            self.tileSystem.createTile(layerDepth, worldPos, tilePosition, layerInfo.flipX, layerInfo.flipY, false, hideUpdate);
 
             var chunkPos = self.tileSystem.getChunkPosition(worldPos);
             if (!chunkPos.equals(self.location)){
@@ -134,24 +134,32 @@ TileChunk.prototype.createTilesFromBlock = function(position, value, hideUpdate)
 
 TileChunk.prototype.createTiles = function(){
     var tileChunk = this;
-    this.blocks.data().sort(function(val1, val2) {
+    if (this.needsUpdate()) {
+        this.blocks.data().sort(function (val1, val2) {
 
-        var blockInfo1 = tileChunk.tileSystem.getBlockById(val1.value);
-        var blockInfo2 = tileChunk.tileSystem.getBlockById(val2.value);
+            var blockInfo1 = tileChunk.tileSystem.getBlockById(val1.value);
+            var blockInfo2 = tileChunk.tileSystem.getBlockById(val2.value);
 
 
-        return blockInfo1.blockLayers.length - blockInfo2.blockLayers.length;
-    }).forEach(function (block) {
-        tileChunk.createTilesFromBlock(block.key, block.value);
-    });
-
-    this.tileSystem.getChunkDependencies(this.location).forEach(function (chunk) {
-        chunk.chunkDependencies.get(tileChunk.location).forEach(function (pos) {
-            chunk.createTilesFromBlock(pos, null, true);
+            return blockInfo1.blockLayers.length - blockInfo2.blockLayers.length;
+        }).forEach(function (block) {
+            tileChunk.createTilesFromBlock(block.key, block.value);
         });
-    });
 
-    this.hasChanged = false;
+        this.tileSystem.getChunkDependencies(this.location).forEach(function (chunk) {
+            chunk.chunkDependencies.get(tileChunk.location).forEach(function (pos) {
+                chunk.createTilesFromBlock(pos, null, true);
+            });
+        });
+
+        this.hasChanged = false;
+
+        return true;
+
+    }
+
+    return false;
+
 };
 
 TileChunk.prototype.commitTiles = function(){
@@ -168,8 +176,18 @@ TileChunk.prototype.commitTiles = function(){
 
                 //pass by reference
                 var tilePos = layer.getTile(new Vector2(w,h));
+
+                var flipX = layer.getTileFlipX(new Vector2(w,h));
+                var flipY = layer.getTileFlipY(new Vector2(w,h));
+
+                var flipEnum = 0;
+
+                if (flipX && flipY) flipEnum = 3;
+                else if (flipY) flipEnum = 2;
+                else if (flipX) flipEnum = 1;
+
                 if (tilePos){
-                    tile = new Vector4(tilePos.x, tilePos.y, 255, 0);
+                    tile = new Vector4(tilePos.x, tilePos.y, 255, flipEnum);
                 }
 
                 tileMapArray.push(tile.x);

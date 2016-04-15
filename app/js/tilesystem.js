@@ -1,6 +1,8 @@
-var BlockLayer = function(position, tilePositionPredicate, tiles, tileIndexPredicate){
+var BlockLayer = function(position, tilePositionPredicate, tiles, flipX, flipY, tileIndexPredicate){
     this.position = position;
     this.tiles = tiles;
+    this.flipX = flipX;
+    this.flipY = flipY;
     this.tilePositionPredicate = tilePositionPredicate;
     this.tileIndexPredicate = tileIndexPredicate;
 };
@@ -10,12 +12,15 @@ var Block = function(blockLayers, isSolid){
     this.isSolid = isSolid;
 };
 
-var TileSystem = function(level, tilesheetUrl, tileSize, chunkSize){
+var TileSystem = function(level, tilesheetUrl, tileSize, chunkSize, tickOnce){
     this.level = level;
     this.generator = null;
     this.tileSize = tileSize;
     this.chunkSize = chunkSize;
     this.tilesheetUrl = tilesheetUrl;
+
+    this.tickOnce = tickOnce;
+    this.tickCount = 0;
 
     this.blocks = new Map();
 
@@ -32,7 +37,9 @@ TileSystem.prototype.setGenerator = function(generator){
 TileSystem.prototype.tick = function(viewports){
     //calculate all chunks inside viewport
 
-    if (this.generator == null) return;
+    //Slight hack as it needs to tick twice to deal with shadow chunks
+    if (this.generator == null || this.tickCount > 2) return;
+    if (this.tickOnce) this.tickCount++;
 
     //new array
 
@@ -44,12 +51,12 @@ TileSystem.prototype.tick = function(viewports){
         var minX = Math.floor((-viewport.levelX+viewport.levelWidth/2) / tileSystem.chunkSize / tileSystem.tileSize);
         var maxX = Math.floor(((-viewport.levelX+viewport.levelWidth/2) + viewport.levelWidth) / tileSystem.chunkSize / tileSystem.tileSize);
 
-        //minX = 5, maxX = 5;
+        //minX = 0, maxX = 5;
 
         var minY = Math.floor((-viewport.levelY+viewport.levelHeight/2) / tileSystem.chunkSize / tileSystem.tileSize);
         var maxY = Math.floor(((-viewport.levelY+viewport.levelHeight/2) + viewport.levelHeight) / tileSystem.chunkSize / tileSystem.tileSize);
 
-        //minY = 0, maxY = 0;
+        //minY = 0, maxY = 5;
 
         for (var x = minX; x <= maxX; x++) {
             for (var y = minY; y <= maxY; y++) {
@@ -79,6 +86,10 @@ TileSystem.prototype.tick = function(viewports){
 
     });
 
+
+    //Do this earlier to shadow load chunks
+    this.createTiles(true, true);
+
     //unload old chunks
     this.tileChunks.keys().difference(loadedChunks).forEach(function(chunkPosition) {
         var chunk = tileSystem.getChunk(chunkPosition, false);
@@ -89,9 +100,6 @@ TileSystem.prototype.tick = function(viewports){
     });
 
     //this.generator.generateRoad(new Vector2(10,10))
-
-    this.createTiles(true);
-
 
     Engine.log("Loaded chunks: " + this.tileChunks.size());
 };
@@ -106,9 +114,10 @@ TileSystem.prototype.getBlockById = function(blockId){
 
 TileSystem.prototype.getChunk = function(chunkPosition, create){
     var chunk = this.tileChunks.get(chunkPosition);
-    if (create) {
+    if (!chunk && create) {
         chunk = new TileChunk(this, chunkPosition);
         this.tileChunks.set(chunkPosition, chunk);
+        this.generator.generateChunk(chunk.location);
     }
     return chunk;
 };
@@ -142,7 +151,7 @@ TileSystem.prototype.getChunksInRange = function(position, bounds){
 TileSystem.prototype.setBlock = function(position, blockId){
     var chunkPosition = position.clone().divScalar(this.chunkSize).floor();
 
-    var chunk = this.getChunk(chunkPosition);
+    var chunk = this.getChunk(chunkPosition, true);
 
     if (chunk){
         chunk.setBlock(position.clone().wrap(this.chunkSize), blockId);
@@ -179,11 +188,11 @@ TileSystem.prototype.registerBlockType = function(blockId, block){
     this.blocks.set(blockId, block);
 };
 
-TileSystem.prototype.createTile = function(depth, position, tile, createChunk, hideUpdate){
+TileSystem.prototype.createTile = function(depth, position, tile, flipX, flipY, createChunk, hideUpdate){
     var chunkPosition = this.getChunkPosition(position);
     var chunk = this.getChunk(chunkPosition, createChunk);
     if (chunk) {
-        chunk.createTile(depth, position.clone().wrap(this.chunkSize), tile, hideUpdate);
+        chunk.createTile(depth, position.clone().wrap(this.chunkSize), tile, flipX, flipY, hideUpdate);
 
         return true;
     }
@@ -195,12 +204,9 @@ TileSystem.prototype.getChunkPosition = function(position){
     return position.clone().divScalar(this.chunkSize).floor();
 };
 
-TileSystem.prototype.createTiles = function(update){
+TileSystem.prototype.createTiles = function(update, noCreate){
 
     this.tileChunks.forEach(function (chunk) {
-        if (chunk.value.needsUpdate()) {
-            chunk.value.createTiles();
-            if (update) chunk.value.commitTiles();
-        }
+        if (chunk.value.createTiles() && update) chunk.value.commitTiles();
     });
 }

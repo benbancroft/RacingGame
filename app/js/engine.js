@@ -59,6 +59,10 @@ Engine.prototype.registerViewport = function(viewport){
     return viewport;
 };
 
+Engine.prototype.unregisterViewport = function(viewport){
+    this.viewports.removeElement(viewport);
+};
+
 Engine.prototype.unregisterViewports = function(){
     this.viewports.clear();
 };
@@ -80,7 +84,7 @@ Engine.prototype.isKeyPressed = function(keycode){
     if (!keyState) return false;
 
     return keyState;
-}
+};
 
 //Engine
 
@@ -146,7 +150,7 @@ Engine.prototype.loaded = function () {
 };
 
 Engine.prototype.animate = function (time) {
-    try {
+    //try {
         var now = new Date().getTime();
         this.unprocessedFrames += (now - this.lastTime) * 60.0 / 1000.0; //60 fps
         this.lastTime = now;
@@ -170,7 +174,7 @@ Engine.prototype.animate = function (time) {
         }
 
         window.requestAnimationFrame(this.animate.bind(this));
-    }catch (e) {
+    /*}catch (e) {
         Engine.log(e);
-    }
+    }*/
 };

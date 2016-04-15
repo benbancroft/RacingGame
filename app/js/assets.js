@@ -136,6 +136,12 @@ var Assets = {
         return null;
     },
 
+    getAll: function(type) {
+        return assetRegister.filter(function(item){
+            return item.type == type;
+        });
+    },
+
     set: function(url, contents) {
         var asset = this.get(url);
 
@@ -416,5 +422,9 @@ var Tracks = {
         if (asset == null || asset.type != Assets.Type.RACE_TRACK) return null;
 
         return asset.contents;
+    },
+
+    getAll: function() {
+        return Assets.getAll(Assets.Type.RACE_TRACK);
     }
 };

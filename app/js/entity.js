@@ -156,11 +156,6 @@ Entity.prototype.render = function(renderer){
 
     renderer.setRotation(this.direction, true);
 
-    /*renderer.setUseColour(true);
-    renderer.setRotation(this.direction, true);
-    renderer.setCentre(new Vector2(this.bbWidth/2, this.bbHeight/2));
-    renderer.setDimensions(new Vector2(this.bbWidth, this.bbHeight), false);*/
-
     renderer.draw(new Vector2(this.x, this.y));
 };
 

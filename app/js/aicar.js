@@ -21,20 +21,23 @@ AICar.prototype.findNewTarget = function () {
 
 AICar.prototype.tick = function(engine){
 
-    if (this.level.game.running && this.currentLap >= this.level.game.generator.track.laps){
+    if (this.level.game.gameState == 2 && this.currentLap >= this.level.tileSystem.generator.track.laps){
+
+        this.level.game.playersComplete++;
 
         this.level.removeEntity(this);
 
         return;
     }
 
-    var numberCheckpoints = engine.generator.checkPoints.length;
+    var tileSystem = this.level.tileSystem;
+    var numberCheckpoints = tileSystem.generator.checkPoints.length;
 
     if (this.checkPointIndex < numberCheckpoints) {
 
         var position = new Vector2(this.x, this.y);
 
-        var nextCheckPoint = engine.generator.checkPoints[this.checkPointIndex];
+        var nextCheckPoint = tileSystem.generator.checkPoints[this.checkPointIndex];
 
         var distanceToCheckPoint = position.clone().sub(nextCheckPoint).len();
 

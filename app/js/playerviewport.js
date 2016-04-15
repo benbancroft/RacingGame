@@ -13,7 +13,7 @@ PlayerViewport.prototype.render = function(renderer){
     Viewport.prototype.render.call(this, renderer);
 
 
-    if (this.followingEntity != null) {
+    if (this.game.gameState == 2 && this.followingEntity != null) {
 
         var resolution = renderer.getResolution();
 
@@ -21,7 +21,7 @@ PlayerViewport.prototype.render = function(renderer){
         renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
 
         renderer.drawText("Position: " + this.game.calculatePosition(this.followingEntity) + "/" + this.game.numberPlayers, resolution.clone().sub(new Vector2(20, 150)));
-        renderer.drawText("Lap: " + this.followingEntity.currentLap + "/" + this.game.generator.track.laps, resolution.clone().sub(new Vector2(20, 200)));
+        renderer.drawText("Lap: " + this.followingEntity.currentLap + "/" + this.level.tileSystem.generator.track.laps, resolution.clone().sub(new Vector2(20, 200)));
         renderer.drawText("Speed: " + Math.floor(this.followingEntity.getForwardSpeed()*7), resolution.clone().sub(new Vector2(20, 250)));
 
         renderer.setUseColour(false, false, true);

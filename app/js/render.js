@@ -112,6 +112,8 @@ Renderer.prototype.resetRenderer = function(isDraw){
         gl.clear(gl.COLOR_BUFFER_BIT/* | DEPTH_BUFFER_BIT*/);
         //glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
         this.setShader("assets/shaders/draw", Shaders.Types.DRAW, true);
+
+        textCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
     }
     gl.disable(gl.CULL_FACE);
     this.setUseAlpha(false, true);
@@ -122,8 +124,6 @@ Renderer.prototype.resetRenderer = function(isDraw){
     gl.depthFunc(gl.LEQUAL);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     //glBlendFunc(SRC_ALPHA, DST_ALPHA);
-
-    textCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
 };
 
 Renderer.prototype.initiseRenderer = function(){
@@ -379,7 +379,7 @@ Renderer.prototype.setUseSprite = function (url, index, useDimensions){
 
                 var topCorner = new Vector2(sprite.x, sprite.y);
 
-                this.setUVs(topCorner, new Vector2(topCorner.x + sprite.width, topCorner.y + sprite.height), true);
+                this.setUVs(topCorner, new Vector2(topCorner.x + sprite.width, topCorner.y + sprite.height), true, true);
 
                 this.setUseColour(false);
 

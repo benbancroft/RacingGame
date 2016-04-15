@@ -1,14 +1,88 @@
 {
-  "name": "The Loop",
+  "name": "The Hour Glass",
   "difficulty": "1",
   "startOrientation": "1",
+  "laps": "4",
   "nodes": [
     {
-      "type": "2",
+      "type": "3",
       "range": "5"
     },
     {
-      "type": "1"
+      "type": "4",
+      "orientation": "2"
+    },
+    {
+      "type": "3",
+      "range": "2"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
+    },
+    {
+      "type": "3",
+      "range": "3"
+    },
+    {
+      "type": "4",
+      "orientation": "2"
+    },
+    {
+      "type": "3",
+      "range": "1"
+    },
+    {
+      "type": "4",
+      "orientation": "1"
+    },
+    {
+      "type": "3",
+      "range": "2"
+    },
+    {
+      "type": "4",
+      "orientation": "2"
+    },
+    {
+      "type": "3",
+      "range": "1"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
+    },
+    {
+      "type": "3",
+      "range": "7"
+    },
+    {
+      "type": "4",
+      "orientation": "0"
+    },
+    {
+      "type": "3",
+      "range": "1"
+    },
+    {
+      "type": "4",
+      "orientation": "1"
+    },
+    {
+      "type": "3",
+      "range": "2"
+    },
+    {
+      "type": "4",
+      "orientation": "0"
+    },
+    {
+      "type": "3",
+      "range": "1"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
     },
     {
       "type": "3",
@@ -20,31 +94,19 @@
     },
     {
       "type": "3",
-      "range": "10"
-    },
-    {
-      "type": "4",
-      "orientation": "3"
-    },
-    {
-      "type": "3",
-      "range": "10"
-    },
-    {
-      "type": "4",
-      "orientation": "2"
-    },
-    {
-      "type": "3",
-      "range": "10"
+      "range": "2"
     },
     {
       "type": "4",
       "orientation": "1"
     },
     {
-      "type": "3",
-      "range": "3"
+      "type": "2",
+      "range": "5"
+    },
+    {
+      "type": "1"
     }
+
   ]
 }

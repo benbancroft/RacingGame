@@ -1,5 +1,6 @@
 var Viewport = function(level, x, y, width, height, levelX, levelY, levelWidth, levelHeight){
     this.level = level;
+    this.level.registerViewport(this);
 
     this.x = x;
     this.y = y;

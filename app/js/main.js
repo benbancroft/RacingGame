@@ -50,6 +50,9 @@ require.config({
         car : {
             deps: ['entity']
         },
+        carfactory : {
+            deps: ['car']
+        },
         playercar : {
             deps: ['entity', 'car']
         },
@@ -60,7 +63,7 @@ require.config({
             deps: ['entity', 'car']
         },
         game : {
-            deps: ['engine', 'tilesystem', 'tilegenerator', 'aicar', 'playercar', 'coldebug', 'playerviewport', 'button']
+            deps: ['engine', 'tilesystem', 'tilegenerator', 'aicar', 'playercar', 'carfactory', 'coldebug', 'playerviewport', 'button']
         }
     }
 });

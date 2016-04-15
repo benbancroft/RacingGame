@@ -8,6 +8,25 @@ PlayerCar.prototype.constructor = PlayerCar;
 
 PlayerCar.prototype.tick = function(engine){
 
+    if (this.level.game.running && this.currentLap >= this.level.tileSystem.generator.track.laps){
+
+        this.level.game.finalPlace = this.level.game.calculatePosition(this);
+
+        var self = this;
+        this.level.entities.forEach(function(entity) {
+            if (entity.__proto__ !== PlayerCar.prototype){
+                self.level.removeEntity(entity);
+            }
+        });
+
+        this.level.game.gameState = 3;
+        this.level.game.finishScreen();
+        this.level.game.gameFinishTick = this.level.game.gameTicks;
+        this.__proto__ = AICar.prototype;
+
+        return;
+    }
+
     //up
     if (engine.isKeyPressed(32)){
         this.isHandbrake = true;

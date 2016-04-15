@@ -1,0 +1,14 @@
+{
+    "texture": "assets/textures/ambulance",
+    "sprites": [
+        {
+            "name": "Ambulance",
+            "x": "0",
+            "y": "0",
+            "centreX": "128",
+            "centreY": "128",
+            "width": "256",
+            "height": "256"
+        }
+  ]
+}

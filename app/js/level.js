@@ -1,16 +1,26 @@
-var Level = function(game, width, height, hasBounds){
-    this.width = width;
-    this.height = height;
-    this.hasBounds = hasBounds;
-
+var Level = function(game){
     this.game = game;
 
     this.entities = new Array();
     this.renderables = new Array();
+    this.viewports = new Array();
 
     this.tileSystem = null;
 
     this.firstGen = false;
+};
+
+Level.prototype.registerViewport = function(viewport){
+    this.viewports.push(viewport);
+    return viewport;
+};
+
+Level.prototype.unregisterViewports = function(){
+    var self = this;
+    this.viewports.forEach(function(viewport){
+        self.game.unregisterViewport(viewport);
+    })
+    this.viewports.clear();
 };
 
 Level.prototype.keyDown = function (keycode) {
@@ -21,7 +31,7 @@ Level.prototype.keyDown = function (keycode) {
 
 Level.prototype.tick = function(engine){
 
-    if (this.tileSystem != null && !this.firstGen) this.tileSystem.tick(engine.viewports);
+    if (this.tileSystem != null && !this.firstGen) this.tileSystem.tick(this.viewports);
     //this.firstGen = true;
 
     var entityMoveUpdate = function (entity) {
@@ -71,6 +81,10 @@ Level.prototype.removeEntity = function(entity){
     this.renderables.removeElement(entity);
 };
 
+Level.prototype.removeEntities = function(){
+    this.entities.clear();
+};
+
 Level.prototype.setTileSystem = function(tileSystem){
     this.tileSystem = tileSystem;
 };
@@ -86,4 +100,8 @@ Level.prototype.addRenderable = function(renderable){
 
 Level.prototype.removeRenderable = function(renderable){
     this.renderables.removeElement(renderable);
+};
+
+Level.prototype.removeRenderables = function(){
+    this.renderables.clear();
 };
