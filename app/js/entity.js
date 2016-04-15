@@ -296,7 +296,7 @@ Entity.prototype.tick = function(engine){
 
                 var velocityOnPoint = this.velocity.clone().add(other.velocity.clone().sub(cross(this.angularVelocity, midPointA).add(cross(other.angularVelocity, midPointB))));
                 var velocityOnPointProjection = velocityOnPoint.dot(n); //negative projection means they are moving towards each other
-                if (velocityOnPointProjection < 0) { //Bases on projection, are they moving apart?
+                if (velocityOnPointProjection < 0) { //Bases on projection, check if they moving apart
                     //Normal impulse
                     var j = -this.elasticity*velocityOnPointProjection / (Math.pow(midPointA.cross(n), 2) / aI + Math.pow(midPointB.cross(n), 2) / bI + 1/this.mass + 1/other.mass);
                     var jn = n.clone().scale(j);

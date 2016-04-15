@@ -48,13 +48,13 @@ TileSystem.prototype.tick = function(viewports){
 
     viewports.forEach(function(viewport) {
 
-        var minX = Math.floor((-viewport.levelX+viewport.levelWidth/2) / tileSystem.chunkSize / tileSystem.tileSize);
-        var maxX = Math.floor(((-viewport.levelX+viewport.levelWidth/2) + viewport.levelWidth) / tileSystem.chunkSize / tileSystem.tileSize);
+        var minX = Math.floor((-viewport.levelX+viewport.levelWidth/2) / tileSystem.chunkSize / tileSystem.tileSize)-1;
+        var maxX = Math.floor(((-viewport.levelX+viewport.levelWidth/2) + viewport.levelWidth) / tileSystem.chunkSize / tileSystem.tileSize)+1;
 
         //minX = 0, maxX = 5;
 
-        var minY = Math.floor((-viewport.levelY+viewport.levelHeight/2) / tileSystem.chunkSize / tileSystem.tileSize);
-        var maxY = Math.floor(((-viewport.levelY+viewport.levelHeight/2) + viewport.levelHeight) / tileSystem.chunkSize / tileSystem.tileSize);
+        var minY = Math.floor((-viewport.levelY+viewport.levelHeight/2) / tileSystem.chunkSize / tileSystem.tileSize)-1;
+        var maxY = Math.floor(((-viewport.levelY+viewport.levelHeight/2) + viewport.levelHeight) / tileSystem.chunkSize / tileSystem.tileSize)+1;
 
         //minY = 0, maxY = 5;
 

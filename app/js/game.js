@@ -24,7 +24,7 @@ function Game() {
     this.gameState = 0;
 
     this.carFactory = new CarFactory();
-    this.maxCarStats = this.carFactory.getMaxStats();
+    //this.maxCarStats = this.carFactory.getMaxStats();
     this.carIndex = 0;
 
     this.trackIndex = 1;
@@ -205,33 +205,27 @@ Game.prototype.optionsScreen = function(){
         self.startGame();
     }));
 
-    //car
+    //Car
 
-    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).sub(new Vector2(224, -127)), new Vector2(40, 40), "\u25C4", function(){
+    this.registerGuiComponent(new CarWidget (this, resolution.clone().divScalar(2).sub(new Vector2(155, 152)), function(){
         self.carIndex = wrapIndex(self.carIndex-1, self.carFactory.carStats.size);
-    }, new Vector4(0.6,0.6,0.6,1.0)));
-
-    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).sub(new Vector2(84, -127)), new Vector2(40, 40), "\u25BA", function(){
+    }, function(){
         self.carIndex = wrapIndex(self.carIndex+1, self.carFactory.carStats.size);
-    }, new Vector4(0.6,0.6,0.6,1.0)));
+    }, function (){
+        return self.carFactory.carStats.get(self.carIndex);
+    }, self.carFactory.getMaxStats()));
 
-    //level
+    //Track
 
-    var trackPosition = resolution.clone().divScalar(2).sub(new Vector2(13, 207));
-
-    this.loadTrackPreview(trackPosition);
-
-    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(120, 127)), new Vector2(40, 40), "\u25C4", function(){
+    this.registerGuiComponent(new TrackWidget (this, resolution.clone().divScalar(2).sub(new Vector2(13, 207)), function(trackPosition){
         self.trackIndex = wrapIndex(self.trackIndex-1, self.availableTracks.length);
         self.loadTrackPreview(trackPosition);
         self.previewLevel.registerViewport(self.racetrackPreviewViewport);
-    }, new Vector4(0.6,0.6,0.6,1.0)));
-
-    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(200, 127)), new Vector2(40, 40), "\u25BA", function(){
+    }, function(trackPosition){
         self.trackIndex = wrapIndex(self.trackIndex+1, self.availableTracks.length);
         self.loadTrackPreview(trackPosition);
         self.previewLevel.registerViewport(self.racetrackPreviewViewport);
-    }, new Vector4(0.6,0.6,0.6,1.0)));
+    }));
 };
 
 Game.prototype.finishScreen = function () {
@@ -243,132 +237,6 @@ Game.prototype.finishScreen = function () {
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 100)), new Vector2(200, 40), "Back to Start Screen", function(){
         self.startScreen(true);
     }));
-};
-
-function drawPercentageBar(renderer, position, percentage, length, thickness){
-    renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
-    renderer.setUseColour(true);
-    renderer.setRotation(0, true);
-
-    renderer.setColour(new Vector4(1,1,1,1));
-    renderer.setCentre(new Vector2(0,0));
-    renderer.setDimensions(new Vector2(percentage*length, thickness), false);
-    renderer.draw(position);
-
-    renderer.setColour(new Vector4(0.6,0.6,0.6,1));
-    renderer.setCentre(new Vector2(0,0));
-    renderer.setDimensions(new Vector2((1-percentage)*length, thickness), false);
-    renderer.draw(position.clone().add(new Vector2(percentage*length, 0)));
-};
-
-Game.prototype.drawMainMenu = function(renderer){
-    var resolution = this.getResolution();
-
-    /*var dimensions = new Vector2(400, 400);
-
-
-    renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
-    renderer.setColour(new Vector4(0.2, 0.2, 0.2, 0.6));
-
-    renderer.setUseColour(true);
-    renderer.setRotation(0, true);
-    renderer.setCentre(dimensions.clone().divScalar(2));
-    renderer.setDimensions(dimensions, false);
-
-    renderer.draw(resolution.clone().divScalar(2));*/
-
-
-
-};
-
-Game.prototype.drawOptionsMenu = function(renderer){
-    var resolution = this.getResolution();
-
-    /*var dimensions = new Vector2(580, 495);
-
-    renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
-    renderer.setColour(new Vector4(0.2, 0.2, 0.2, 0.6));
-
-    renderer.setUseColour(true);
-    renderer.setRotation(0, true);
-    renderer.setCentre(dimensions.clone().divScalar(2));
-    renderer.setDimensions(dimensions, false);
-
-    renderer.draw(resolution.clone().divScalar(2));*/
-
-    //draw car
-
-    var carBoxDimensions = new Vector2(200, 375);
-    var carPosition = resolution.clone().divScalar(2).sub(new Vector2(155, 152));
-
-    renderer.setColour(new Vector4(0.8, 0.8, 0.8, 1.0));
-    renderer.setUseColour(true);
-    renderer.setRotation(0, true);
-    renderer.setCentre(new Vector2(carBoxDimensions.x/2, 0));
-    renderer.setDimensions(carBoxDimensions, false);
-
-    renderer.draw(carPosition.clone().sub(new Vector2(0, 64)));
-
-    renderer.setUseColour(false);
-    renderer.setDimensions(new Vector2(128, 128));
-    renderer.setRotation(Math.PI/2, true);
-
-    renderer.setUseSprite(this.carFactory.carStats.get(this.carIndex).spriteSheetUrl, 0);
-
-    renderer.draw(carPosition);
-
-    //parameters
-
-    var massParameterPosition = resolution.clone().divScalar(2).sub(new Vector2(244, 37.5));
-    drawPercentageBar(renderer, massParameterPosition, this.carFactory.carStats.get(this.carIndex).mass / this.maxCarStats.mass, 180, 3);
-
-    var speedParameterPosition = massParameterPosition.clone().add(new Vector2(0, 40));
-    drawPercentageBar(renderer, speedParameterPosition, this.carFactory.carStats.get(this.carIndex).maxSpeed / this.maxCarStats.maxSpeed, 180, 3);
-
-    var handlingParameterPosition = speedParameterPosition.clone().add(new Vector2(0, 40));
-    drawPercentageBar(renderer, handlingParameterPosition, this.carFactory.carStats.get(this.carIndex).turnSpeed / this.maxCarStats.turnSpeed, 180, 3);
-
-    var accelerationParameterPosition = handlingParameterPosition.clone().add(new Vector2(0, 40));
-    drawPercentageBar(renderer, accelerationParameterPosition, this.carFactory.carStats.get(this.carIndex).acceleration / this.maxCarStats.acceleration, 180, 3);
-
-    //draw track
-
-    var trackBoxDimensions = new Vector2(280, 375);
-    var trackPosition = resolution.clone().divScalar(2).add(new Vector2(115, -29));
-
-    renderer.setColour(new Vector4(0.8, 0.8, 0.8, 1.0));
-    renderer.setUseColour(true);
-    renderer.setRotation(0, true);
-    renderer.setCentre(trackBoxDimensions.clone().divScalar(2));
-    renderer.setDimensions(trackBoxDimensions, false);
-
-    renderer.draw(trackPosition);
-
-    this.racetrackPreviewViewport.render(renderer);
-
-    //text
-
-    renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-    renderer.setTextAlign(TextAlign.CENTRE);
-    renderer.setFont("Arial", 18);
-
-    renderer.drawText(this.carFactory.carStats.get(this.carIndex).name, carPosition.add(new Vector2(0,70)));
-
-    renderer.drawText(this.currentTrack.contents.name, trackPosition.add(new Vector2(0,95)));
-
-    renderer.setFont("Arial", 16);
-
-    renderer.drawText(this.currentTrack.contents.laps + " Laps", trackPosition.add(new Vector2(0,20)));
-
-    renderer.setTextAlign(TextAlign.LEFT);
-
-    renderer.drawText("Mass", massParameterPosition.sub(new Vector2(0, 15)));
-    renderer.drawText("Max Speed", speedParameterPosition.sub(new Vector2(0, 15)));
-    renderer.drawText("Handling", handlingParameterPosition.sub(new Vector2(0, 15)));
-    renderer.drawText("Acceleration", accelerationParameterPosition.sub(new Vector2(0, 15)));
-
-    //renderer.drawText("Options", resolution.clone().divScalar(2).sub(new Vector2(0, 130)));
-
 };
 
 Game.prototype.drawFinishMenu = function(renderer){
@@ -478,10 +346,7 @@ Game.prototype.animate = function(time){
 
 Game.prototype.renderGui = function(){
 
-    Engine.prototype.renderGui.call(this);
-
-    if (this.gameState == 1) this.drawOptionsMenu(this);
-    else if (this.gameState == 2 && this.secondsTillStart >= -1){
+    if (this.gameState == 2 && this.secondsTillStart >= -1){
         var resolution = this.getResolution();
 
         this.setTextAlign(TextAlign.CENTRE);
@@ -495,6 +360,8 @@ Game.prototype.renderGui = function(){
         this.drawText(startMessage, resolution.clone().divScalar(2).sub(new Vector2(0, 150)));
     }
     else if (this.gameState == 3) this.drawFinishMenu(this);
+
+    Engine.prototype.renderGui.call(this);
 
 };
 
