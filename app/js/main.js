@@ -84,16 +84,36 @@ require(['engine', 'game'], function () {
         game.keyUp(key);
     }
 
+    document.oncontextmenu = function (event) {
+        event.preventDefault();
+    };
+
     document.onmousemove = function(event) {
+        event.preventDefault();
         game.mouseMove(event.clientX, event.clientY);
     }
 
     document.onmousedown = function(event) {
+        event.preventDefault();
         game.mouseDown(event.clientX, event.clientY, event.button);
     }
 
     document.onmouseup = function(event) {
         game.mouseUp(event.clientX, event.clientY, event.button);
+    }
+
+    document.ontouchstart = function(event) {
+        for (var i = 0; i < event.touches.length; i++){
+            var item = event.touches.item(i);
+            game.mouseDown(item.clientX, item.clientY, 0);
+        }
+    }
+
+    document.ontouchend = function(event) {
+        for (var i = 0; i < event.touches.length; i++){
+            var item = event.touches.item(i);
+            game.mouseUp(item.clientX, item.clientY, 0);
+        }
     }
 
     if (window.location.host == "users.aber.ac.uk"){

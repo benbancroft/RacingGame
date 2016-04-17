@@ -223,19 +223,22 @@ Engine.prototype.mouseMove = function(x, y){
 Engine.prototype.mouseUp = function(x, y, button){
     var position = new Vector2(x, y);
 
-    this.leftMousePressed = button !== 0;
-    this.rightMousePressed = button !== 2;
+    if (x && y) this.mousePosition = position;
 
-    this.mousePosition = position;
+    if (button === 0) this.leftMousePressed = false;
+    if (button === 2) this.rightMousePressed = false;
 };
 
 Engine.prototype.mouseDown = function(x, y, button){
     var position = new Vector2(x, y);
 
-    this.leftMousePressed = button === 0;
-    this.rightMousePressed = button === 2;
+    if (x && y) this.mousePosition = position;
 
-    this.mousePosition = position;
+    if (button === 0) this.leftMousePressed = true;
+    else this.leftMousePressed = false;
+
+    if (button === 2) this.rightMousePressed = true;
+    else this.rightMousePressed = false;
 
     for (var i = 0; i < this.guiComponents.length; i++) {
         var component = this.guiComponents[i];

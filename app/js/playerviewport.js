@@ -49,7 +49,7 @@ PlayerViewport.prototype.followEntity = function(entity){
 
     var position = this.game.getMousePosition();
 
-    if (this.game.isMousePressed(false) && this.x <= position.x && this.x + this.width >= position.x && this.y <= position.y && this.y + this.height >= position.y){
+    if ((this.game.isMousePressed(false) || this.game.isMousePressed(true)) && this.x <= position.x && this.x + this.width >= position.x && this.y <= position.y && this.y + this.height >= position.y){
 
         var pos = position.clone().sub(new Vector2(this.x, this.y)).add(new Vector2(this.width, this.height).divScalar(2));
 
