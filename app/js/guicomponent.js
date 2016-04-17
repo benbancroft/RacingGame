@@ -7,6 +7,9 @@ var GuiComponent = function(game, position, dimensions){
     this.isHover = false;
 };
 
+GuiComponent.prototype.decontructor = function(){
+}
+
 GuiComponent.prototype.onHover = function(){
 };
 
@@ -175,11 +178,11 @@ var TrackWidget = function(game, position, previousCallback, nextCallback){
 
     game.loadTrackPreview(position);
 
-    //game.registerGuiComponent(new Panel(this, position.clone().add(new Vector2(213, 334)), new Vector2(40, 40), "\u25BA", curry(nextCallback, position), new Vector4(0.6,0.6,0.6,1.0)));
+    game.registerGuiComponent(new Panel(game, position.clone().add(new Vector2(128, 178)), new Vector2(280, 375), new Vector4(0.8, 0.8, 0.8, 1.0)));
 
-    game.registerGuiComponent(new Button(this, position.clone().add(new Vector2(133, 334)), new Vector2(40, 40), "\u25C4", curry(previousCallback, position), new Vector4(0.6,0.6,0.6,1.0)));
+    game.registerGuiComponent(new Button(game, position.clone().add(new Vector2(18, 334)), new Vector2(40, 40), "\u25C4", curry(previousCallback, position), new Vector4(0.6,0.6,0.6,1.0)));
 
-    game.registerGuiComponent(new Button(this, position.clone().add(new Vector2(213, 334)), new Vector2(40, 40), "\u25BA", curry(nextCallback, position), new Vector4(0.6,0.6,0.6,1.0)));
+    game.registerGuiComponent(new Button(game, position.clone().add(new Vector2(238, 334)), new Vector2(40, 40), "\u25BA", curry(nextCallback, position), new Vector4(0.6,0.6,0.6,1.0)));
 
 };
 
@@ -187,21 +190,10 @@ TrackWidget.prototype = Object.create(Widget.prototype);
 TrackWidget.prototype.constructor = TrackWidget;
 
 TrackWidget.prototype.render = function(renderer){
-    var resolution = renderer.getResolution();
-    var position = this.position.clone();
-
-    //draw track
 
     var trackBoxDimensions = new Vector2(280, 375);
-    var trackPosition = resolution.clone().divScalar(2).add(new Vector2(115, -29));
+    var trackPosition = this.position.clone().add(new Vector2(128, 178));
 
-    renderer.setColour(new Vector4(0.8, 0.8, 0.8, 1.0));
-    renderer.setUseColour(true);
-    renderer.setRotation(0, true);
-    renderer.setCentre(trackBoxDimensions.clone().divScalar(2));
-    renderer.setDimensions(trackBoxDimensions, false);
-
-    renderer.draw(trackPosition);
 
     this.game.racetrackPreviewViewport.render(renderer);
 
@@ -216,4 +208,41 @@ TrackWidget.prototype.render = function(renderer){
     renderer.setFont("Arial", 16);
 
     renderer.drawText(this.game.currentTrack.contents.laps + " Laps", trackPosition.add(new Vector2(0,20)));
+};
+
+//Input Widget
+
+var InputWidget = function(game, position, dimensions, maxLength) {
+    Widget.call(this, game, position, dimensions);
+
+    this.position = position;
+
+    var container = document.getElementById("dom-widgets");
+
+    this.input = document.createElement("input");
+    this.input.type = "text";
+    this.input.maxLength = maxLength;
+    this.input.style.position = "absolute";
+    this.input.style.left = position.x +'px';
+    this.input.style.top = position.y +'px';
+    this.input.style.width = dimensions.x +'px';
+    this.input.style.height = dimensions.y +'px';
+
+    container.appendChild(this.input);
+};
+
+InputWidget.prototype = Object.create(Widget.prototype);
+InputWidget.prototype.constructor = InputWidget;
+
+InputWidget.prototype.decontructor = function(){
+    var container = document.getElementById("dom-widgets");
+
+    container.removeChild(this.input);
+}
+
+InputWidget.prototype.getValue = function(){
+    return this.input.value;
+};
+
+InputWidget.prototype.render = function(renderer){
 };

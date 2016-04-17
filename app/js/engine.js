@@ -8,6 +8,12 @@
 
 var Engine = function(){
 
+    if(typeof(Storage) === "undefined") {
+        Engine.log("Local storage is not available.");
+        return;
+    }
+
+
     Renderer.call(this);
 
     this.unprocessedFrames = 0.0;
@@ -37,13 +43,36 @@ Engine.log = function (message) {
     console.log(message);
 };
 
-Engine.random = function(lower, upper){
-    return Math.floor((Math.random()*(upper - lower)) + lower);
+Engine.openLink = function (url) {
+    window.location = url;
 };
 
 //prototype methods
 
 //API
+
+Engine.prototype.getHiscores = function(trackName){
+
+    var hiscores = JSON.parse(localStorage.getItem(trackName)) || new Array();
+
+    hiscores.sort(function(val1, val2) {
+        return val1.time - val2.time;
+    })
+
+    return hiscores;
+};
+
+Engine.prototype.addHiscore = function(trackName, name, time, position, carUrl){
+    var hiscores = this.getHiscores(trackName);
+    hiscores.push({
+        name: name,
+        time: time,
+        position: position,
+        carUrl: carUrl
+    });
+
+    return localStorage.setItem(trackName, JSON.stringify(hiscores));
+};
 
 Engine.prototype.registerGuiComponent = function(component){
     this.guiComponents.push(component);
@@ -51,6 +80,9 @@ Engine.prototype.registerGuiComponent = function(component){
 };
 
 Engine.prototype.unregisterGuiComponents = function(){
+    this.guiComponents.forEach(function(component){
+        component.decontructor();
+    });
     this.guiComponents.clear();
 };
 

@@ -20,7 +20,7 @@ PlayerCar.prototype.tick = function(engine){
         });
 
         this.level.game.gameState = 3;
-        this.level.game.finishScreen();
+        this.level.game.finishScreen(Math.floor(this.level.game.gameTicks/60), this.level.game.finalPlace);
         this.level.game.gameFinishTick = this.level.game.gameTicks;
         this.__proto__ = AICar.prototype;
 
