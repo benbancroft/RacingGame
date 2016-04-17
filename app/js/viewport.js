@@ -27,6 +27,9 @@ Viewport.prototype.render = function(renderer){
     //Engine.log("render");
 };
 
+Viewport.prototype.mouseDown = function(position){
+};
+
 Viewport.prototype.followEntity = function(entity){
 
     this.levelX = this.levelWidth - entity.x;

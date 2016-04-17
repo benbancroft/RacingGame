@@ -39,10 +39,35 @@ PlayerViewport.prototype.render = function(renderer){
 
 };
 
+Viewport.prototype.mouseDown = function(position){
+
+};
 
 PlayerViewport.prototype.followEntity = function(entity){
 
     Viewport.prototype.followEntity.call(this, entity);
+
+    var position = this.game.getMousePosition();
+
+    if (this.game.isMousePressed(false) && this.x <= position.x && this.x + this.width >= position.x && this.y <= position.y && this.y + this.height >= position.y){
+
+        var pos = position.clone().sub(new Vector2(this.x, this.y)).add(new Vector2(this.width, this.height).divScalar(2));
+
+
+        pos.div(new Vector2(this.width, this.height).div(new Vector2(this.levelWidth, this.levelHeight))).sub(new Vector2(this.levelX, this.levelY));
+
+        var result = new Vector2(Math.sin(entity.direction), -Math.cos(entity.direction)).cross(pos.clone().sub(entity.getPosition()));
+
+        if (result > 0) {
+            entity.isLeft = false;
+            entity.isRight = true;
+        }
+        else {
+            entity.isLeft = true;
+            entity.isRight = false;
+        }
+
+    }
 
     this.game.setSoundListenerPosition(new Vector2(entity.x, entity.y));
     this.game.setSoundListenerVelocity(entity.velocity);

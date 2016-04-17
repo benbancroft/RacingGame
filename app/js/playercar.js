@@ -31,7 +31,7 @@ PlayerCar.prototype.tick = function(engine){
     if (engine.isKeyPressed(32)){
         this.isHandbrake = true;
     }
-    else if (engine.isKeyPressed(87)){
+    else if (engine.isKeyPressed(87) || engine.isMousePressed(false)){
         this.isForward = true;
         this.isReverse = false;
         this.isHandbrake = false;
@@ -55,7 +55,7 @@ PlayerCar.prototype.tick = function(engine){
     else if(engine.isKeyPressed(68)){
         this.isLeft = false;
         this.isRight = true;
-    }else{
+    }else if (!engine.isMousePressed(false)){
         this.isLeft = false;
         this.isRight = false;
     }

@@ -89,7 +89,11 @@ require(['engine', 'game'], function () {
     }
 
     document.onmousedown = function(event) {
-        game.mouseDown(event.clientX, event.clientY);
+        game.mouseDown(event.clientX, event.clientY, event.button);
+    }
+
+    document.onmouseup = function(event) {
+        game.mouseUp(event.clientX, event.clientY, event.button);
     }
 
     if (window.location.host == "users.aber.ac.uk"){

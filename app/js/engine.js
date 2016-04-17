@@ -173,6 +173,18 @@ Engine.prototype.isKeyPressed = function(keycode){
     return keyState;
 };
 
+Engine.prototype.isMousePressed = function(right){
+    if (!right){
+        return this.leftMousePressed;
+    }else{
+        return this.rightMousePressed;
+    }
+};
+
+Engine.prototype.getMousePosition = function(){
+    return this.mousePosition;
+};
+
 //Engine
 
 Engine.prototype.tick = function () {
@@ -197,6 +209,7 @@ Engine.prototype.keyUp = function (keycode) {
 
 Engine.prototype.mouseMove = function(x, y){
     var position = new Vector2(x, y);
+    this.mousePosition = position;
 
     for (var i = 0; i < this.guiComponents.length; i++) {
         var component = this.guiComponents[i];
@@ -207,8 +220,22 @@ Engine.prototype.mouseMove = function(x, y){
     }
 };
 
-Engine.prototype.mouseDown = function(x, y){
+Engine.prototype.mouseUp = function(x, y, button){
     var position = new Vector2(x, y);
+
+    this.leftMousePressed = button !== 0;
+    this.rightMousePressed = button !== 2;
+
+    this.mousePosition = position;
+};
+
+Engine.prototype.mouseDown = function(x, y, button){
+    var position = new Vector2(x, y);
+
+    this.leftMousePressed = button === 0;
+    this.rightMousePressed = button === 2;
+
+    this.mousePosition = position;
 
     for (var i = 0; i < this.guiComponents.length; i++) {
         var component = this.guiComponents[i];

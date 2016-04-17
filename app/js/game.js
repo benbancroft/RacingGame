@@ -136,7 +136,10 @@ Game.prototype.startScreen = function(loadTileSystem){
     this.unregisterGuiComponents();
 
     if (loadTileSystem){
-        this.setupGame("assets/tracks/2", true, this.mainLevel);
+
+        var trackIndex = Math.floor(Math.random() * this.availableTracks.length);
+
+        this.setupGame(this.availableTracks[trackIndex].url, true, this.mainLevel);
 
         var tilesystem = this.mainLevel.tileSystem;
         var generator = tilesystem.generator;
