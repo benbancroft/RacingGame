@@ -38,3 +38,13 @@ PlayerViewport.prototype.render = function(renderer){
     }
 
 };
+
+
+PlayerViewport.prototype.followEntity = function(entity){
+
+    Viewport.prototype.followEntity.call(this, entity);
+
+    this.game.setSoundListenerPosition(new Vector2(entity.x, entity.y));
+    this.game.setSoundListenerVelocity(entity.velocity);
+
+};

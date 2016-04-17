@@ -1,6 +1,6 @@
-var AICar = function(level){
+var AICar = function(level, playSound){
     //set depth of AICar here
-    Car.call(this, level, 5);
+    Car.call(this, level, playSound);
 
     this.destX = 0;
     this.destY = 0;

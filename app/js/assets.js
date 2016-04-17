@@ -56,6 +56,10 @@ function Sprite (name, x, y, centreX, centreY, width, height){
     this.height = height;
 }
 
+function Sound(buffer){
+    this.buffer = buffer;
+}
+
 function RaceTrack(name, difficulty, startOrientation, nodes, laps){
     this.name = name;
     this.difficulty = difficulty;
@@ -116,7 +120,7 @@ CornerTrackNode.prototype.constructor = CornerTrackNode;
 var Assets = {
 
     Type: {
-        SHADER: 0, TEXTURE: 1, SPRITE_SHEET: 2, TILE_SHEET: 3, RACE_TRACK: 4
+        SHADER: 0, TEXTURE: 1, SPRITE_SHEET: 2, TILE_SHEET: 3, SOUND: 4, RACE_TRACK: 5
     },
 
     add: function(url, type) {
@@ -364,6 +368,45 @@ var Sprites = {
     }
 };
 
+var Sounds = {
+
+    create: function(url, buffer){
+        var sound = new Sound(buffer);
+
+        Engine.log("Loaded sound: " + url);
+
+        Assets.setLoaded(url);
+        Assets.set(url, sound);
+    },
+
+    load: function(url) {
+
+        Assets.add(url, Assets.Type.SOUND);
+
+        var request = new XMLHttpRequest();
+        request.open('GET', url + ".ogg", true);
+        request.responseType = 'arraybuffer';
+
+        request.onload = function() {
+            soundContext.decodeAudioData(request.response, function(buffer) {
+                Sounds.create(url, buffer);
+            }, function (e){
+                Engine.log("Failed to load sound: " + url + ". Error: " + e.err);
+            });
+        }
+        request.send();
+    },
+
+    get: function(url) {
+        var asset = Assets.get(url);
+
+        if (asset == null || asset.type != Assets.Type.SOUND) return null;
+
+        return asset.contents;
+    }
+};
+
+
 var Tracks = {
 
     create: function(url, name, difficulty, startOrientation, laps, nodes){
@@ -409,7 +452,7 @@ var Tracks = {
                     //nodes.push(new Sprite(spriteJson.name, parseFloat(spriteJson.x), parseFloat(spriteJson.y), parseFloat(spriteJson.centreX), parseFloat(spriteJson.centreY), parseFloat(spriteJson.width), parseFloat(spriteJson.height)));
                 }
 
-                var track = Tracks.create(url, json.name, parseInt(json.difficulty), parseInt(json.startOrientation), parseInt(json.laps), nodes);
+                Tracks.create(url, json.name, parseInt(json.difficulty), parseInt(json.startOrientation), parseInt(json.laps), nodes);
 
             }
         };

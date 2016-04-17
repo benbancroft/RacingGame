@@ -1,6 +1,6 @@
 var PlayerCar = function(level){
     //set depth of PlayerCar here
-    Car.call(this, level, 5);
+    Car.call(this, level, true);
 }
 
 PlayerCar.prototype = Object.create(Car.prototype);

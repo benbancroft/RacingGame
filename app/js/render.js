@@ -4,6 +4,8 @@ var canvas;
 var textCanvas;
 var textCtx;
 var gl;
+var soundContext;
+var volume;
 
 //Misc
 
@@ -32,6 +34,10 @@ var Renderer = function(){
         Engine.log("Browser does not support WebGL - cannot run game.");
         return;
     }
+
+    soundContext = new AudioContext();
+    volume = soundContext.createGain();
+    volume.connect(soundContext.destination);
 
     this.setFont("Arial", 32);
 

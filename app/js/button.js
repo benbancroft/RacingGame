@@ -1,5 +1,5 @@
-var Button = function(engine, position, dimensions, text, callback, colour){
-    GuiComponent.call(this, engine, position, dimensions);
+var Button = function(game, position, dimensions, text, callback, colour){
+    GuiComponent.call(this, game, position, dimensions);
 
     this.text = text;
     this.callback = callback;
@@ -11,6 +11,8 @@ Button.prototype = Object.create(GuiComponent.prototype);
 Button.prototype.constructor = Button;
 
 Button.prototype.onPress = function(position){
+    this.game.playSound("assets/sounds/mouseclick");
+
     this.callback();
 };
 

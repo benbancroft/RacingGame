@@ -46,6 +46,10 @@ var Entity = function(level, depth){
 Entity.prototype = Object.create(Renderable.prototype);
 Entity.prototype.constructor = Entity;
 
+Entity.prototype.decontructor = function(){
+
+};
+
 Entity.prototype.addRenderable = function(level){
     level.addRenderable(this);
 }
@@ -230,6 +234,7 @@ Entity.prototype.tick = function(engine){
 
     this.lastX = this.x;
     this.lastY = this.y;
+    this.hasCollided = false;
 
     //entity.x -= Math.sin(entity.direction) * entity.speed;
     //entity.y += Math.cos(entity.direction) * entity.speed;
@@ -247,6 +252,7 @@ Entity.prototype.tick = function(engine){
         //do {
             isColliding = this.isCollidingWithEntity(other, manifolds) && manifolds.maximumDisplacement != Number.MAX_VALUE;
             if (isColliding){
+                this.hasCollided = true;
                 var newPos = new Vector2(this.lastX, this.lastY).add(this.velocity.clone().normalise().scale(manifolds.maximumDisplacement-10))
 
                 //console.log(manifolds.contactPointsB);

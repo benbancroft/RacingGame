@@ -77,11 +77,15 @@ Level.prototype.addEntity = function(entity){
 };
 
 Level.prototype.removeEntity = function(entity){
+    entity.decontructor();
     this.entities.removeElement(entity);
     this.renderables.removeElement(entity);
 };
 
 Level.prototype.removeEntities = function(){
+    this.entities.forEach(function(entity){
+        entity.decontructor();
+    });
     this.entities.clear();
 };
 

@@ -11,8 +11,18 @@ function Game() {
     Sprites.load("assets/sprites/ambulance");
     Sprites.load("assets/sprites/sports2");
 
-    Textures.load("assets/textures/tilesheet_p");
+    Sounds.load("assets/sounds/mouseclick");
+    Sounds.load("assets/sounds/race_countdown_0");
+    Sounds.load("assets/sounds/race_countdown_1");
+    Sounds.load("assets/sounds/car_loop_0");
+    Sounds.load("assets/sounds/car_loop_1");
+    Sounds.load("assets/sounds/car_loop_2");
+    Sounds.load("assets/sounds/car_loop_3");
+    Sounds.load("assets/sounds/car_loop_4");
+    Sounds.load("assets/sounds/car_loop_5");
+    Sounds.load("assets/sounds/car_crash");
 
+    Textures.load("assets/textures/tilesheet_p");
     Textures.load("assets/textures/arrow");
 
     Tracks.load("assets/tracks/1");
@@ -27,7 +37,7 @@ function Game() {
     //this.maxCarStats = this.carFactory.getMaxStats();
     this.carIndex = 0;
 
-    this.trackIndex = 1;
+    this.trackIndex = 0;
     this.currentTrack = null;
 };
 
@@ -99,11 +109,11 @@ Game.prototype.loadTrackPreview = function(trackPosition){
     this.racetrackPreviewViewport = new Viewport(this.previewLevel, trackPosition.x, trackPosition.y, trackDimensions.x, trackDimensions.y, levelCentre.x, levelCentre.y, levelDimensions.x, levelDimensions.y);
 };
 
-function createAI(startPositionPoints, level, carFactory){
+function createAI(startPositionPoints, level, carFactory, playSound){
     var count = 0;
     while (startPositionPoints.length > 0){
 
-        var ai = new AICar(level);
+        var ai = new AICar(level, playSound);
 
         setEntitySpawnPosition(startPositionPoints, ai);
 
@@ -145,7 +155,7 @@ Game.prototype.startScreen = function(loadTileSystem){
 
         var startPositionPoints = generator.startPositions.keys();
 
-        this.numberPlayers = createAI(startPositionPoints, this.mainLevel, this.carFactory);
+        this.numberPlayers = createAI(startPositionPoints, this.mainLevel, this.carFactory, false);
     }
 
     //GUI
@@ -178,7 +188,6 @@ Game.prototype.startScreen = function(loadTileSystem){
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 75)), new Vector2(150, 40), "About", function(){
-
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 125)), new Vector2(150, 40), "Unit Tests", function(){
@@ -396,7 +405,7 @@ Game.prototype.startGame = function(){
         this.numberPlayers++;
     }
 
-    this.numberPlayers += createAI(startPositionPoints, this.mainLevel, this.carFactory);
+    this.numberPlayers += createAI(startPositionPoints, this.mainLevel, this.carFactory, true);
 
     this.player.addViewportTrack(this.mainViewport);
 };
@@ -406,7 +415,14 @@ Game.prototype.tick = function(){
     if (this.gameState == 2){
         this.gameTicks++;
 
+        var lastSecond = this.secondsTillStart;
+
         this.secondsTillStart = 5 - Math.floor(this.gameTicks / 60.0);
+
+        if (!this.running && lastSecond > this.secondsTillStart){
+            if (this.secondsTillStart <= 0) this.playSound("assets/sounds/race_countdown_1");
+            else this.playSound("assets/sounds/race_countdown_0");
+        }
 
         if (this.secondsTillStart <= 0){
             this.running = true;

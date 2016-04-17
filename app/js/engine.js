@@ -51,6 +51,61 @@ Engine.openLink = function (url) {
 
 //API
 
+Engine.prototype.playSound = function (url, loop, positional) {
+
+    var sound = Sounds.get(url);
+
+    if (sound){
+
+        var soundInfo = {};
+
+        soundInfo.source = soundContext.createBufferSource();
+        soundInfo.volume = soundContext.createGain();
+
+        soundInfo.source.connect(soundInfo.volume);
+
+        soundInfo.source.buffer = sound.buffer;
+
+        if (positional) {
+            soundInfo.panner = soundContext.createPanner();
+            soundInfo.volume.connect(soundInfo.panner);
+            soundInfo.panner.connect(volume);
+        }else{
+            soundInfo.volume.connect(volume);
+        }
+
+        soundInfo.source.loop = loop;
+        soundInfo.source.start(0);
+        return soundInfo;
+    }
+
+    return null;
+};
+
+Engine.prototype.setSoundPosition = function(sound, position){
+    sound.panner.setPosition(position.x/100, position.y/100, 0);
+};
+
+Engine.prototype.setSoundListenerPosition = function(position){
+    soundContext.listener.setPosition(position.x/100, position.y/100, 0);
+};
+
+Engine.prototype.setSoundVelocity = function(sound, velocity){
+    sound.panner.setVelocity(velocity.x/100, velocity.y/100, 0);
+};
+
+Engine.prototype.setSoundListenerVelocity = function(velocity){
+    soundContext.listener.setVelocity(velocity.x/100, velocity.y/100, 0);
+};
+
+
+Engine.prototype.stopSound = function(sound){
+    if (sound){
+        sound.source.stop();
+    }
+};
+
+
 Engine.prototype.getHiscores = function(trackName){
 
     var hiscores = JSON.parse(localStorage.getItem(trackName)) || new Array();

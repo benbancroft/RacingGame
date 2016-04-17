@@ -21,7 +21,7 @@ Test.prototype.render = function(renderer){
 
 
 
-var Car = function(level){
+var Car = function(level, playSound){
     //set depth of car here
     Entity.call(this, level, 10);
 
@@ -59,10 +59,23 @@ var Car = function(level){
 
     this.checkPointIndex = 0;
     this.currentLap = 0;
-}
+
+    this.playSound = playSound
+
+    if (playSound){
+
+        var soundIndex = Math.floor(Math.random() * 6);
+
+        this.sound = this.level.game.playSound("assets/sounds/car_loop_" + soundIndex, true, true);
+    }
+};
 
 Car.prototype = Object.create(Entity.prototype);
 Car.prototype.constructor = Car;
+
+Car.prototype.decontructor = function(){
+    this.level.game.stopSound(this.sound);
+};
 
 Car.prototype.setStats = function(type, stats) {
 
@@ -194,65 +207,82 @@ Car.prototype.getDistanceToCheckpoint = function(engine){
 
 Car.prototype.tick = function(engine){
 
-    if (this.level.game.gameState == 2 && !this.level.game.running) return;
+    if ((this.level.game.gameState == 2 && this.level.game.running) || this.level.game.gameState != 2) {
 
-    //0.95 grass
+        //0.95 grass
 
-    var driftFactor = 0.95;
-    this.maxSpeed = this.carMaxSpeed / 2;
+        var driftFactor = 0.95;
+        this.maxSpeed = this.carMaxSpeed / 2;
 
-    var ct = this.turnSpeed * 0.8;
+        var ct = this.turnSpeed * 0.8;
 
-    var tileSystem = this.level.tileSystem;
-    if (tileSystem && tileSystem.generator.isOnStructure(new Vector2(this.x, this.y))){
-        driftFactor = 0.2;
-        this.maxSpeed = this.carMaxSpeed;
-        ct = this.turnSpeed;
-    }
+        var tileSystem = this.level.tileSystem;
+        if (tileSystem && tileSystem.generator.isOnStructure(new Vector2(this.x, this.y))) {
+            driftFactor = 0.2;
+            this.maxSpeed = this.carMaxSpeed;
+            ct = this.turnSpeed;
+        }
 
-    this.killOrthogonalVelocity(driftFactor);
-    this.dampenSpeed();
+        this.killOrthogonalVelocity(driftFactor);
+        this.dampenSpeed();
 
 
-    var speed = this.getForwardSpeed();
-    if(!this.isReverse && speed >= 0){
-        if (speed > this.maxSpeed/2) speed = this.maxSpeed/2;
-        ct *= Math.sin((speed * (Math.PI / 2)) / (this.maxSpeed/2) );
-    }
+        var speed = this.getForwardSpeed();
+        if (!this.isReverse && speed >= 0) {
+            if (speed > this.maxSpeed / 2) speed = this.maxSpeed / 2;
+            ct *= Math.sin((speed * (Math.PI / 2)) / (this.maxSpeed / 2));
+        }
 
-    //up
-    if (this.isHandbrake){
-        //this.killForwardVelocity();
-    }
-    else if (this.isForward){
-        //this.speed += 1.0;
-        //change to force F=ma
-        this.accelerateForwardMax(this.acceleration);
+        //up
+        if (this.isHandbrake) {
+            //this.killForwardVelocity();
+        }
+        else if (this.isForward) {
+            //this.speed += 1.0;
+            //change to force F=ma
+            this.accelerateForwardMax(this.acceleration);
 
-        //Engine.log("forward");
-    }
-    //down
-    else if (this.isReverse){
-        this.accelerateForwardMax(-this.acceleration);
+            //Engine.log("forward");
+        }
+        //down
+        else if (this.isReverse) {
+            this.accelerateForwardMax(-this.acceleration);
 
-        ct *= -0.6;
-        //this.speed -= 1.0;
+            ct *= -0.6;
+            //this.speed -= 1.0;
 
-        //Engine.log("back");
-    }
+            //Engine.log("back");
+        }
 
-    //fraction of a degree
-    if(this.isLeft){
-        this.applyTorque(-ct);
-        this.driftDir = false;
-    }
-    else if(this.isRight){
-        //this.direction = this.turnSpeed;
-        this.applyTorque(ct);
-        this.driftDir = true;
+        //fraction of a degree
+        if (this.isLeft) {
+            this.applyTorque(-ct);
+            this.driftDir = false;
+        }
+        else if (this.isRight) {
+            //this.direction = this.turnSpeed;
+            this.applyTorque(ct);
+            this.driftDir = true;
+        }
+
     }
 
     Entity.prototype.tick.call(this, engine);
+
+    if (this.hasCollided && this.playSound){
+        var game = this.level.game;
+        game.stopSound(this.crashSound);
+        this.crashSound = game.playSound("assets/sounds/car_crash", false, true);
+        game.setSoundPosition(this.crashSound, this.getPosition());
+        game.setSoundVelocity(this.crashSound, this.velocity)
+    }
+
+    if (this.sound){
+        var game = this.level.game;
+        game.setSoundPosition(this.sound, this.getPosition());
+        game.setSoundVelocity(this.sound, this.velocity)
+    }
+
 
     var numberCheckpoints = this.level.tileSystem.generator.checkPoints.length;
 
