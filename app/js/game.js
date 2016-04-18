@@ -24,6 +24,10 @@ function Game() {
 
     Textures.load("assets/textures/tilesheet_p");
     Textures.load("assets/textures/arrow");
+    Textures.load("assets/textures/mouse");
+    Textures.load("assets/textures/wasd_keys");
+    Textures.load("assets/textures/arrow_keys");
+    Textures.load("assets/textures/escape_key");
 
     Tracks.load("assets/tracks/1");
     Tracks.load("assets/tracks/2");
@@ -232,7 +236,7 @@ Game.prototype.optionsScreen = function() {
     if (this.multiplayer) startButtonPos.add(new Vector2(116, 0));
 
     this.registerGuiComponent(new Button(this, startButtonPos, new Vector2(150, 40), "Start Game", function () {
-        self.startGame();
+        self.howToPlayScreen();
     }));
 
     //Car
@@ -274,6 +278,68 @@ Game.prototype.optionsScreen = function() {
         self.trackIndex = wrapIndex(self.trackIndex+1, self.availableTracks.length);
         self.loadTrackPreview(trackPosition);
         self.previewLevel.registerViewport(self.racetrackPreviewViewport);
+    }));
+};
+
+Game.prototype.howToPlayScreen = function(){
+    this.unregisterGuiComponents();
+
+    var resolution = this.getResolution();
+
+    var self = this;
+
+    this.registerGuiComponent(new Panel(this, resolution.clone().divScalar(2), new Vector2(516, 495)));
+
+    this.registerGuiComponent(new Widget(this, resolution.clone().divScalar(2).sub(new Vector2(0, 220)), function(renderer, position){
+        renderer.setTextAlign(TextAlign.CENTRE);
+        renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
+        renderer.setFont("Arial", 25);
+
+        var textPosition = position.clone();
+
+        renderer.drawText("How to Play", textPosition);
+
+        renderer.drawText("Steering", position.clone().add(new Vector2(0, 180)));
+
+        renderer.drawText("Pause Menu", position.clone().add(new Vector2(0, 300)));
+
+        renderer.setFont("Arial", 20);
+
+        renderer.setUseColour(false, false, true);
+        renderer.setUseColourBlending(false, false);
+        renderer.setTexture("assets/textures/wasd_keys", false, true);
+        renderer.setUVs(new Vector2(0, 0), new Vector2(128, 64), false, true);
+        renderer.setRotation(0, true);
+        renderer.setCentre(new Vector2(64, 32));
+        renderer.setDimensions(new Vector2(128, 64), false);
+
+        renderer.draw(position.clone().add(new Vector2(-96, 100)));
+
+        if (self.multiplayer) {
+            renderer.setTexture("assets/textures/arrow_keys", false, true);
+            renderer.draw(position.clone().add(new Vector2(96, 100)));
+
+            renderer.drawText("Player 1", position.clone().add(new Vector2(-96, 50)));
+            renderer.drawText("Player 2", position.clone().add(new Vector2(96, 50)));
+        }else{
+            renderer.setTexture("assets/textures/mouse", false, true);
+            renderer.setUVs(new Vector2(0, 0), new Vector2(48, 64), false, true);
+            renderer.setDimensions(new Vector2(48, 64), false);
+            renderer.draw(position.clone().add(new Vector2(136, 100)));
+
+            renderer.drawText("Or", position.clone().add(new Vector2(0, 100)));
+        }
+
+        renderer.setTexture("assets/textures/escape_key", false, true);
+        renderer.setUVs(new Vector2(0, 0), new Vector2(32, 32), false, true);
+        renderer.setCentre(new Vector2(16, 16));
+        renderer.setDimensions(new Vector2(32, 32), false);
+        renderer.draw(position.clone().add(new Vector2(0, 250)));
+    }));
+
+
+    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 200)), new Vector2(150, 40), "Continue", function () {
+        self.startGame();
     }));
 };
 
