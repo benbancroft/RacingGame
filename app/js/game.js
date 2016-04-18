@@ -31,11 +31,14 @@ function Game() {
     this.numberPlayers = 0;
     this.running = false;
 
+    this.multiplayer = false;
+
     this.gameState = 0;
 
     this.carFactory = new CarFactory();
     //this.maxCarStats = this.carFactory.getMaxStats();
     this.carIndex = 0;
+    this.secondCarIndex = 0;
 
     this.trackIndex = 0;
     this.currentTrack = null;
@@ -179,11 +182,13 @@ Game.prototype.startScreen = function(loadTileSystem){
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).sub(new Vector2(0, 75)), new Vector2(150, 40), "Single Player", function(){
+        self.multiplayer = false;
         self.optionsScreen();
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).sub(new Vector2(0, 25)), new Vector2(150, 40), "Multi Player", function(){
-
+        self.multiplayer = true;
+        self.optionsScreen();
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 25)), new Vector2(150, 40), "Hiscores", function(){
@@ -191,6 +196,7 @@ Game.prototype.startScreen = function(loadTileSystem){
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 75)), new Vector2(150, 40), "About", function(){
+        Engine.openLink("about.html");
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 125)), new Vector2(150, 40), "Unit Tests", function(){
@@ -198,7 +204,7 @@ Game.prototype.startScreen = function(loadTileSystem){
     }));
 };
 
-Game.prototype.optionsScreen = function(){
+Game.prototype.optionsScreen = function() {
 
     this.gameState = 1;
 
@@ -210,29 +216,57 @@ Game.prototype.optionsScreen = function(){
 
     var self = this;
 
-    this.registerGuiComponent(new Panel(this, resolution.clone().divScalar(2), new Vector2(580, 495)));
+    var dimensions = new Vector2(580, 495);
+    if (this.multiplayer) dimensions.add(new Vector2(232, 0));
 
-    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).sub(new Vector2(180, -200)), new Vector2(150, 40), "Back", function(){
+    this.registerGuiComponent(new Panel(this, resolution.clone().divScalar(2), dimensions));
+
+    var backButtonPos = resolution.clone().divScalar(2).sub(new Vector2(180, -200))
+    if (this.multiplayer) backButtonPos.sub(new Vector2(116, 0));
+
+    this.registerGuiComponent(new Button(this, backButtonPos, new Vector2(150, 40), "Back", function () {
         self.startScreen(false);
     }));
 
-    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(180, 200)), new Vector2(150, 40), "Start Game", function(){
+    var startButtonPos = resolution.clone().divScalar(2).add(new Vector2(180, 200))
+    if (this.multiplayer) startButtonPos.add(new Vector2(116, 0));
+
+    this.registerGuiComponent(new Button(this, startButtonPos, new Vector2(150, 40), "Start Game", function () {
         self.startGame();
     }));
 
     //Car
+    var secondCarPosition = resolution.clone().divScalar(2).sub(new Vector2(155, 152));
 
-    this.registerGuiComponent(new CarWidget (this, resolution.clone().divScalar(2).sub(new Vector2(155, 152)), function(){
-        self.carIndex = wrapIndex(self.carIndex-1, self.carFactory.carStats.size);
-    }, function(){
-        self.carIndex = wrapIndex(self.carIndex+1, self.carFactory.carStats.size);
-    }, function (){
+    var carPosition = resolution.clone().divScalar(2).sub(new Vector2(271, 152));
+    if (!this.multiplayer) carPosition = secondCarPosition;
+
+    this.registerGuiComponent(new CarWidget(this, carPosition, function () {
+        self.carIndex = wrapIndex(self.carIndex - 1, self.carFactory.carStats.size);
+    }, function () {
+        self.carIndex = wrapIndex(self.carIndex + 1, self.carFactory.carStats.size);
+    }, function () {
         return self.carFactory.carStats.get(self.carIndex);
     }, self.carFactory.getMaxStats()));
 
+    if (this.multiplayer){
+        secondCarPosition.add(new Vector2(116, 0));
+
+        this.registerGuiComponent(new CarWidget(this, secondCarPosition, function () {
+            self.secondCarIndex = wrapIndex(self.secondCarIndex - 1, self.carFactory.carStats.size);
+        }, function () {
+            self.secondCarIndex = wrapIndex(self.secondCarIndex + 1, self.carFactory.carStats.size);
+        }, function () {
+            return self.carFactory.carStats.get(self.secondCarIndex);
+        }, self.carFactory.getMaxStats()));
+    }
+
     //Track
 
-    this.registerGuiComponent(new TrackWidget (this, resolution.clone().divScalar(2).sub(new Vector2(13, 207)), function(trackPosition){
+    var trackPosition = resolution.clone().divScalar(2).sub(new Vector2(13, 207));
+    if (this.multiplayer) trackPosition.add(new Vector2(116, 0));
+
+    this.registerGuiComponent(new TrackWidget (this, trackPosition, function(trackPosition){
         self.trackIndex = wrapIndex(self.trackIndex-1, self.availableTracks.length);
         self.loadTrackPreview(trackPosition);
         self.previewLevel.registerViewport(self.racetrackPreviewViewport);
@@ -349,14 +383,15 @@ Game.prototype.drawFinishMenu = function(renderer){
 
     var finishMessage = "You came " + getOrdinalString(this.finalPlace) + " place."
 
-    if (this.finalPlace == 1) finishMessage = "You Won! Congratulations."
+    if (this.multiplayer) finishMessage = "Player " + (this.multiplayerWinner ? "2" : "1") + " Won! Congratulations.";
+    else if (this.finalPlace == 1) finishMessage = "You Won! Congratulations.";
 
     renderer.drawText(finishMessage, resolution.clone().divScalar(2).sub(new Vector2(0, 150)));
 
     renderer.setFont("Arial", 16);
 
-    renderer.drawText("You completed the track in:", resolution.clone().divScalar(2).sub(new Vector2(0, 70)));
-    renderer.drawText(getTimeString(Math.floor(this.gameTicks/60)), resolution.clone().divScalar(2).sub(new Vector2(0, 20)));
+    renderer.drawText("The track was completed in:", resolution.clone().divScalar(2).sub(new Vector2(0, 70)));
+    renderer.drawText(getTimeString(this.winningTime), resolution.clone().divScalar(2).sub(new Vector2(0, 20)));
     renderer.drawText("Please enter your name below to add a new hiscore entry.", resolution.clone().divScalar(2).add(new Vector2(0, 30)));
 
 
@@ -383,6 +418,8 @@ Game.prototype.startGame = function(){
     this.gameState = 2;
 
     this.running = false;
+    this.won = false;
+    this.winningTime = 0;
     this.numberPlayers = 0;
     this.playersComplete = 0;
     this.secondsTillStart = 0;
@@ -393,24 +430,44 @@ Game.prototype.startGame = function(){
 
     var resolution = this.getResolution();
 
-    this.mainViewport = this.registerViewport(new PlayerViewport(this, this.mainLevel, 0, 0, resolution.x, resolution.y, resolution.x/2, resolution.y/2, resolution.x, resolution.y));
+    if (this.multiplayer){
+        this.mainViewport = this.registerViewport(new PlayerViewport(this, this.mainLevel, 0, 0, resolution.x, resolution.y/2, resolution.x/2, resolution.y/2, resolution.x, resolution.y/2));
+        this.secondViewport = this.registerViewport(new PlayerViewport(this, this.mainLevel, 0, resolution.y/2, resolution.x, resolution.y/2, resolution.x/2, resolution.y/2, resolution.x, resolution.y/2));
+    }else{
+        this.mainViewport = this.registerViewport(new PlayerViewport(this, this.mainLevel, 0, 0, resolution.x, resolution.y, resolution.x/2, resolution.y/2, resolution.x, resolution.y));
+    }
 
     this.numberPlayers = 0;
 
-    this.player = new PlayerCar(this.mainLevel);
+    this.player = new PlayerCar(this.mainLevel, false);
     this.carFactory.createCar(this.carIndex, this.player);
     this.player.direction = Math.PI/2;
 
+    this.player.addViewportTrack(this.mainViewport);
+
     var startPositionPoints = this.mainLevel.tileSystem.generator.startPositions.keys();
+
+    if (this.multiplayer){
+        this.secondPlayer = new PlayerCar(this.mainLevel, true);
+        this.carFactory.createCar(this.secondCarIndex, this.secondPlayer);
+        this.secondPlayer.direction = Math.PI/2;
+
+        this.secondPlayer.addViewportTrack(this.secondViewport);
+
+        if (startPositionPoints.length > 0){
+            setEntitySpawnPosition(startPositionPoints, this.secondPlayer);
+            this.numberPlayers++;
+        }
+    }
 
     if (startPositionPoints.length > 0){
         setEntitySpawnPosition(startPositionPoints, this.player);
         this.numberPlayers++;
     }
 
-    this.numberPlayers += createAI(startPositionPoints, this.mainLevel, this.carFactory, true);
+    if (!this.multiplayer) this.numberPlayers += createAI(startPositionPoints, this.mainLevel, this.carFactory, true);
 
-    this.player.addViewportTrack(this.mainViewport);
+    this.startNumberPlayers = this.numberPlayers;
 };
 
 Game.prototype.tick = function(){

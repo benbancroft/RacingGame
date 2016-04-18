@@ -89,12 +89,10 @@ require(['engine', 'game'], function () {
     };
 
     document.onmousemove = function(event) {
-        event.preventDefault();
         game.mouseMove(event.clientX, event.clientY);
     }
 
     document.onmousedown = function(event) {
-        event.preventDefault();
         game.mouseDown(event.clientX, event.clientY, event.button);
     }
 
