@@ -20,6 +20,8 @@ PlayerViewport.prototype.render = function(renderer){
         renderer.setTextAlign(TextAlign.RIGHT);
         renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
 
+        renderer.setFont("Arial", 32);
+
         renderer.drawText("Position: " + this.game.calculatePosition(this.followingEntity) + "/" + this.game.startNumberPlayers, position.clone().sub(new Vector2(20, 150)));
         renderer.drawText("Lap: " + this.followingEntity.currentLap + "/" + this.level.tileSystem.generator.track.laps, position.clone().sub(new Vector2(20, 200)));
         renderer.drawText("Speed: " + Math.floor(this.followingEntity.getForwardSpeed()*7), position.clone().sub(new Vector2(20, 250)));

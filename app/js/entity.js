@@ -253,7 +253,7 @@ Entity.prototype.tick = function(engine){
             isColliding = this.isCollidingWithEntity(other, manifolds) && manifolds.maximumDisplacement != Number.MAX_VALUE;
             if (isColliding){
                 this.hasCollided = true;
-                var newPos = new Vector2(this.lastX, this.lastY).add(this.velocity.clone().normalise().scale(manifolds.maximumDisplacement-10))
+                var newPos = new Vector2(this.lastX, this.lastY).add(this.velocity.clone().normalise().scale(manifolds.maximumDisplacement-0.1))
 
                 //console.log(manifolds.contactPointsB);
                 //console.log(manifolds.maximumDisplacement);
@@ -297,7 +297,7 @@ Entity.prototype.tick = function(engine){
                 var aI = 4/3 * this.bbWidth * this.bbHeight * (Math.pow(this.bbWidth, 2) + Math.pow(this.bbHeight, 2)) * this.density;
                 var bI = 4/3 * other.bbWidth * other.bbHeight * (Math.pow(other.bbWidth, 2) + Math.pow(other.bbHeight, 2)) * other.density;
 
-
+                //var n = maxCollPointB.clone().sub(minCollPointB).perp().normalise().reverse();;
                 var n = this.velocity.clone().normalise().reverse();
 
                 var velocityOnPoint = this.velocity.clone().add(other.velocity.clone().sub(cross(this.angularVelocity, midPointA).add(cross(other.angularVelocity, midPointB))));

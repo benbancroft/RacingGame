@@ -59,11 +59,8 @@ require.config({
         aicar : {
             deps: ['entity', 'car']
         },
-        coldebug : {
-            deps: ['entity', 'car']
-        },
         game : {
-            deps: ['engine', 'tilesystem', 'tilegenerator', 'aicar', 'playercar', 'carfactory', 'coldebug', 'playerviewport', 'button']
+            deps: ['engine', 'tilesystem', 'tilegenerator', 'aicar', 'playercar', 'carfactory', 'playerviewport', 'button']
         }
     }
 });

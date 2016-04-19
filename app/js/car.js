@@ -35,7 +35,7 @@ var Car = function(level, playSound){
     this.height = 128;
 
     this.mass = 200;
-    this.density = 0.001
+    this.density = 0.01
 
     this.bbWidth = 49;
     this.bbHeight = 107;
@@ -206,6 +206,13 @@ Car.prototype.getDistanceToCheckpoint = function(engine){
 };
 
 Car.prototype.tick = function(engine){
+
+    if (this.level.game.paused){
+        engine.muteSound(this.sound)
+        return;
+    }else{
+        engine.unMuteSound(this.sound)
+    }
 
     if ((this.level.game.gameState == 2 && this.level.game.running) || this.level.game.gameState != 2) {
 

@@ -31,8 +31,10 @@ Level.prototype.keyDown = function (keycode) {
 
 Level.prototype.tick = function(engine){
 
-    if (this.tileSystem != null && !this.firstGen) this.tileSystem.tick(this.viewports);
+    if (this.tileSystem != null) this.tileSystem.tick(this.viewports);
     //this.firstGen = true;
+
+    if (this.game.paused) return;
 
     var entityMoveUpdate = function (entity) {
 

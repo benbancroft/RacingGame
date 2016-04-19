@@ -420,7 +420,9 @@ Game.prototype.finishScreen = function (time, position) {
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 150)), new Vector2(200, 40), "Back to Start Screen", function(){
         var name = self.nameInput.getValue();
 
-        self.addHiscore(self.currentTrack.url, name, time, position, self.carIndex);
+        var winningCar = self.multiplayerWinner && self.multiplayer ? self.secondCarIndex : self.carIndex;
+
+        self.addHiscore(self.currentTrack.url, name, time, position, winningCar);
 
         self.startScreen(true);
     }));
@@ -475,6 +477,43 @@ Game.prototype.setupGame = function(trackUrl, tickOnce, level){
     tilesystem.setGenerator(generator);
 
     level.setTileSystem(tilesystem);
+};
+
+Game.prototype.pauseGame = function () {
+
+    this.paused = true;
+
+    var resolution = this.getResolution();
+
+    this.unregisterGuiComponents();
+
+    var self = this;
+
+    this.registerGuiComponent(new Panel(this, resolution.clone().divScalar(2), new Vector2(300, 300)));
+
+    this.registerGuiComponent(new Widget(this, resolution.clone().divScalar(2), function(renderer, position){
+        renderer.setTextAlign(TextAlign.CENTRE);
+        renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
+        renderer.setFont("Arial", 20);
+
+        renderer.drawText("Game Paused", position.clone().sub(new Vector2(0, 105)));
+    }));
+
+    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).sub(new Vector2(0, 25)), new Vector2(150, 40), "Resume", function(){
+        self.unPauseGame();
+    }));
+
+    this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 25)), new Vector2(150, 40), "Quit Game", function(){
+        self.unPauseGame();
+        self.startScreen(true);
+    }));
+};
+
+Game.prototype.unPauseGame = function () {
+
+    this.paused = false;
+
+    this.unregisterGuiComponents();
 };
 
 Game.prototype.startGame = function(){
@@ -536,9 +575,20 @@ Game.prototype.startGame = function(){
     this.startNumberPlayers = this.numberPlayers;
 };
 
+Game.prototype.keyDown = function (keycode) {
+
+    //escape
+    if (keycode === 27 && this.gameState === 2){
+        if (!this.paused) this.pauseGame();
+        else this.unPauseGame();
+    }
+
+    Engine.prototype.keyDown.call(this, keycode);
+};
+
 Game.prototype.tick = function(){
 
-    if (this.gameState == 2){
+    if (this.gameState == 2 && !this.paused){
         this.gameTicks++;
 
         var lastSecond = this.secondsTillStart;
@@ -565,7 +615,7 @@ Game.prototype.animate = function(time){
 
 Game.prototype.renderGui = function(){
 
-    if (this.gameState == 2 && this.secondsTillStart >= -1){
+    if (this.gameState == 2 && this.secondsTillStart >= -1 && !this.paused){
         var resolution = this.getResolution();
 
         this.setTextAlign(TextAlign.CENTRE);

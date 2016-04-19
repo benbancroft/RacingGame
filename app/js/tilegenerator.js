@@ -466,6 +466,128 @@ var TileGenerator = function(tileSystem, trackUrl){
         [2, new BlockLayer(new Vector2(10, -10), null, [new Vector2(15, 4)], true)]
     ]), true));
 
+    //Corner outer wall: down-right
+
+    var downRightLower = [
+        [1, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Down, grassFunc)],
+        [1, new BlockLayer(TilePosition.Right, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.DownRight, asphaltFunc)],
+        [1, new BlockLayer(new Vector2(0, 2), grassFunc)],
+        [1, new BlockLayer(new Vector2(1, 2), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(0, 3), grassFunc)],
+        [1, new BlockLayer(new Vector2(1, 3), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(0, 4), grassFunc)],
+        [1, new BlockLayer(new Vector2(1, 4), grassFunc)],
+        [1, new BlockLayer(new Vector2(2, 4), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(1, 5), grassFunc)],
+        [1, new BlockLayer(new Vector2(2, 5), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(3, 5), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(1, 6), grassFunc)],
+        [1, new BlockLayer(new Vector2(2, 6), grassFunc)],
+        [1, new BlockLayer(new Vector2(3, 6), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(2, 7), grassFunc)],
+        [1, new BlockLayer(new Vector2(3, 7), grassFunc)],
+        [1, new BlockLayer(new Vector2(4, 7), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(5, 7), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(3, 8), grassFunc)],
+        [1, new BlockLayer(new Vector2(4, 8), grassFunc)],
+        [1, new BlockLayer(new Vector2(5, 8), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(6, 8), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(4, 9), grassFunc)],
+        [1, new BlockLayer(new Vector2(5, 9), grassFunc)],
+        [1, new BlockLayer(new Vector2(6, 9), grassFunc)],
+        [1, new BlockLayer(new Vector2(7, 9), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(8, 9), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(9, 9), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(10, 9), asphaltFunc)],
+        [1, new BlockLayer(new Vector2(6, 10), grassFunc)],
+        [1, new BlockLayer(new Vector2(7, 10), grassFunc)],
+        [1, new BlockLayer(new Vector2(8, 10), grassFunc)],
+        [1, new BlockLayer(new Vector2(9, 10), grassFunc)],
+        [1, new BlockLayer(new Vector2(10, 10), grassFunc)]
+    ];
+
+    this.tileSystem.registerBlockType(22, new Block(downRightLower.concat([
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(16, 4)])],
+        [2, new BlockLayer(TilePosition.Down, null, [new Vector2(16, 5)])],
+        [2, new BlockLayer(TilePosition.Right, null, [new Vector2(17, 4)])],
+        [2, new BlockLayer(TilePosition.DownRight, null, [new Vector2(17, 5)])],
+        [2, new BlockLayer(new Vector2(0, 2), null, [new Vector2(16, 6)])],
+        [2, new BlockLayer(new Vector2(1, 2), null, [new Vector2(17, 6)])],
+        [2, new BlockLayer(new Vector2(0, 3), null, [new Vector2(16, 7)])],
+        [2, new BlockLayer(new Vector2(1, 3), null, [new Vector2(17, 7)])],
+        [2, new BlockLayer(new Vector2(0, 4), null, [new Vector2(16, 8)])],
+        [2, new BlockLayer(new Vector2(1, 4), null, [new Vector2(17, 8)])],
+        [2, new BlockLayer(new Vector2(2, 4), null, [new Vector2(18, 8)])],
+        [2, new BlockLayer(new Vector2(1, 5), null, [new Vector2(17, 9)])],
+        [2, new BlockLayer(new Vector2(2, 5), null, [new Vector2(18, 9)])],
+        [2, new BlockLayer(new Vector2(3, 5), null, [new Vector2(19, 9)])],
+        [2, new BlockLayer(new Vector2(1, 6), null, [new Vector2(17, 10)])],
+        [2, new BlockLayer(new Vector2(2, 6), null, [new Vector2(18, 10)])],
+        [2, new BlockLayer(new Vector2(3, 6), null, [new Vector2(19, 10)])],
+        [2, new BlockLayer(new Vector2(2,  7), null, [new Vector2(18, 11)])],
+        [2, new BlockLayer(new Vector2(3, 7), null, [new Vector2(19, 11)])],
+        [2, new BlockLayer(new Vector2(4, 7), null, [new Vector2(20, 11)])],
+        [2, new BlockLayer(new Vector2(5, 7), null, [new Vector2(21, 11)])],
+        [2, new BlockLayer(new Vector2(3,  8), null, [new Vector2(19, 12)])],
+        [2, new BlockLayer(new Vector2(4, 8), null, [new Vector2(20, 12)])],
+        [2, new BlockLayer(new Vector2(5, 8), null, [new Vector2(21, 12)])],
+        [2, new BlockLayer(new Vector2(6, 8), null, [new Vector2(22, 12)])],
+        [2, new BlockLayer(new Vector2(4,  9), null, [new Vector2(20, 13)])],
+        [2, new BlockLayer(new Vector2(5, 9), null, [new Vector2(21, 13)])],
+        [2, new BlockLayer(new Vector2(6, 9), null, [new Vector2(22, 13)])],
+        [2, new BlockLayer(new Vector2(7, 9), null, [new Vector2(23, 13)])],
+        [2, new BlockLayer(new Vector2(8, 9), null, [new Vector2(24, 13)])],
+        [2, new BlockLayer(new Vector2(9, 9), null, [new Vector2(25, 13)])],
+        [2, new BlockLayer(new Vector2(10, 9), null, [new Vector2(26, 13)])],
+        [2, new BlockLayer(new Vector2(6, 10), null, [new Vector2(22, 14)])],
+        [2, new BlockLayer(new Vector2(7, 10), null, [new Vector2(23, 14)])],
+        [2, new BlockLayer(new Vector2(8, 10), null, [new Vector2(24, 14)])],
+        [2, new BlockLayer(new Vector2(9, 10), null, [new Vector2(25, 14)])],
+        [2, new BlockLayer(new Vector2(10, 10), null, [new Vector2(26, 14)])]
+    ]), true));
+
+    this.tileSystem.registerBlockType(23, new Block(downRightLower.concat([
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(16, 4)], true)],
+        [2, new BlockLayer(TilePosition.Down, null, [new Vector2(16, 5)], true)],
+        [2, new BlockLayer(TilePosition.Right, null, [new Vector2(17, 4)], true)],
+        [2, new BlockLayer(TilePosition.DownRight, null, [new Vector2(17, 5)], true)],
+        [2, new BlockLayer(new Vector2(0, 2), null, [new Vector2(16, 6)], true)],
+        [2, new BlockLayer(new Vector2(1, 2), null, [new Vector2(17, 6)], true)],
+        [2, new BlockLayer(new Vector2(0, 3), null, [new Vector2(16, 7)], true)],
+        [2, new BlockLayer(new Vector2(1, 3), null, [new Vector2(17, 7)], true)],
+        [2, new BlockLayer(new Vector2(0, 4), null, [new Vector2(16, 8)], true)],
+        [2, new BlockLayer(new Vector2(1, 4), null, [new Vector2(17, 8)], true)],
+        [2, new BlockLayer(new Vector2(2, 4), null, [new Vector2(18, 8)], true)],
+        [2, new BlockLayer(new Vector2(1, 5), null, [new Vector2(17, 9)], true)],
+        [2, new BlockLayer(new Vector2(2, 5), null, [new Vector2(18, 9)], true)],
+        [2, new BlockLayer(new Vector2(3, 5), null, [new Vector2(19, 9)], true)],
+        [2, new BlockLayer(new Vector2(1, 6), null, [new Vector2(17, 10)], true)],
+        [2, new BlockLayer(new Vector2(2, 6), null, [new Vector2(18, 10)], true)],
+        [2, new BlockLayer(new Vector2(3, 6), null, [new Vector2(19, 10)], true)],
+        [2, new BlockLayer(new Vector2(2,  7), null, [new Vector2(18, 11)], true)],
+        [2, new BlockLayer(new Vector2(3, 7), null, [new Vector2(19, 11)], true)],
+        [2, new BlockLayer(new Vector2(4, 7), null, [new Vector2(20, 11)], true)],
+        [2, new BlockLayer(new Vector2(5, 7), null, [new Vector2(21, 11)], true)],
+        [2, new BlockLayer(new Vector2(3,  8), null, [new Vector2(19, 12)], true)],
+        [2, new BlockLayer(new Vector2(4, 8), null, [new Vector2(20, 12)], true)],
+        [2, new BlockLayer(new Vector2(5, 8), null, [new Vector2(21, 12)], true)],
+        [2, new BlockLayer(new Vector2(6, 8), null, [new Vector2(22, 12)], true)],
+        [2, new BlockLayer(new Vector2(4,  9), null, [new Vector2(20, 13)], true)],
+        [2, new BlockLayer(new Vector2(5, 9), null, [new Vector2(21, 13)], true)],
+        [2, new BlockLayer(new Vector2(6, 9), null, [new Vector2(22, 13)], true)],
+        [2, new BlockLayer(new Vector2(7, 9), null, [new Vector2(23, 13)], true)],
+        [2, new BlockLayer(new Vector2(8, 9), null, [new Vector2(24, 13)], true)],
+        [2, new BlockLayer(new Vector2(9, 9), null, [new Vector2(25, 13)], true)],
+        [2, new BlockLayer(new Vector2(10, 9), null, [new Vector2(26, 13)], true)],
+        [2, new BlockLayer(new Vector2(6, 10), null, [new Vector2(22, 14)], true)],
+        [2, new BlockLayer(new Vector2(7, 10), null, [new Vector2(23, 14)], true)],
+        [2, new BlockLayer(new Vector2(8, 10), null, [new Vector2(24, 14)], true)],
+        [2, new BlockLayer(new Vector2(9, 10), null, [new Vector2(25, 14)], true)],
+        [2, new BlockLayer(new Vector2(10, 10), null, [new Vector2(26, 14)], true)]
+    ]), true));
+
     //Corner outer wall: left-down
 
     var leftDownLower = [
@@ -585,9 +707,60 @@ var TileGenerator = function(tileSystem, trackUrl){
         [2, new BlockLayer(new Vector2(-10, 7), null, [new Vector2(3, 9)], true)],
         [2, new BlockLayer(new Vector2(-10, 8), null, [new Vector2(3, 10)], true)],
         [2, new BlockLayer(new Vector2(-10, 9), null, [new Vector2(3, 11)], true)],
-        [2, new BlockLayer(new Vector2(-10, 10), null, [new Vector2(3, 12)])]
+        [2, new BlockLayer(new Vector2(-10, 10), null, [new Vector2(3, 12)], true)]
     ]), true));
 
+    //Corner inner wall: right-down (normal)
+
+    this.tileSystem.registerBlockType(26, new Block([
+        [1, new BlockLayer(TilePosition.Left, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.UpLeft, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Up, asphaltFunc)],
+        [2, new BlockLayer(TilePosition.Left, null, [new Vector2(28, 1)])],
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(29, 1)])],
+        [2, new BlockLayer(TilePosition.UpLeft, null, [new Vector2(28, 0)])],
+        [2, new BlockLayer(TilePosition.Up, null, [new Vector2(29, 0)])]
+    ], true));
+
+    //Corner inner wall: right-up (normal)
+
+    this.tileSystem.registerBlockType(27, new Block([
+        [1, new BlockLayer(TilePosition.Up, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.UpRight, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Right, asphaltFunc)],
+        [2, new BlockLayer(TilePosition.Up, null, [new Vector2(24, 0)])],
+        [2, new BlockLayer(TilePosition.UpRight, null, [new Vector2(25, 0)])],
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(24, 1)])],
+        [2, new BlockLayer(TilePosition.Right, null, [new Vector2(25, 1)])]
+    ], true));
+
+    //Corner inner wall: left-up (normal)
+
+    this.tileSystem.registerBlockType(28, new Block([
+        [1, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Right, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Down, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.DownRight, asphaltFunc)],
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(26, 0)])],
+        [2, new BlockLayer(TilePosition.Right, null, [new Vector2(27, 0)])],
+        [2, new BlockLayer(TilePosition.Down, null, [new Vector2(26, 1)])],
+        [2, new BlockLayer(TilePosition.DownRight, null, [new Vector2(27, 1)])]
+    ], true));
+
+    //Corner inner wall: left-down (normal)
+
+    this.tileSystem.registerBlockType(29, new Block([
+        [1, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Left, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Down, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.DownLeft, asphaltFunc)],
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(31, 0)])],
+        [2, new BlockLayer(TilePosition.Left, null, [new Vector2(30, 0)])],
+        [2, new BlockLayer(TilePosition.Down, null, [new Vector2(31, 1)])],
+        [2, new BlockLayer(TilePosition.DownLeft, null, [new Vector2(30, 1)])]
+    ], true));
 
     this.generateStructures();
 
@@ -940,6 +1113,9 @@ TileGenerator.prototype.generateCorner = function(position, direction, type){
                 break;
         }
     }
+
+    //road marker
+    blocks.set(new Vector2(3, 4), 26 + direction);
 
     addStructureBlocks(this.tileSystem, startPosition, direction, blocks);
 };

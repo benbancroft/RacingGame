@@ -105,6 +105,19 @@ Engine.prototype.stopSound = function(sound){
     }
 };
 
+Engine.prototype.muteSound = function(sound){
+    if (sound){
+        sound.volume.gain.value = 0;
+    }
+};
+
+Engine.prototype.unMuteSound = function(sound){
+    if (sound){
+        sound.volume.gain.value = 1;
+    }
+};
+
+
 
 Engine.prototype.getHiscores = function(trackName){
 
