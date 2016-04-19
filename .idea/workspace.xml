@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93ce935e-41c3-4b6b-b43d-d6b62abed6ba" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/assets/textures/Police_animation/0.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/assets/textures/Police_animation/1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/assets/textures/Police_animation/2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/assets/textures/Police_animation/3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/assets/textures/Police_animation/out.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/textures/ambulance.png" afterPath="$PROJECT_DIR$/app/assets/textures/ambulance.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/sprites/ambulance.json" afterPath="$PROJECT_DIR$/app/assets/sprites/ambulance.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/css/ftw.css" afterPath="$PROJECT_DIR$/app/css/ftw.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/button.js" afterPath="$PROJECT_DIR$/app/js/button.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/car.js" afterPath="$PROJECT_DIR$/app/js/car.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/game.js" afterPath="$PROJECT_DIR$/app/js/game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/guicomponent.js" afterPath="$PROJECT_DIR$/app/js/guicomponent.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/main.js" afterPath="$PROJECT_DIR$/app/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/playerviewport.js" afterPath="$PROJECT_DIR$/app/js/playerviewport.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/render.js" afterPath="$PROJECT_DIR$/app/js/render.js" />
     </list>
     <ignored path="ClientSideGraphics.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,21 +62,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="car.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="car.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/js/car.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46575344">
+            <state vertical-scroll-proportion="0.0">
               <caret line="96" column="59" selection-start-line="96" selection-start-column="59" selection-end-line="96" selection-end-column="59" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.833334">
-              <caret line="80" column="106" selection-start-line="80" selection-start-column="106" selection-end-line="80" selection-end-column="106" />
+            <state vertical-scroll-proportion="0.2767857">
+              <caret line="72" column="210" selection-start-line="72" selection-start-column="210" selection-end-line="72" selection-end-column="210" />
               <folding />
             </state>
           </provider>
@@ -216,9 +200,9 @@
         <option value="$PROJECT_DIR$/app/js/game.js" />
         <option value="$PROJECT_DIR$/app/js/main.js" />
         <option value="$PROJECT_DIR$/app/css/ftw.css" />
-        <option value="$PROJECT_DIR$/app/index.html" />
         <option value="$PROJECT_DIR$/app/assets/sprites/ambulance.json" />
         <option value="$PROJECT_DIR$/app/js/car.js" />
+        <option value="$PROJECT_DIR$/app/index.html" />
       </list>
     </option>
   </component>
@@ -1220,16 +1204,16 @@
       <workItem from="1460806995286" duration="11896000" />
       <workItem from="1460825548906" duration="77951000" />
       <workItem from="1461041808268" duration="1244000" />
-      <workItem from="1461071604596" duration="16548000" />
+      <workItem from="1461071604596" duration="16841000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="735936000" />
+    <option name="totallyTimeSpent" value="736229000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1242,7 +1226,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28061768" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28061768" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63852817" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1640,14 +1624,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.833334">
-          <caret line="80" column="106" selection-start-line="80" selection-start-column="106" selection-end-line="80" selection-end-column="106" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/sprites/police.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.875">
@@ -1679,8 +1655,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/js/car.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46575344">
+        <state vertical-scroll-proportion="0.0">
           <caret line="96" column="59" selection-start-line="96" selection-start-column="59" selection-end-line="96" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2767857">
+          <caret line="72" column="210" selection-start-line="72" selection-start-column="210" selection-end-line="72" selection-end-column="210" />
           <folding />
         </state>
       </provider>
