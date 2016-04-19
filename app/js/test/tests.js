@@ -33,39 +33,6 @@ QUnit.test("collision", function( assert ) {
     assert.ok(testPolygonsSAT(new Vector2(0,0), polygon1, polygon2));
 });
 
-/*QUnit.test("collision manifolds", function( assert ) {
-    var polygon1 = new Polygon(new Vector2(20,30), [
-        new Vector2(0,0), new Vector2(40,0), new Vector2(45,20), new Vector2(40,40), new Vector2(0,40)
-    ], new Vector2(0,0));
-
-    var polygon2 = new Polygon(new Vector2(50,50), [
-        new Vector2(0,0), new Vector2(50,0), new Vector2(50,40), new Vector2(0,40)
-    ], new Vector2(0,0));
-
-    var response = new CollisionManifolds();
-    var isCollision = testPolygonsSAT(new Vector2(0,30), polygon1, polygon2, response);
-
-    console.log(response.contactPointsA);
-    console.log(response.contactPointsB);
-    console.log("D: " + response.maximumDisplacement);
-    response.velocityDir.print();
-
-    assert.ok(isCollision);
-
-    assert.equal(response.contactPointsA.length, 1);
-
-    assert.equal(response.contactPointsA[0].x, 45);
-    assert.equal(response.contactPointsA[0].y, 20);
-
-    assert.equal(response.contactPointsB[0].x, 0);
-    assert.equal(response.contactPointsB[0].y, 0);
-
-    assert.equal(response.maximumDisplacement, 5);
-
-    assert.equal(response.velocityDir.x, 1);
-    assert.equal(response.velocityDir.y, 0);
-});*/
-
 QUnit.test("collision manifolds diagonal velocity", function( assert ) {
     var polygon1 = new Polygon(new Vector2(5,0), [
         new Vector2(0,0), new Vector2(40,0), new Vector2(45,20), new Vector2(40,40), new Vector2(0,40)

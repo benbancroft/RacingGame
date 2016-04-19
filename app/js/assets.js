@@ -1,9 +1,6 @@
 //Assets
 
 var assetRegister = new Array();
-/*var shaderPrograms = new Array();
-var textures = new Array();
-var spriteSheets = new Array();*/
 
 function Asset (url, type) {
     this.url = url;
@@ -116,6 +113,14 @@ function CornerTrackNode (orientation) {
 }
 CornerTrackNode.prototype = Object.create(TrackNode.prototype);
 CornerTrackNode.prototype.constructor = CornerTrackNode;
+
+//Cross
+
+function CrossTrackNode () {
+    TrackNode.call(this, NodeType.CROSS);
+}
+CrossTrackNode.prototype = Object.create(TrackNode.prototype);
+CrossTrackNode.prototype.constructor = CrossTrackNode;
 
 var Assets = {
 
@@ -447,9 +452,10 @@ var Tracks = {
                         case NodeType.CORNER:
                             nodes.push(new CornerTrackNode(parseInt(nodeJson.orientation)));
                             break;
+                        case NodeType.CROSS:
+                            nodes.push(new CrossTrackNode());
+                            break;
                     }
-
-                    //nodes.push(new Sprite(spriteJson.name, parseFloat(spriteJson.x), parseFloat(spriteJson.y), parseFloat(spriteJson.centreX), parseFloat(spriteJson.centreY), parseFloat(spriteJson.width), parseFloat(spriteJson.height)));
                 }
 
                 Tracks.create(url, json.name, parseInt(json.difficulty), parseInt(json.startOrientation), parseInt(json.laps), nodes);

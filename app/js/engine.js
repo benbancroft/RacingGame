@@ -280,7 +280,7 @@ Engine.prototype.loaded = function () {
 };
 
 Engine.prototype.animate = function (time) {
-    //try {
+    try {
         var now = new Date().getTime();
         this.unprocessedFrames += (now - this.lastTime) * 60.0 / 1000.0; //60 fps
         this.lastTime = now;
@@ -304,7 +304,7 @@ Engine.prototype.animate = function (time) {
         }
 
         window.requestAnimationFrame(this.animate.bind(this));
-    /*}catch (e) {
+    }catch (e) {
         Engine.log(e);
-    }*/
+    }
 };

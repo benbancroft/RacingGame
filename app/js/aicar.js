@@ -6,9 +6,6 @@ var AICar = function(level, playSound){
     this.destY = 0;
 
     this.isForward = true;
-
-    //this.findNewTarget();
-    //this.setAlarm(1, 20+Engine.random(0, 80));
 }
 
 AICar.prototype = Object.create(Car.prototype);

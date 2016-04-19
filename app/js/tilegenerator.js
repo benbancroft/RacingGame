@@ -16,6 +16,8 @@ var TileGenerator = function(tileSystem, trackUrl){
 
     this.startPositions = new HashMap();
     this.checkPoints = new Array();
+    this.crossRoads = new Array();
+
 
     this.structurePieces = new Array();
     this.minPosition = new Vector2();
@@ -26,11 +28,10 @@ var TileGenerator = function(tileSystem, trackUrl){
     this.stuctureBounds.set(NodeType.START, new Vector2(6, 10));
     this.stuctureBounds.set(NodeType.STRAIGHT, new Vector2(8, 10));
     this.stuctureBounds.set(NodeType.CORNER, new Vector2(11, 11));
+    this.stuctureBounds.set(NodeType.CROSS, new Vector2(12, 12));
 
     var tileSelectFunc = function(startPos, tileSystem, worldPos){
         var tileOffset = worldPos.clone().wrap(16).abs();
-
-        //if (worldPos.lessThan(new Vector2(0))) tileOffset = new Vector2(15, 15).sub(tileOffset);
 
         return startPos.clone().add(tileOffset);
     };
@@ -116,7 +117,20 @@ var TileGenerator = function(tileSystem, trackUrl){
         [1, new BlockLayer(TilePosition.DownDownRight, null, [new Vector2(5, 2)])]
     ], true));
 
-//Corner inner wall: right-down (normal)
+    //Cross road markings
+
+    this.tileSystem.registerBlockType(9, new Block([
+        [1, new BlockLayer(TilePosition.Left, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Centre, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.UpLeft, asphaltFunc)],
+        [1, new BlockLayer(TilePosition.Up, asphaltFunc)],
+        [2, new BlockLayer(TilePosition.Left, null, [new Vector2(2, 2)])],
+        [2, new BlockLayer(TilePosition.Centre, null, [new Vector2(3, 2)])],
+        [2, new BlockLayer(TilePosition.UpLeft, null, [new Vector2(2, 1)])],
+        [2, new BlockLayer(TilePosition.Up, null, [new Vector2(3, 1)])]
+    ], true));
+
+    //Corner inner wall: right-down (normal)
 
     this.tileSystem.registerBlockType(10, new Block([
         [1, new BlockLayer(TilePosition.Left, grassFunc)],
@@ -825,6 +839,10 @@ TileGenerator.prototype.generateStructuresChunk = function(position){
             {
                 this.generateCorner(structurePiece.position, structurePiece.direction, structurePiece.metadata);
             }break;
+            case NodeType.CROSS:
+            {
+                this.generateCross(structurePiece.position, structurePiece.direction);
+            }break;
         }
     }
 
@@ -868,7 +886,7 @@ function calculateBounds(bounds, direction){
     }
 }
 
-TileGenerator.prototype.generateStructure = function(tileSystem, node, position, direction, bounds, structurePieces, metadata, overrideBounds){
+TileGenerator.prototype.generateStructure = function(tileSystem, node, position, direction, bounds, structurePieces, metadata, invisible){
 
     var structurePiece = new StructurePiece(node.type, position.clone(), direction);
 
@@ -881,11 +899,12 @@ TileGenerator.prototype.generateStructure = function(tileSystem, node, position,
 
     structurePiece.metadata = metadata;
 
-    structurePieces.push(structurePiece);
+    if (!invisible){
+        structurePieces.push(structurePiece);
+        Engine.log("Loaded structure: " + node.type);
+    }
 
-    Engine.log("Loaded structure: " + node.type);
-
-    calculatePosition(position, direction, overrideBounds || bounds, node.type == NodeType.CORNER);
+    calculatePosition(position, direction, bounds, node.type == NodeType.CORNER);
 };
 
 TileGenerator.prototype.generateStructures = function(){
@@ -895,7 +914,9 @@ TileGenerator.prototype.generateStructures = function(){
     for (var i = 0; i < this.track.nodes.length; i++) {
         var node = this.track.nodes[i];
 
-        var bounds = this.stuctureBounds.get(node.type).clone();
+        var originalBounds = this.stuctureBounds.get(node.type).clone();
+        var bounds = originalBounds.clone();
+
         calculateBounds(bounds, direction);
 
         switch(node.type){
@@ -1022,6 +1043,44 @@ TileGenerator.prototype.generateStructures = function(){
                     }
                 }
 
+            }break;
+            case NodeType.CROSS:
+            {
+                //special case for corner
+                var offset = new Vector2(0, 1);
+                calculateBounds(offset, direction);
+                position.sub(offset);
+
+                var checkPoint = directPosition(position, new Vector2(5, 5), direction).scale(this.tileSystem.tileSize);
+                if (checkPoint) this.checkPoints.push(checkPoint);
+
+                //now we work out corners and check for other intersections
+
+                var upperRight = new Vector2(originalBounds.x-1, 0);
+                calculateBounds(upperRight, direction);
+                upperRight.add(position);
+
+                var lowerLeft = new Vector2(0, originalBounds.y-1);
+                calculateBounds(lowerLeft, direction);
+                lowerLeft.add(position);
+
+                var lowerRight = originalBounds.clone().sub(new Vector2(1, 1));
+                calculateBounds(lowerRight, direction);
+                lowerRight.add(position);
+
+                var exists = this.crossRoads.some(function(item){
+                    return item.equals(upperRight) || item.equals(lowerLeft) || item.equals(lowerRight);
+                });
+
+                if (!exists){
+                    this.crossRoads.push(position.clone());
+                }else{
+                    Engine.log("A crossroad node already exists at: " + position.toString());
+                }
+
+                this.generateStructure(this.tileSystem, node, position, direction, bounds, this.structurePieces, null, exists);
+
+                position.add(offset);
             }break;
             default:
                 continue;
@@ -1177,6 +1236,32 @@ TileGenerator.prototype.generateStart = function(position, direction, metadata){
     else{
         blocks.set(new Vector2(4, 6), 8);
     }
+
+    addStructureBlocks(this.tileSystem, position, direction, blocks);
+};
+
+TileGenerator.prototype.generateCross = function(position, direction){
+
+    var blocks = new HashMap();
+
+    for (var x = 0; x < 12; x++){
+        for (var y = 0; y < 12; y++) {
+            blocks.set(new Vector2(x, y), 2);
+        }
+    }
+
+    var leftUpperBlockId = wrapIndex((direction)*2, 8);
+    var rightUpperBlockId = wrapIndex(leftUpperBlockId+2, 8);
+    var rightLowerBlockId = wrapIndex(rightUpperBlockId+3, 8);
+    var leftLowerBlockId = wrapIndex(rightLowerBlockId+2, 8);
+
+    blocks.set(new Vector2(0, 1), 10+leftUpperBlockId);
+    blocks.set(new Vector2(10, 0), 10+rightUpperBlockId);
+    blocks.set(new Vector2(11, 10), 10+rightLowerBlockId);
+    blocks.set(new Vector2(1, 11), 10+leftLowerBlockId);
+
+    if (direction == 3 || direction == 1) blocks.set(new Vector2(6, 6), 9);
+    else blocks.set(new Vector2(5, 6), 9);
 
     addStructureBlocks(this.tileSystem, position, direction, blocks);
 };

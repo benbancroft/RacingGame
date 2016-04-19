@@ -2,7 +2,7 @@
   "name": "The Loop",
   "difficulty": "1",
   "startOrientation": "1",
-  "laps": "1",
+  "laps": "5",
   "nodes": [
     {
       "type": "3",

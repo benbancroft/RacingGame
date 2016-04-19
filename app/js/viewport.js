@@ -23,8 +23,6 @@ Viewport.prototype.render = function(renderer){
     this.level.render(renderer, this);
 
     renderer.setUseViewport(false);
-
-    //Engine.log("render");
 };
 
 Viewport.prototype.mouseDown = function(position){

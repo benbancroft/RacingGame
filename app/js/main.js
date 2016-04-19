@@ -42,7 +42,7 @@ require.config({
             deps: ['utils', 'tilelayer']
         },
         tilelayer : {
-            deps: ['utils']
+            deps: ['utils', 'renderable']
         },
         tilegenerator : {
             deps: ['utils']

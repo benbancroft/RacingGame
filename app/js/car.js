@@ -35,7 +35,7 @@ var Car = function(level, playSound){
     this.height = 128;
 
     this.mass = 200;
-    this.density = 0.01
+    this.density = 0.0005
 
     this.bbWidth = 49;
     this.bbHeight = 107;
@@ -93,26 +93,6 @@ Car.prototype.setStats = function(type, stats) {
     if (type == CarType.POLICE) this.toggleSirens();
 };
 
-Car.prototype.render = function(renderer){
-
-    /*if (this.isColliding())
-        renderer.setColour(new Vector4(1.0, 0.0, 0.0, 1.0));
-    else
-        renderer.setColour(new Vector4(0.0, 1.0, 0.0, 1.0));*/
-
-    //renderer.setUseColourBlending(true);
-    Entity.prototype.render.call(this, renderer);
-
-    /*renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
-    //renderer.setColour(new Vector4(1.0, 0.0, 0.0, 1.0));
-    renderer.setUseColour(true);
-    renderer.setCentre(new Vector2(this.bbWidth/2, this.bbHeight/2));
-    renderer.setRotation(this.direction);
-    renderer.setDimensions(new Vector2(this.bbWidth, this.bbHeight), false);
-
-    renderer.draw(new Vector2(this.x, this.y));*/
-};
-
 Car.prototype.toggleSirens = function(){
     if (!this.sirenState){
         this.spriteIndex = 1;
@@ -148,14 +128,6 @@ Car.prototype.accelerateForwardMax = function(acceleration) {
 
     var currentSpeed = this.getForwardSpeed();
 
-    /*var currentSpeed = Math.abs(this.velocity.len() * Math.sin(this.direction));
-
-     if ((this.direction > -Math.PI / 2 && this.direction < 0) || (this.direction > Math.PI / 2 && this.direction < Math.PI)) {
-     currentSpeed = Math.abs(this.velocity.len() * Math.cos(this.direction));
-     }*/
-
-    //Engine.log(currentSpeed);
-
     if (currentSpeed < this.maxSpeed){
 
         var forward = new Vector2(Math.sin(this.direction), -Math.cos(this.direction)).normalise();
@@ -164,11 +136,9 @@ Car.prototype.accelerateForwardMax = function(acceleration) {
 
         if (cap < acceleration) {
             this.accelerate(forward.scale(cap));
-            //Engine.log(this.getForwardSpeed());
         }
         else if (cap > 0) {
             this.accelerate(forward.scale(acceleration));
-            //Engine.log(this.getForwardSpeed());
         }
 
     }

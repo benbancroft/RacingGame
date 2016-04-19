@@ -188,10 +188,10 @@ Vector2.prototype.midPoint = function(other) {
 };
 
 Vector2.prototype.applyAspectRatio = function(ratio) {
-    if (this.x < this.y){
-        this.y = this.x / ratio.x * ratio.y;
-    }else{
+    if (ratio.x > ratio.y){
         this.x = this.y / ratio.y * ratio.x;
+    }else{
+        this.y = this.x / ratio.x * ratio.y;
     }
 
     return this;
@@ -326,8 +326,12 @@ Vector2.prototype.toArray = function(){
     return [this.x, this.y];
 };
 
+Vector2.prototype.toString = function(){
+    return "X: " + this.x + ", Y: " + this.y;
+};
+
 Vector2.prototype.print = function(){
-    console.log("X: " + this.x + ", Y: " + this.y);
+    console.log(this.toString());
 };
 
 var Vector3 = function(x, y, z){
@@ -662,9 +666,10 @@ function lineLineIntersection(p, pNormal, q, qNormal) {
     return new Vector2(B.clone().swap().cross(C.clone().swap()) / determinant, A.cross(C) / determinant);
 }
 
-function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aManifolds, bManifolds, currentDisplacement){
+function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aManifolds, bManifolds, bNormals, currentDisplacement){
 
     var polyPos = null;
+    var edgeNormal = null;
     var displacement = Number.MAX_VALUE;
 
     var position = vertex.clone().add(leftPos);
@@ -672,7 +677,7 @@ function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aM
     //Find edge.
 
     for (var i = 0; i < poly.edges.length; i++){
-        var edgeNormal = poly.normals[i];
+        edgeNormal = poly.normals[i];
         if (velocityNormal.cross(edgeNormal) < 0) {
 
             var edgePos = poly.computePoints[i].clone().add(rightPos);
@@ -712,12 +717,16 @@ function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aM
         if (displacement != currentDisplacement){
             aManifolds.clear();
             bManifolds.clear();
+            if (bNormals) bNormals.clear();
         }
 
         position.sub(leftPos);
 
         if (!aManifolds.inArray(function(e) { return e.equals(vertex) })) aManifolds.push(vertex.clone());
-        if (!bManifolds.inArray(function(e) { return e.equals(polyPos) })) bManifolds.push(polyPos);
+        if (!bManifolds.inArray(function(e) { return e.equals(polyPos) })) {
+            bManifolds.push(polyPos);
+            if (bNormals) bNormals.push(edgeNormal);
+        }
 
         return displacement;
     }
@@ -725,33 +734,33 @@ function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aM
     return currentDisplacement;
 }
 
-function projectForwardHull(leftPos, rightPos, minIndex, maxIndex, leftPoly, rightPoly, velocityNormal, minDistance, aManifolds, bManifolds){
+function projectForwardHull(leftPos, rightPos, minIndex, maxIndex, leftPoly, rightPoly, velocityNormal, minDistance, aManifolds, bManifolds, bNormals){
     var currentDisplacement = minDistance;
     //if an issue in future, maybe dir need flipping
     if (leftPoly.normals[maxIndex].cross(velocityNormal) < 0){
         var startPos = 0;
         if (minIndex < maxIndex){
             for (var i = maxIndex; i < leftPoly.computePoints.length; i++){
-                currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, currentDisplacement);
+                currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, bNormals, currentDisplacement);
             }
         }else{
             startPos = maxIndex;
         }
         for (var i = startPos; i <= minIndex; i++){
-            currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, currentDisplacement);
+            currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, bNormals, currentDisplacement);
         }
     }
     else{
         var endPos = 0;
         if (minIndex > maxIndex){
             for (var i = minIndex; i < leftPoly.computePoints.length; i++){
-                currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, currentDisplacement);
+                currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, bNormals, currentDisplacement);
             }
         }else{
             endPos = minIndex;
         }
         for (var i = maxIndex; i >= endPos; i--){
-            currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, currentDisplacement);
+            currentDisplacement = projectForwardPoint(leftPos, rightPos, leftPoly.computePoints[i], rightPoly, velocityNormal, aManifolds, bManifolds, bNormals, currentDisplacement);
         }
     }
     return currentDisplacement;
@@ -802,14 +811,16 @@ function testPolygonsSAT(lastPosition, a, b, response) {
 
         var aManifolds = new Array();
         var bManifolds = new Array();
+        var bNormals = new Array();
 
-        var maxDistance = projectForwardHull(lastPosition, b.position, rangeA[2], rangeA[3], a, b, velocityNormal, Number.MAX_VALUE, aManifolds, bManifolds);
+        var maxDistance = projectForwardHull(lastPosition, b.position, rangeA[2], rangeA[3], a, b, velocityNormal, Number.MAX_VALUE, aManifolds, bManifolds, bNormals);
 
         var reverseVelocityNormal = velocityDir.clone().reverse().perp();
-        maxDistance = projectForwardHull(b.position, lastPosition, rangeB[2], rangeB[3], b, a, reverseVelocityNormal, maxDistance, bManifolds, aManifolds);
+        maxDistance = projectForwardHull(b.position, lastPosition, rangeB[2], rangeB[3], b, a, reverseVelocityNormal, maxDistance, bManifolds, aManifolds, null);
 
         response.contactPointsA = aManifolds;
         response.contactPointsB = bManifolds;
+        response.contactEdgeNormalsB = bNormals;
         response.maximumDisplacement = maxDistance;
         response.velocityDir = velocityDir;
     }

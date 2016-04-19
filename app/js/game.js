@@ -31,6 +31,7 @@ function Game() {
 
     Tracks.load("assets/tracks/1");
     Tracks.load("assets/tracks/2");
+    Tracks.load("assets/tracks/3");
 
     this.numberPlayers = 0;
     this.running = false;
@@ -40,7 +41,6 @@ function Game() {
     this.gameState = 0;
 
     this.carFactory = new CarFactory();
-    //this.maxCarStats = this.carFactory.getMaxStats();
     this.carIndex = 0;
     this.secondCarIndex = 0;
 

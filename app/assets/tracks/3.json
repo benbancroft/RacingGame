@@ -1,0 +1,106 @@
+{
+  "name": "No Traffic Lights Required",
+  "difficulty": "1",
+  "startOrientation": "1",
+  "laps": "3",
+  "nodes": [
+    {
+      "type": "5"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "0"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "2"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "5"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
+    },
+    {
+      "type": "3",
+      "range": "8"
+    },
+    {
+      "type": "4",
+      "orientation": "0"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "5"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "3"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "2"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "4",
+      "orientation": "1"
+    },    {
+      "type": "3",
+      "range": "5"
+    },
+    {
+      "type": "5"
+    },
+    {
+      "type": "2",
+      "range": "5"
+    },
+    {
+      "type": "1"
+    },
+    {
+      "type": "3",
+      "range": "5"
+    }
+  ]
+}
