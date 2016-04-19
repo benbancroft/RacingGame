@@ -61,6 +61,11 @@ Engine.prototype.playSound = function (url, loop, positional) {
 
         soundInfo.source = soundContext.createBufferSource();
         soundInfo.volume = soundContext.createGain();
+        soundInfo.ended = false;
+
+        soundInfo.source.onended = function(){
+            soundInfo.ended = true;
+        };
 
         soundInfo.source.connect(soundInfo.volume);
 

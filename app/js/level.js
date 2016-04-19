@@ -34,8 +34,6 @@ Level.prototype.tick = function(engine){
     if (this.tileSystem != null) this.tileSystem.tick(this.viewports);
     //this.firstGen = true;
 
-    if (this.game.paused) return;
-
     var entityMoveUpdate = function (entity) {
 
         for (var i = 0; i < entity.viewportsFollowing.length; i++) {
@@ -57,7 +55,7 @@ Level.prototype.tick = function(engine){
 
     for (var i = 0; i < this.entities.length; i++) {
         var entity = this.entities[i];
-        entityAlarmUpdate(entity);
+        if (!this.game.paused) entityAlarmUpdate(entity);
         entity.tick(engine);
         entity.aliveTime++;
         entityMoveUpdate(entity);

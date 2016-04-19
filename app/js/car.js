@@ -246,7 +246,7 @@ Car.prototype.tick = function(engine){
 
     Entity.prototype.tick.call(this, engine);
 
-    if (this.hasCollided && this.playSound){
+    if (this.hasCollided && this.playSound && (!this.crashSound || this.crashSound.ended)){
         var game = this.level.game;
         game.stopSound(this.crashSound);
         this.crashSound = game.playSound("assets/sounds/car_crash", false, true);
