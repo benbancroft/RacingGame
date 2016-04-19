@@ -444,6 +444,11 @@ Renderer.prototype.setTextAlign = function(alignment){
     }
 
     textCtx.textAlign = alignString;
+
+    textCtx.shadowColor = "black"
+    textCtx.shadowOffsetX = 1;
+    textCtx.shadowOffsetY = 1;
+    textCtx.shadowBlur = 1;
 };
 
 Renderer.prototype.setFont = function(name, size){

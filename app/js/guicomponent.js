@@ -123,11 +123,11 @@ CarWidget.prototype.render = function(renderer){
     renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
 
     renderer.setTextAlign(TextAlign.CENTRE);
-    renderer.setFont("Arial", 18);
+    renderer.setFont("Chewy", 18);
 
     renderer.drawText(carStats.name, this.position.clone().add(new Vector2(0,70)));
 
-    renderer.setFont("Arial", 16);
+    renderer.setFont("Chewy", 16);
 
     renderer.setTextAlign(TextAlign.LEFT);
 
@@ -201,11 +201,11 @@ TrackWidget.prototype.render = function(renderer){
 
     renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
     renderer.setTextAlign(TextAlign.CENTRE);
-    renderer.setFont("Arial", 18);
+    renderer.setFont("Chewy", 18);
 
     renderer.drawText(this.game.currentTrack.contents.name, trackPosition.add(new Vector2(0,95)));
 
-    renderer.setFont("Arial", 16);
+    renderer.setFont("Chewy", 16);
 
     renderer.drawText(this.game.currentTrack.contents.laps + " Laps", trackPosition.add(new Vector2(0,20)));
 };

@@ -177,11 +177,11 @@ Game.prototype.startScreen = function(loadTileSystem){
     this.registerGuiComponent(new Widget(this, resolution.clone().divScalar(2), function(renderer, position){
         renderer.setTextAlign(TextAlign.CENTRE);
         renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-        renderer.setFont("Arial", 32);
+        renderer.setFont("Chewy", 32);
 
         renderer.drawText("Torque Triumph", position.clone().sub(new Vector2(0, 155)));
 
-        renderer.setFont("Arial", 20);
+        renderer.setFont("Chewy", 20);
         renderer.drawText("By Ben Bancroft", position.clone().sub(new Vector2(0, 130)));
     }));
 
@@ -200,7 +200,9 @@ Game.prototype.startScreen = function(loadTileSystem){
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 75)), new Vector2(150, 40), "About", function(){
-        Engine.openLink("about.html");
+        self.gameState = 5;
+        self.unregisterGuiComponents();
+        document.getElementById("page").style.display = 'block';
     }));
 
     this.registerGuiComponent(new Button(this, resolution.clone().divScalar(2).add(new Vector2(0, 125)), new Vector2(150, 40), "Unit Tests", function(){
@@ -293,7 +295,7 @@ Game.prototype.howToPlayScreen = function(){
     this.registerGuiComponent(new Widget(this, resolution.clone().divScalar(2).sub(new Vector2(0, 220)), function(renderer, position){
         renderer.setTextAlign(TextAlign.CENTRE);
         renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-        renderer.setFont("Arial", 25);
+        renderer.setFont("Chewy", 25);
 
         var textPosition = position.clone();
 
@@ -303,7 +305,7 @@ Game.prototype.howToPlayScreen = function(){
 
         renderer.drawText("Pause Menu", position.clone().add(new Vector2(0, 300)));
 
-        renderer.setFont("Arial", 20);
+        renderer.setFont("Chewy", 20);
 
         renderer.setUseColour(false, false, true);
         renderer.setUseColourBlending(false, false);
@@ -373,7 +375,7 @@ Game.prototype.hiscoreScreen = function(){
 
         renderer.setTextAlign(TextAlign.CENTRE);
         renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-        renderer.setFont("Arial", 25);
+        renderer.setFont("Chewy", 25);
 
         var textPosition = position.clone();
 
@@ -389,7 +391,7 @@ Game.prototype.hiscoreScreen = function(){
         renderer.drawText("Position", textPosition.clone().add(new Vector2(100, 0)));
         renderer.drawText("Car", textPosition.clone().add(new Vector2(300, 0)));
 
-        renderer.setFont("Arial", 20);
+        renderer.setFont("Chewy", 20);
 
         textPosition.add(new Vector2(0, 40));
 
@@ -447,7 +449,7 @@ Game.prototype.drawFinishMenu = function(renderer){
 
     renderer.setTextAlign(TextAlign.CENTRE);
     renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-    renderer.setFont("Arial", 32);
+    renderer.setFont("Chewy", 32);
 
     var finishMessage = "You came " + getOrdinalString(this.finalPlace) + " place."
 
@@ -456,7 +458,7 @@ Game.prototype.drawFinishMenu = function(renderer){
 
     renderer.drawText(finishMessage, resolution.clone().divScalar(2).sub(new Vector2(0, 150)));
 
-    renderer.setFont("Arial", 16);
+    renderer.setFont("Chewy", 16);
 
     renderer.drawText("The track was completed in:", resolution.clone().divScalar(2).sub(new Vector2(0, 70)));
     renderer.drawText(getTimeString(this.winningTime), resolution.clone().divScalar(2).sub(new Vector2(0, 20)));
@@ -494,7 +496,7 @@ Game.prototype.pauseGame = function () {
     this.registerGuiComponent(new Widget(this, resolution.clone().divScalar(2), function(renderer, position){
         renderer.setTextAlign(TextAlign.CENTRE);
         renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-        renderer.setFont("Arial", 20);
+        renderer.setFont("Chewy", 20);
 
         renderer.drawText("Game Paused", position.clone().sub(new Vector2(0, 105)));
     }));
@@ -620,7 +622,7 @@ Game.prototype.renderGui = function(){
 
         this.setTextAlign(TextAlign.CENTRE);
         this.setColour(new Vector4(1.0, 1.0, 1.0, 1.0), true);
-        this.setFont("Arial", 32);
+        this.setFont("Chewy", 32);
 
         var startMessage = "Game starting in " + this.secondsTillStart + "."
 

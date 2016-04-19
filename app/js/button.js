@@ -31,6 +31,6 @@ Button.prototype.render = function(renderer){
 
     renderer.setTextAlign(TextAlign.CENTRE);
     renderer.setColour(new Vector4(1.0, 1.0, 1.0, 1.0));
-    renderer.setFont("Arial", 20);
+    renderer.setFont("Chewy", 20);
     renderer.drawText(this.text, this.position);
 };

@@ -60,6 +60,8 @@ var Car = function(level, playSound){
     this.checkPointIndex = 0;
     this.currentLap = 0;
 
+    this.type = CarType.POLICE;
+
     this.playSound = playSound
 
     if (playSound){
@@ -90,7 +92,9 @@ Car.prototype.setStats = function(type, stats) {
     this.bbHeight = stats.boundingBox.y;
     this.spriteIndex = 0;
 
-    if (type == CarType.POLICE) this.toggleSirens();
+    this.type = type;
+
+    if (type == CarType.POLICE || type == CarType.AMBULANCE) this.toggleSirens();
 };
 
 Car.prototype.toggleSirens = function(){
@@ -281,7 +285,7 @@ Car.prototype.alarm = function(index){
         case 0:
         {
             this.spriteIndex++;
-            if (this.spriteIndex > 3) this.spriteIndex = 1;
+            if (this.spriteIndex > (this.type == CarType.POLICE ? 3 : 2)) this.spriteIndex = 1;
 
             this.setAlarm(0, this.sirenRate);
         }

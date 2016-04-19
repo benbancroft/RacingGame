@@ -1,23 +1,238 @@
 html, body {
-    width:  100%;
+    width: 100%;
     height: 100%;
     margin: 0px;
-    overflow:hidden;
-
+    overflow: hidden;
     background: url('../assets/textures/grass.png');
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 20px;
+    color: #FFFFFF;
 }
-.container {
-    position: relative;
+
+.game {
+    position: absolute;
 }
+
+#page {
+    height: 100%;
+    background-color: rgba(32, 32, 32, 0.9);
+    z-index: 12;
+    display: none;
+}
+
+#about-page {
+    width:1000px;
+    margin:0 auto;
+}
+
 #text {
     position: absolute;
     left: 0px;
     top: 0px;
     z-index: 10;
 }
+
 #dom-widgets {
     position: absolute;
     left: 0px;
     top: 0px;
     z-index: 11;
+}
+
+/* Menu stuff for about page */
+
+.menu {
+    margin-top: 30px;
+}
+
+.nav-list {
+    margin-bottom: 0;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.nav {
+    list-style: none;
+    margin-bottom: 20px;
+    margin-left: 0;
+}
+
+.nav > li > a, .nav > li > div {
+    display: block;
+    padding: 3px 15px;
+}
+
+ul {
+    margin: 0 0 10px 25px;
+    padding: 0;
+}
+
+.menu a, .menu div {
+    font-family: Chewy;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 15pt;
+}
+
+.menu li.active a, .menu li.active div {
+    font-size: 18pt;
+    text-shadow: none;
+    color: #000000;
+}
+
+.menu li {
+    line-height: 25px;
+}
+
+/* Grid - This css was auto-generated using a program I wrote, with a similar output used for my CS25010 assignment */
+
+.fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.container:after,
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.column,
+.columns {
+    width: 100%;
+    float: left;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 80%;
+}
+
+.column,
+.columns {
+    margin-left: 4%;
+}
+
+.column:first-child,
+.columns:first-child {
+    margin-left: 0;
+}
+
+.one.column,
+.one.columns {
+    width: 4.66666666667%;
+}
+
+.two.columns {
+    width: 13.3333333333%;
+}
+
+.three.columns {
+    width: 22%;
+}
+
+.four.columns {
+    width: 30.6666666667%;
+}
+
+.five.columns {
+    width: 39.3333333333%;
+}
+
+.six.columns {
+    width: 48%;
+}
+
+.seven.columns {
+    width: 56.6666666667%;
+}
+
+.eight.columns {
+    width: 65.3333333333%;
+}
+
+.nine.columns {
+    width: 74.0%;
+}
+
+.ten.columns {
+    width: 82.6666666667%;
+}
+
+.eleven.columns {
+    width: 91.3333333333%;
+}
+
+.twelve.columns {
+    width: 100%;
+    margin-left: 0;
+}
+
+/* Offsets */
+.offset-by-one.column,
+.offset-by-one.columns {
+    margin-left: 8.66666666667%;
+}
+
+.offset-by-two.column,
+.offset-by-two.columns {
+    margin-left: 17.3333333333%;
+}
+
+.offset-by-three.column,
+.offset-by-three.columns {
+    margin-left: 26%;
+}
+
+.offset-by-four.column,
+.offset-by-four.columns {
+    margin-left: 34.6666666667%;
+}
+
+.offset-by-five.column,
+.offset-by-five.columns {
+    margin-left: 43.3333333333%;
+}
+
+.offset-by-six.column,
+.offset-by-six.columns {
+    margin-left: 52%;
+}
+
+.offset-by-seven.column,
+.offset-by-seven.columns {
+    margin-left: 60.6666666667%;
+}
+
+.offset-by-eight.column,
+.offset-by-eight.columns {
+    margin-left: 69.3333333333%;
+}
+
+.offset-by-nine.column,
+.offset-by-nine.columns {
+    margin-left: 78.0%;
+}
+
+.offset-by-ten.column,
+.offset-by-ten.columns {
+    margin-left: 86.6666666667%;
+}
+
+.offset-by-eleven.column,
+.offset-by-eleven.columns {
+    margin-left: 95.3333333333%;
 }

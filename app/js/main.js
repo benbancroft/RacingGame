@@ -82,7 +82,7 @@ require(['engine', 'game'], function () {
     }
 
     document.oncontextmenu = function (event) {
-        event.preventDefault();
+        if (game.gameState != 5) event.preventDefault();
     };
 
     document.onmousemove = function(event) {
@@ -110,6 +110,11 @@ require(['engine', 'game'], function () {
             game.mouseUp(item.clientX, item.clientY, 0);
         }
     }
+
+    document.getElementById("menu-play").addEventListener("click", function(){
+        document.getElementById("page").style.display = 'none';
+        game.startScreen(false);
+    });
 
     if (window.location.host == "users.aber.ac.uk"){
         var http = new XMLHttpRequest();

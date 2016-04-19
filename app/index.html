@@ -4,14 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width; initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5; " />
     <title>Client Side Graphics</title>
+    <link href='https://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/ftw.css">
     <script data-main="js/main" src="bower_components/requirejs/require.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="game">
         <canvas id="canvas"></canvas>
         <canvas id="text"></canvas>
         <div id="dom-widgets">
+        </div>
+    </div>
+    <div class="container fluid" id ="page">
+        <div id="row">
+            <div class="two columns">
+                <ul class="menu nav nav-list">
+                    <li id="menu-play">
+                        <div>Play</div>
+                    </li>
+                    <li class="active" id="menu-about">
+                        <div>About</div>
+                    </li>
+                    <li id="menu-source">
+                        <a href="test.html">Unit Tests</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="eight columns">
+                <div id="about-page">
+                    <h2>About</h2>
+                    <p>Torque Triumph is a racing game with the usual objective of being the fastest around the track.</p>
+                    <p>You can choose 1 of 9 vehicles for you attempt to beat either the AI or a friend on split screen multiplayer.</p>
+                    <p>The game features a fairly accurate physic and collision system, so be careful that you stay on the track and don't spin out when you collide.</p>
+                    <p>An outline of supported features is below:</p>
+                    <ul>
+                        <li>3 tracks of various difficulties and laps</li>
+                        <li>9 different vehicles to pick from</li>
+                        <li>Split screen multiplayer!</li>
+                        <li>Hiscore system per track</li>
+                        <li>Positional Audio, including doppler effect</li>
+                    </ul>
+
+                    </p><h2>Credits</h2>
+
+                    <ul>
+                        <li>
+                            Textures
+                            <ul>
+                                <li>Track Tiles by Oskar TRBRY Lindqvist - <a href="http://opengameart.org/content/track-tiles">OpenGameArt.org</a>, SVG images have been rasterised and resized from original, License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a></li>
+                                <li>Free Top Down Car Sprites by SUjit Kumar Yadav - <a href="http://opengameart.org/content/free-top-down-car-sprites-by-unlucky-studio">OpenGameArt.org</a>, Unmodified, License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a></li>
+                                <li>Grass Texture,seamless 2d by surfacecurve - <a href="http://opengameart.org/content/grass-textureseamless-2d">OpenGameArt.org</a>, License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></li>
+                                <li>White asphalt tilling 256px by Tiziana - <a href="http://www.unbruco.it/offcircle/risorse_en.html">Website</a>, Unmodified, License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a></li>
+                                <li>Arrow keys, wsad, mouse icon by InanZen - <a href="http://opengameart.org/content/mouse-click">OpenGameArt.org</a>, License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            Sounds
+                            <ul>
+                                <li>Mouse click by LFA - <a href="http://opengameart.org/content/grass-textureseamless-2d">OpenGameArt.org</a>, License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></li>
+                                <li>Race Start Ready go by steel2008 - <a href="http://www.freesound.org/people/steel2008/sounds/231277/">freesound.org</a>, License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></li>
+                                <li>Crash Collision by Iwan Gabovitch - <a href="http://opengameart.org/content/crash-collision">OpenGameArt.org</a>, License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></li>
+                                <li>Racing car engine sound loops by domasx2 - <a href="http://opengameart.org/content/racing-car-engine-sound-loops">OpenGameArt.org</a>, License: <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            Libraries
+                            <ul>
+                                <li>RequireJS - <a href="http://requirejs.org">requirejs.org</a>, License: <a href="https://github.com/requirejs/requirejs/blob/master/LICENSE">new BSD or MIT licensed</a></li>
+                                <li>QUnit - <a href="https://qunitjs.com">qunitjs.com</a>, License: <a href="https://github.com/jquery/qunit/blob/master/LICENSE.txt">MIT licensed</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            Other
+                            <ul>
+                                <li>Samuel Bancroft - For helping me understand the physics needed to create this game.</li>
+                                <li>Erik Neumann/myphysicslab.com - For explaing on your website a good way that Rigid Body Collisions (Linear and Angular momentum) can be implemented, which associated derivations - <a href="http://www.myphysicslab.com/collision.html">Website</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="two columns">
+            </div>
         </div>
     </div>
 </body>
