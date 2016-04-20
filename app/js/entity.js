@@ -1,4 +1,9 @@
 /**
+ * This code was written by Ben Bancroft
+ * Angular momentum implementation based on maths from http://www.myphysicslab.com/collision.html#resting_contact
+ */
+
+/**
  * Alarm structure
  * @param startTime
  * @param delay

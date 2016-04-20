@@ -1,5 +1,8 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var PlayerCar = function(level, secondPlayer){
-    //set depth of PlayerCar here
     Car.call(this, level, true);
 
     this.secondPlayer = secondPlayer;

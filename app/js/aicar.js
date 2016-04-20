@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var AICar = function(level, playSound){
     //set depth of AICar here
     Car.call(this, level, playSound);

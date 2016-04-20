@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var Button = function(game, position, dimensions, text, callback, colour){
     GuiComponent.call(this, game, position, dimensions);
 

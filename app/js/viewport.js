@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var Viewport = function(level, x, y, width, height, levelX, levelY, levelWidth, levelHeight){
     this.level = level;
     this.level.registerViewport(this);

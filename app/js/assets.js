@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 //Assets
 
 var assetRegister = new Array();

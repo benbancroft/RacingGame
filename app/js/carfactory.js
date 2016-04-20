@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var CarType = {
     POLICE: 0, SPORTS: 1, MUSCLE: 2, TAXI: 3, TRUCK: 4, MINI_VAN: 5, MINI_TRUCK: 6, AMBULANCE: 7, SPORTS2: 8
 };

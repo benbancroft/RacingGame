@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var PlayerViewport = function(game, level, x, y, width, height, levelX, levelY, levelWidth, levelHeight){
     Viewport.call(this, level, x, y, width, height, levelX, levelY, levelWidth, levelHeight);
 

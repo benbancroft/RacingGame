@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var GuiComponent = function(game, position, dimensions){
     this.game = game;
 

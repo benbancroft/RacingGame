@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 QUnit.test("rotation", function( assert ) {
 
     var rotated = new Vector2(50,0).rotate(Math.PI/2, new Vector2(25,20));

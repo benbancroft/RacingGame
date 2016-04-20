@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var BlockLayer = function(position, tilePositionPredicate, tiles, flipX, flipY, tileIndexPredicate){
     this.position = position;
     this.tiles = tiles;

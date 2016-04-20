@@ -1,3 +1,8 @@
+/**
+ * This code was written by Ben Bancroft
+ * Based on API documented at: http://requirejs.org/docs/start.html
+ */
+
 require.config({
     baseUrl: 'js',
 

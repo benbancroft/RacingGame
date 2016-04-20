@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 Renderable = function(depth){
     this.depth = depth;
 }

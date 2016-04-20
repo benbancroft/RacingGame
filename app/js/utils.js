@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft unless otherwise stated
+ */
+
 //Utils
 
 //Polyfill to support in older browsers
@@ -21,8 +25,8 @@ var curry = function(fn){
 };
 
 function getOrdinalString(input) {
-    var tenth = input % 10,
-        hundreth = input % 100;
+    var tenth = input % 10;
+    var hundreth = input % 100;
     if (tenth == 1 && hundreth != 11) {
         return input + "st";
     }
@@ -44,15 +48,6 @@ function getTimeString(input) {
 function wrapIndex(i, div) {
     return ((i % div) + div) % div;
 }
-
-function isObject(obj) {
-    var type = typeof obj;
-    return type === 'function' || type === 'object' && !!obj;
-}
-
-Array.prototype.pushArray = function(arr) {
-    this.push.apply(this, arr);
-};
 
 Array.prototype.removeElement = function(item) {
     for(var i = this.length; i--;) {
@@ -535,34 +530,29 @@ Polygon.prototype.setAngle = function(angle) {
     this.calculate();
 };
 
+//Based on mathematical formula defined here: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
 Polygon.prototype.calculateCentroid = function()
 {
     var len = this.points.length;
 
     this.centroid = new Vector2(0, 0);
-    var signedArea = 0.0;
-    var x0 = 0; // Current vertex X
-    var y0 = 0; // Current vertex Y
-    var x1 = 0; // Next vertex X
-    var y1 = 0; // Next vertex Y
-    var area = 0;  // Partial signed area
+    var signedArea = 0;
+    var pos1 = new Vector2(0, 0);
+    var pos2 = new Vector2(0, 0);
+    var area = 0;
 
-    // For all vertices
+    //Loop over vertices
     for (var i = 0; i < len-1; i++)
     {
-        x0 = this.computePoints[i].x;
-        y0 = this.computePoints[i].y;
-        x1 = this.computePoints[(i+1) % len].x;
-        y1 = this.computePoints[(i+1) % len].y;
-        area = x0*y1 - x1*y0;
+        pos1 = this.computePoints[i].clone();
+        pos2 = this.computePoints[(i+1) % len].clone();
+        area = pos1.cross(pos2);
         signedArea += area;
-        this.centroid.x += (x0 + x1)*area;
-        this.centroid.y += (y0 + y1)*area;
+        this.centroid.add(new Vector2((pos1.x + pos2.x)*area, (pos1.y + pos2.y)*area));
     }
 
     signedArea *= 0.5;
-    this.centroid.x /= (6 * signedArea);
-    this.centroid.y /= (6 * signedArea);
+    this.centroid.divScalar(6 * signedArea)
 };
 
 Polygon.prototype.calculate = function() {
@@ -586,10 +576,6 @@ Polygon.prototype.calculate = function() {
     }
 
     this.calculateCentroid();
-
-    /*for (i = 0; i < len; i++) {
-        this.computePoints[i].add(this.position);
-    }*/
 
     return this;
 };
@@ -699,12 +685,6 @@ function projectForwardPoint(leftPos, rightPos, vertex, poly, velocityNormal, aM
                 (minY < pointOnEdgeLine.y || approxEqual(minY, pointOnEdgeLine.y)) && (maxY > pointOnEdgeLine.y || approxEqual(maxY, pointOnEdgeLine.y))){
                 displacement = pointOnEdgeLine.clone().sub(position).len();
                 polyPos = pointOnEdgeLine.clone().sub(rightPos);
-                /*edgePos.print();
-                edgeEnd.print();
-                pointOnEdgeLine.print();*/
-                /*console.log(position);
-                console.log(polyPos);
-                console.log("D: " + displacement);*/
                 break;
             }
 
@@ -771,6 +751,9 @@ function testPolygonsSAT(lastPosition, a, b, response) {
     var aLen = aPoints.length;
     var bPoints = b.computePoints;
     var bLen = bPoints.length;
+
+    //Separating axis theorem implementation: https://en.wikipedia.org/wiki/Hyperplane_separation_theorem
+
     //Check normals of A's edges for seperating axis - if no they are not intercepting
     for (var i = 0; i < aLen; i++) {
         if (isSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals[i])) {
@@ -798,16 +781,6 @@ function testPolygonsSAT(lastPosition, a, b, response) {
 
         projectPointsLine(lastPosition, aPoints, velocityNormal, rangeA, centrePoint, true);
         projectPointsLine(b.position, bPoints, velocityNormal, rangeB, centrePoint, true);
-
-        /*console.log("Min max A - should be top so higher y")
-
-        aPoints[rangeA[2]].print();
-        aPoints[rangeA[3]].print();
-
-        console.log("Min max B - should be bottom so lower y")
-
-        bPoints[rangeB[2]].print();
-        bPoints[rangeB[3]].print();*/
 
         var aManifolds = new Array();
         var bManifolds = new Array();

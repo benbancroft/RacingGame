@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var TilePosition = {
     Centre: new Vector2(0,0),
     Up: new Vector2(0,-1),

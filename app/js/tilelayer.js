@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var TileLayer = function(depth, chunk){
     this.chunk = chunk;
 

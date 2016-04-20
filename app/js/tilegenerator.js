@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 var StructurePiece = function(type, position, direction){
     this.type = type;
     this.position = position;
