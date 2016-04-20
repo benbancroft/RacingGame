@@ -1,26 +1,7 @@
-/*var Test = function(level){
-    //set depth of car here
-    Entity.call(this, level, 5);
-
-    this.width = 10;
-    this.height = 10;
-}
-
-Test.prototype = Object.create(Entity.prototype);
-Test.prototype.constructor = Test;
-
-Test.prototype.render = function(renderer){
-
-    renderer.setShader("assets/shaders/draw", Shaders.Types.DRAW);
-    renderer.setColour(new Vector4(1.0, 0.0, 0.0, 1.0));
-    renderer.setUseColour(true);
-    renderer.setDimensions(new Vector2(this.width, this.height), false);
-
-    renderer.draw(new Vector2(this.x, this.y));
-};*/
-
-
-
+/**
+ * This code was written by Ben Bancroft
+ */
+    
 var Car = function(level, playSound){
     //set depth of car here
     Entity.call(this, level, 10);

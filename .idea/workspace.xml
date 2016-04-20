@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93ce935e-41c3-4b6b-b43d-d6b62abed6ba" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/shaders/draw.frag" afterPath="$PROJECT_DIR$/app/assets/shaders/draw.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/shaders/draw.vert" afterPath="$PROJECT_DIR$/app/assets/shaders/draw.vert" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/shaders/tile.frag" afterPath="$PROJECT_DIR$/app/assets/shaders/tile.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/shaders/tile.vert" afterPath="$PROJECT_DIR$/app/assets/shaders/tile.vert" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/js/car.js" afterPath="$PROJECT_DIR$/app/js/car.js" />
     </list>
     <ignored path="ClientSideGraphics.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,14 +32,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="car.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="car.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/js/car.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.931034">
-              <caret line="187" column="37" selection-start-line="187" selection-start-column="27" selection-end-line="187" selection-end-column="37" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.05202312">
+              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="carfactory.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/js/carfactory.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -61,7 +66,7 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -97,10 +102,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tile.vert" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tile.vert" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/shaders/tile.vert">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.033557046">
+            <state vertical-scroll-proportion="0.0">
               <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
               <folding />
             </state>
@@ -124,16 +129,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-11.310345">
               <caret line="754" column="45" selection-start-line="754" selection-start-column="45" selection-end-line="754" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="viewport.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/js/viewport.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -208,11 +203,11 @@
         <option value="$PROJECT_DIR$/app/js/tilesystem.js" />
         <option value="$PROJECT_DIR$/app/js/viewport.js" />
         <option value="$PROJECT_DIR$/app/js/utils.js" />
-        <option value="$PROJECT_DIR$/app/js/car.js" />
         <option value="$PROJECT_DIR$/app/assets/shaders/draw.frag" />
         <option value="$PROJECT_DIR$/app/assets/shaders/draw.vert" />
         <option value="$PROJECT_DIR$/app/assets/shaders/tile.frag" />
         <option value="$PROJECT_DIR$/app/assets/shaders/tile.vert" />
+        <option value="$PROJECT_DIR$/app/js/car.js" />
       </list>
     </option>
   </component>
@@ -1237,12 +1232,12 @@
       <workItem from="1460825548906" duration="77951000" />
       <workItem from="1461041808268" duration="1244000" />
       <workItem from="1461071604596" duration="18802000" />
-      <workItem from="1461151879033" duration="5030000" />
+      <workItem from="1461151879033" duration="5555000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="743220000" />
+    <option name="totallyTimeSpent" value="743745000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
@@ -1565,14 +1560,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/carfactory.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/js/playercar.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1653,16 +1640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/js/car.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.931034">
-          <caret line="187" column="37" selection-start-line="187" selection-start-column="27" selection-end-line="187" selection-end-column="37" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-23.0">
@@ -1673,8 +1650,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1686,6 +1663,22 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/shaders/tile.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/shaders/tile.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1705,18 +1698,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/shaders/tile.frag">
+    <entry file="file://$PROJECT_DIR$/app/js/carfactory.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/shaders/tile.vert">
+    <entry file="file://$PROJECT_DIR$/app/js/car.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.033557046">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.05202312">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
           <folding />
         </state>
       </provider>
