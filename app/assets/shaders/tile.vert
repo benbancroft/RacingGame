@@ -1,3 +1,7 @@
+/**
+ * This code was written by Ben Bancroft
+ */
+
 #ifdef GL_ES
 precision mediump float;
 //precision mediump int;
@@ -53,35 +57,35 @@ void main() {
 
     float depth = 0.0;
     if (u_depth >= 0){
-            depth = -1.0 / float(u_depth+1);
+        depth = -1.0 / float(u_depth+1);
     }
 
-			vec2 viewportPos = u_viewport[0];
-		vec2 viewportDim = u_viewport[1];
+    vec2 viewportPos = u_viewport[0];
+    vec2 viewportDim = u_viewport[1];
 
-		vec2 scenePos = u_viewportScene[0];
-		vec2 sceneDim = u_viewportScene[1];
+    vec2 scenePos = u_viewportScene[0];
+    vec2 sceneDim = u_viewportScene[1];
 
-        vec2 position = u_position;
-        vec2 dimension = u_dimension;
-        if (u_useViewport){
+    vec2 position = u_position;
+    vec2 dimension = u_dimension;
+    if (u_useViewport){
 
-                vec2 viewportPos = u_viewport[0];
-                vec2 viewportDim = u_viewport[1];
+        vec2 viewportPos = u_viewport[0];
+        vec2 viewportDim = u_viewport[1];
 
-                vec2 scenePos = u_viewportScene[0];
-                vec2 sceneDim = u_viewportScene[1];
+        vec2 scenePos = u_viewportScene[0];
+        vec2 sceneDim = u_viewportScene[1];
 
-                position = viewportPos.xy+(viewportDim.xy / sceneDim.xy)*(position.xy+scenePos.xy)-(viewportDim.xy/2.0);
-                dimension = (viewportDim.xy / sceneDim.xy)*dimension.xy;
-        }
+        position = viewportPos.xy+(viewportDim.xy / sceneDim.xy)*(position.xy+scenePos.xy)-(viewportDim.xy/2.0);
+        dimension = (viewportDim.xy / sceneDim.xy)*dimension.xy;
+    }
 
-        vec2 pixelCoord =  a_verticies*u_dimension;
+    vec2 pixelCoord =  a_verticies*u_dimension;
 
-        vTextureCoord = pixelCoord.xy / u_mapChunkSize / u_mapSquareSize;
+    vTextureCoord = pixelCoord.xy / u_mapChunkSize / u_mapSquareSize;
 
-        if (u_mapSquareSize == 32.0) vDebugColour = vec4(1.0,1.0,0.0,1.0);
-        else vDebugColour = vec4(0.0,0.0,1.0,1.0);
+    if (u_mapSquareSize == 32.0) vDebugColour = vec4(1.0,1.0,0.0,1.0);
+    else vDebugColour = vec4(0.0,0.0,1.0,1.0);
 
-        gl_Position = vec4(toScreenSpace(position + a_verticies*dimension), 0, 1);
+    gl_Position = vec4(toScreenSpace(position + a_verticies*dimension), 0, 1);
 }
