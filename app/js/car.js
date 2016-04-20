@@ -1,7 +1,7 @@
 /**
  * This code was written by Ben Bancroft
  */
-    
+
 var Car = function(level, playSound){
     //set depth of car here
     Entity.call(this, level, 10);
