@@ -5,7 +5,7 @@
       <paths name="Central">
         <serverdata>
           <mappings>
-            <mapping deploy="public_html/ftw" local="$PROJECT_DIR$/app" web="/ftw" />
+            <mapping deploy="public_html/ftw4" local="$PROJECT_DIR$/app" web="/ftw" />
           </mappings>
         </serverdata>
       </paths>
