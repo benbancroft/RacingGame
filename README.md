@@ -11,6 +11,8 @@ The underlying engine that I wrote for this game was partially based on the stru
 
 The two dependencies (RequireJS and QUnit) are managed by the Bower package manager (bower install), but should be included in the distributed zip file.
 
+To run the game, copy the app folder to a web server and navigate to it in your browser.
+
 ======
 
 Link to live version of game (20th April 2016)
