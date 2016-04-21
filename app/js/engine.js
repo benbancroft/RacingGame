@@ -92,7 +92,7 @@ Engine.prototype.playSound = function (url, loop, positional) {
 };
 
 Engine.prototype.setSoundPosition = function(sound, position){
-    sound.panner.setPosition(position.x/100, position.y/100, 0);
+    if (sound) sound.panner.setPosition(position.x/100, position.y/100, 0);
 };
 
 Engine.prototype.setSoundListenerPosition = function(position){
@@ -100,7 +100,7 @@ Engine.prototype.setSoundListenerPosition = function(position){
 };
 
 Engine.prototype.setSoundVelocity = function(sound, velocity){
-    sound.panner.setVelocity(velocity.x/100, velocity.y/100, 0);
+    if (sound) sound.panner.setVelocity(velocity.x/100, velocity.y/100, 0);
 };
 
 Engine.prototype.setSoundListenerVelocity = function(velocity){

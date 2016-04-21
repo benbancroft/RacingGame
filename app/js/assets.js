@@ -4,7 +4,7 @@
 
 //Assets
 
-var assetRegister = new Array();
+var assetRegister = new Map();
 
 function Asset (url, type) {
     this.url = url;
@@ -135,22 +135,21 @@ var Assets = {
     add: function(url, type) {
 
         var asset = new Asset(url, type);
-        assetRegister.push(asset);
+        assetRegister.set(url, asset);
 
         return asset;
     },
 
+    remove: function(url) {
+        assetRegister.delete(url);
+    },
+
     get: function(url) {
-        for (var i = 0; i < assetRegister.length; i++) {
-            if(assetRegister[i].url == url){
-                return assetRegister[i];
-            }
-        }
-        return null;
+        return assetRegister.get(url);
     },
 
     getAll: function(type) {
-        return assetRegister.filter(function(item){
+        return Array.from(assetRegister.values()).filter(function(item){
             return item.type == type;
         });
     },
@@ -172,8 +171,9 @@ var Assets = {
 
     areLoaded: function() {
         var loaded = true;
-        for (var i = 0; i < assetRegister.length; i++) {
-            if (!assetRegister[i].isLoaded){
+        var assets = assetRegister.values();
+        for(let asset of assetRegister.values()){
+            if (!asset.isLoaded){
                 loaded = false;
             }
         }
@@ -399,8 +399,9 @@ var Sounds = {
         request.onload = function() {
             soundContext.decodeAudioData(request.response, function(buffer) {
                 Sounds.create(url, buffer);
-            }, function (e){
-                Engine.log("Failed to load sound: " + url + ". Error: " + e.err);
+            }, function (){
+                Engine.log("Failed to load sound: " + url);
+                Assets.remove(url);
             });
         }
         request.send();
